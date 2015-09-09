@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_color"
+    android:clipToPadding="true"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8.0dip"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:paddingTop="8.0dip">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/fithub_expalanation_image"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/accent_color"
+                    android:gravity="center"
+                    android:padding="8.0sp"
+                    android:text="@string/welcome_fithub"
+                    android:textColor="@android:color/white"
+                    android:textSize="20.0sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="200.0dip"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:contentDescription="@string/fithub_explanation"
+                    android:src="@drawable/hub_explanation" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/fithub_explanation_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fithub_expalanation_image"
+            android:layout_gravity="center"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="2.0sp"
+                android:padding="@dimen/activity_vertical_margin"
+                android:text="@string/fitness_hub_message"
+                android:textSize="16.0sp" />
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/fithub_explanation_text"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            android:weightSum="10.0">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_weight="9.0" />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_accent"
+                android:padding="8.0dip"
+                android:text="@string/get_started"
+                android:textColor="@color/grey_100" />
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

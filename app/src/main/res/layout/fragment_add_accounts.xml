@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_color"
+    android:clipToPadding="true"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8.0dip"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:paddingTop="8.0dip">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/connect_google_fit_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/googlefit_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_vertical_margin" />
+
+                <Button
+                    android:id="@+id/connect_google_fit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/google_fit_btn_selector"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="@string/connect_google_fit"
+                    android:textColor="@color/grey_100" />
+
+                <Button
+                    android:id="@+id/disconnect_google_fit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_selector_red"
+                    android:drawableLeft="@drawable/ic_arrow_back"
+                    android:drawableStart="@drawable/ic_arrow_back"
+                    android:text="@string/disconnect_google_fit"
+                    android:textColor="@color/grey_100"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/connect_up_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connect_google_fit_layout"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/up_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_vertical_margin"
+                    android:contentDescription="@string/fithub_explanation" />
+
+                <Button
+                    android:id="@+id/connect_up"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/jawbone_btn_selector"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="@string/connect_jawbone"
+                    android:textColor="@color/grey_100" />
+
+                <Button
+                    android:id="@+id/disconnect_up"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_selector_red"
+                    android:drawableLeft="@drawable/ic_arrow_back"
+                    android:drawableStart="@drawable/ic_arrow_back"
+                    android:text="@string/disconnect_up"
+                    android:textColor="@color/grey_100"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/connect_fitbit_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connect_up_layout"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/fitbit_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="40.0dip" />
+
+                <Button
+                    android:id="@+id/connect_fitbit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fitbit_btn_selector"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="@string/connect_fitbit"
+                    android:textColor="@color/grey_100" />
+
+                <Button
+                    android:id="@+id/disconnect_fitbit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_selector_red"
+                    android:drawableLeft="@drawable/ic_arrow_back"
+                    android:drawableStart="@drawable/ic_arrow_back"
+                    android:text="@string/disconnect_fitbit"
+                    android:textColor="@color/grey_100"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/connect_misfit_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connect_fitbit_layout"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/misfit_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="22.0dip"
+                    android:padding="@dimen/activity_vertical_margin" />
+
+                <Button
+                    android:id="@+id/connect_misfit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/jawbone_btn_selector"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="@string/connect_misfit"
+                    android:textColor="@color/grey_100" />
+
+                <Button
+                    android:id="@+id/disconnect_misfit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_selector_red"
+                    android:drawableLeft="@drawable/ic_arrow_back"
+                    android:drawableStart="@drawable/ic_arrow_back"
+                    android:text="@string/disconnect_misfit"
+                    android:textColor="@color/grey_100"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/connect_moves_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connect_misfit_layout"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/moves_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/activity_vertical_margin" />
+
+                <Button
+                    android:id="@+id/connect_moves"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/moves_btn_selector"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="@string/connect_moves"
+                    android:textColor="@color/grey_100" />
+
+                <Button
+                    android:id="@+id/disconnect_moves"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_selector_red"
+                    android:drawableLeft="@drawable/ic_arrow_back"
+                    android:drawableStart="@drawable/ic_arrow_back"
+                    android:text="@string/disconnect_moves"
+                    android:textColor="@color/grey_100"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/connect_moves_layout"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            android:weightSum="10.0">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_weight="9.0" />
+
+            <Button
+                android:id="@+id/finishButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_accent"
+                android:padding="8.0dip"
+                android:text="@string/finish_setup"
+                android:textColor="@color/grey_100" />
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

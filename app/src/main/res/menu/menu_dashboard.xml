@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/graph_type"
+        android:icon="@drawable/ic_line_chart"
+        android:orderInCategory="1"
+        android:title="Change Graph"
+        app:showAsAction="ifRoom" />
+</menu>

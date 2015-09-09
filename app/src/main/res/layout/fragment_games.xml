@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/leaderboard_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8.0dip"
+        android:background="@android:color/white"
+        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardCornerRadius="4.0dip">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/leaderboards_icon"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:src="@drawable/ic_leaderboard" />
+
+            <Button
+                android:id="@+id/leaderboardds_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_accent"
+                android:drawableLeft="@drawable/ic_arrow_forward"
+                android:drawableStart="@drawable/ic_arrow_forward"
+                android:text="LeaderBoards"
+                android:textColor="@color/grey_100"
+                android:textSize="14.0sp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/achievements_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8.0dip"
+        android:background="@android:color/white"
+        card_view:cardBackgroundColor="@android:color/white"
+        card_view:cardCornerRadius="4.0dip">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/achievements_icon"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:src="@drawable/ic_achievement" />
+
+            <Button
+                android:id="@+id/achievements_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fitbit_btn_selector"
+                android:drawableLeft="@drawable/ic_arrow_forward"
+                android:drawableStart="@drawable/ic_arrow_forward"
+                android:text="Achievements"
+                android:textColor="@color/grey_100"
+                android:textSize="14.0sp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

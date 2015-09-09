@@ -1,0 +1,52 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="TextAppearance.Fitness.FloatLabel.SignIn" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">@color/grey_white_1000</item>
+    </style>
+
+
+    <style name="ThemeFitness" parent="@style/Theme.Fitness.Base" />
+
+    <style name="Theme.Fitness.Base" parent="@android:style/Theme">
+        <item name="drawerArrowStyle">@style/Theme.Fitness.Base.DrawerArrowStyle</item>
+        <item name="material_drawer_background">@color/material_drawer_background</item>
+        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
+        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
+        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
+        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
+        <item name="material_drawer_divider">@color/material_drawer_divider</item>
+        <item name="material_drawer_selected">@color/material_drawer_selected</item>
+        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
+        <item name="material_drawer_header_selection_text">
+            @color/material_drawer_header_selection_text
+        </item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">@null</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent_color</item>
+    </style>
+
+    <style name="Theme.Fitness.Base.DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
+        <item name="spinBars">true</item>
+    </style>
+
+    <style name="Theme.Fitness.Base.ActionBarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="colorControlNormal">#ffffffff</item>
+        <item name="colorControlHighlight">#33ffffff</item>
+    </style>
+
+    <style name="Theme.Fitness.Base.HeaderBar" parent="@style/Theme.Fitness.Base">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/primary</item>
+    </style>
+
+</resources>

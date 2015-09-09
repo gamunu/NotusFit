@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/teal_400"
+                    android:drawableLeft="@drawable/ic_details"
+                    android:drawablePadding="16.0dip"
+                    android:drawableStart="@drawable/ic_details"
+                    android:padding="12.0dip"
+                    android:text="@string/challenge_details"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/grey_100" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8.0dip">
+
+                    <LinearLayout
+                        android:layout_width="100.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_marginRight="8.0dip"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/challenge_logo"
+                            android:layout_width="100.0dip"
+                            android:layout_height="80.0dip"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_running" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0.0dip"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1.0"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="8.0dip">
+
+                            <TextView
+                                android:id="@+id/start_date"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:text="@string/placeholder_start_date"
+                                android:textColor="@color/grey_600"
+                                android:textSize="14.0sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="8.0dip">
+
+                            <TextView
+                                android:id="@+id/end_date"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:text="@string/end_date_placeholder"
+                                android:textColor="@color/grey_600"
+                                android:textSize="14.0sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="8.0dip">
+
+                            <TextView
+                                android:id="@+id/goal"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:text="@string/goal_placeholder"
+                                android:textColor="@color/grey_600"
+                                android:textSize="14.0sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/reward"
+                        android:textSize="18.0sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reward"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8.0dip"
+                        android:layout_marginRight="8.0dip"
+                        android:gravity="center_vertical"
+                        android:text="@string/reward_placeholder"
+                        android:textColor="@color/green_400"
+                        android:textSize="18.0sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/discount"
+                        android:textSize="18.0sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/purple_600"
+                    android:drawableLeft="@drawable/ic_message"
+                    android:drawablePadding="16.0dip"
+                    android:drawableStart="@drawable/ic_message"
+                    android:padding="12.0dip"
+                    android:text="@string/challenge_description"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/grey_100" />
+
+                <TextView
+                    android:id="@+id/challenge_description"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:lineSpacingExtra="2.0sp"
+                    android:padding="8.0dip"
+                    android:text="@string/long_paragraph" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/accept_card"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <TextView
+                android:id="@+id/accept_challenge"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/jawbone_btn_selector"
+                android:gravity="center"
+                android:padding="12.0sp"
+                android:text="@string/accept_challenge"
+                android:textColor="@color/grey_white_1000" />
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background_color"
+    android:clipToPadding="true"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8.0dip"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:paddingTop="8.0dip">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/already_has_account"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fithub_layout"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            android:visibility="gone"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:text="Already have an account?"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/grey_800" />
+
+                <Button
+                    android:id="@+id/sign_in"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/google_fit_btn_selector"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="@string/sign_in"
+                    android:textColor="@color/grey_100" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/fithub_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/facebook_layout"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            android:visibility="gone"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/fithub_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8.0dip"
+                    android:src="@drawable/ic_app_logo" />
+
+                <Button
+                    android:id="@+id/fithub_signup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_selector_accent"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="Create FitHub Account"
+                    android:textColor="@color/grey_100"
+                    android:textSize="14.0sp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/gplus_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8.0dip"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/gplus_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8.0dip"
+                    android:src="@drawable/ic_google_plus" />
+
+                <Button
+                    android:id="@+id/gplus_signup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/google_btn_selector"
+                    android:drawableLeft="@drawable/ic_arrow_forward"
+                    android:drawableStart="@drawable/ic_arrow_forward"
+                    android:text="Sign In with Google"
+                    android:textColor="@color/grey_100"
+                    android:textSize="14.0sp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/facebook_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gplus_layout"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/white"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="4.0dip">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/facebook_logo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8.0dip"
+                    android:contentDescription="@string/fithub_explanation"
+                    android:src="@drawable/ic_facebook_logo" />
+
+                <com.facebook.widget.LoginButton
+                    android:id="@+id/facebook_signup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey_100" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/already_has_account"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="10.0">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.0dip"
+                android:layout_weight="9.0" />
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_selector_accent"
+                android:padding="8.0dip"
+                android:text="@string/next"
+                android:textColor="@color/grey_100" />
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <PreferenceCategory android:title="Account Settings">
+
+        <PreferenceScreen
+            android:icon="@drawable/ic_person_settings"
+            android:key="my_account"
+            android:title="My Account">
+
+            <intent android:action="action.Account" />
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:icon="@drawable/ic_wear_dark"
+            android:key="link_device"
+            android:title="Add / Remove tracker">
+
+            <intent android:action="action.LinkDevices" />
+        </PreferenceScreen>
+
+        <com.afollestad.materialdialogs.prefs.MaterialEditTextPreference
+            android:defaultValue="10000"
+            android:dialogIcon="@drawable/ic_running"
+            android:dialogTitle="Steps Goal"
+            android:icon="@drawable/ic_steps"
+            android:inputType="number"
+            android:key="@string/steps_goal"
+            android:numeric="decimal"
+            android:singleLine="true"
+            android:summary="%s Steps."
+            android:title="Steps Goal" />
+    </PreferenceCategory>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:icon="@drawable/ic_games"
+        android:key="@string/games_enabled"
+        android:title="Enable Play Games" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:icon="@drawable/ic_notifications"
+        android:key="@string/notifications_enable"
+        android:title="Enable Notifications" />
+</PreferenceScreen>

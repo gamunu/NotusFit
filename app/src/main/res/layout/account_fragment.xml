@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:id="@+id/view_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="100.0dip"
+            android:layout_height="100.0dip"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8.0dip"
+            android:layout_marginTop="8.0dip"
+            android:src="@drawable/ic_person_settings"
+            app:border_color="@android:color/white"
+            app:border_width="1.0dip" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.gabilheri.fithub.ui_elements.FloatLabelLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.Fitness.FloatLabel.SignIn">
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/name_lastname"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+            </com.gabilheri.fithub.ui_elements.FloatLabelLayout>
+
+            <com.gabilheri.fithub.ui_elements.FloatLabelLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:floatLabelTextAppearance="@style/TextAppearance.Fitness.FloatLabel.SignIn">
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/email"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white" />
+            </com.gabilheri.fithub.ui_elements.FloatLabelLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/view_layout"
+        android:background="@color/background_color"
+        android:fillViewport="true"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/personal_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@android:color/white"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="4.0dip">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/accent_color"
+                        android:gravity="center_vertical"
+                        android:padding="8.0sp"
+                        android:text="@string/personal_info"
+                        android:textColor="@android:color/white"
+                        android:textSize="20.0sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/activity_vertical_margin"
+                        android:weightSum="10.0">
+
+                        <LinearLayout
+                            android:layout_width="0.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5.0"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4.0dip"
+                                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                                android:text="@string/weight_label"
+                                android:textSize="16.0sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/weight"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ems="4"
+                                    android:enabled="false"
+                                    android:gravity="center"
+                                    android:hint="140"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="numberDecimal"
+                                    android:singleLine="true" />
+
+                                <TextView
+                                    android:id="@+id/weight_units"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="bottom|center"
+                                    android:paddingBottom="5.0dip"
+                                    android:text="lbs" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0.0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5.0"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4.0dip"
+                                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                                android:text="@string/height_label"
+                                android:textSize="16.0sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/height_ft"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ems="2"
+                                    android:enabled="false"
+                                    android:hint="5"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="numberDecimal"
+                                    android:singleLine="true" />
+
+                                <TextView
+                                    android:id="@+id/height_units_1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="bottom|center"
+                                    android:paddingBottom="5.0dip"
+                                    android:text="ft" />
+
+                                <EditText
+                                    android:id="@+id/height_in"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8.0dip"
+                                    android:ems="2"
+                                    android:enabled="false"
+                                    android:hint="2"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="numberDecimal"
+                                    android:singleLine="true" />
+
+                                <TextView
+                                    android:id="@+id/height_units_2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="bottom|center"
+                                    android:paddingBottom="5.0dip"
+                                    android:text="in" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:text="@string/gender_label"
+                        android:textSize="16.0sp" />
+
+                    <Spinner
+                        android:id="@+id/gender_spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:entries="@array/gender_array"
+                        android:padding="@dimen/activity_vertical_margin" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:text="@string/units_label"
+                        android:textSize="16.0sp" />
+
+                    <Spinner
+                        android:id="@+id/unit_spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8.0dip"
+                        android:layout_marginRight="@dimen/activity_vertical_margin"
+                        android:entries="@array/unit_system"
+                        android:padding="@dimen/activity_vertical_margin" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/password_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@android:color/white"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="4.0dip">
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blue_grey_600"
+                        android:gravity="center_vertical"
+                        android:padding="8.0sp"
+                        android:text="@string/linked_accounts"
+                        android:textColor="@android:color/white"
+                        android:textSize="20.0sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/average_steps"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_vertical_margin"
+                            android:layout_marginRight="@dimen/activity_vertical_margin"
+                            android:layout_marginTop="8.0dip"
+                            android:text="@string/show_averaged_steps"
+                            android:textSize="16.0sp" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/activity_vertical_margin"
+                            android:weightSum="10.0">
+
+                            <ImageView
+                                android:id="@+id/fit_logo"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.0"
+                                android:src="@drawable/ic_fit_large" />
+
+                            <ImageView
+                                android:id="@+id/fitbit_logo"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.0"
+                                android:src="@drawable/ic_fitbit_large" />
+
+                            <ImageView
+                                android:id="@+id/up_logo"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.0"
+                                android:src="@drawable/ic_up_logo" />
+
+                            <ImageView
+                                android:id="@+id/misfit_logo"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.0"
+                                android:src="@drawable/ic_logo_misfit" />
+
+                            <ImageView
+                                android:id="@+id/moves_logo"
+                                android:layout_width="0.0dip"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2.0"
+                                android:src="@drawable/ic_moves_logo" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <Button
+                android:id="@+id/changePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingRight="@dimen/activity_vertical_margin"
+                android:text="@string/change_password"
+                android:textColor="@color/accent_color"
+                android:textSize="16.0sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_edit_account"
+        android:layout_width="76.0dip"
+        android:layout_height="76.0dip"
+        android:layout_alignBottom="@id/view_layout"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-38.0dip"
+        android:src="@drawable/ic_edit"
+        app:fab_colorNormal="@color/orange_400"
+        app:fab_colorPressed="@color/orange_500" />
+</RelativeLayout>

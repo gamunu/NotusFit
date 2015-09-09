@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:icon="@drawable/ic_reminders"
+        android:key="enable_reminders"
+        android:title="Enable Reminders" />
+    <com.gabilheri.fithub.ui_elements.TimePreference
+        android:defaultValue="08:00 AM"
+        android:enabled="false"
+        android:icon="@drawable/ic_sun"
+        android:key="day_start"
+        android:title="Day Start" />
+    <com.gabilheri.fithub.ui_elements.TimePreference
+        android:defaultValue="08:00 PM"
+        android:enabled="false"
+        android:icon="@drawable/ic_goal"
+        android:key="goal_time"
+        android:title="Goal Time" />
+</PreferenceScreen>
