@@ -8,7 +8,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.List;
 
 /**
- * Created by Gamunu Balagalla on 9/1/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/1/2015 1:13 PM
  */
 public class BaseViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -27,7 +29,7 @@ public class BaseViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
     public Fragment getItem(int position) {
-        return (Fragment) this.fragmentList.get(position);
+        return this.fragmentList.get(position);
     }
 
     public int getCount() {
@@ -35,6 +37,6 @@ public class BaseViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     public CharSequence getPageTitle(int position) {
-        return (CharSequence) this.titleList.get(position);
+        return this.titleList.get(position);
     }
 }

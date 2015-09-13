@@ -1,6 +1,6 @@
 package com.notus.fit.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,21 +20,15 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class DefaultFragment extends Fragment {
     protected static final boolean DEBUG = true;
     protected static final String LOG_TAG = DefaultFragment.class.getSimpleName();
-    protected CompositeSubscription mCompositeSubscription;
-    protected boolean unsubscribe;
+    protected CompositeSubscription mCompositeSubscription = new CompositeSubscription();
+    protected boolean unsubscribe = DEBUG;
 
-
-    public DefaultFragment() {
-        this.unsubscribe = DEBUG;
-        this.mCompositeSubscription = new CompositeSubscription();
-    }
-
-    public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
+    public void onInflate(Context context, AttributeSet attrs, Bundle savedInstanceState) {
         FragmentManager fm = getFragmentManager();
         if (fm != null) {
             fm.beginTransaction().remove(this).commit();
         }
-        super.onInflate(activity, attrs, savedInstanceState);
+        super.onInflate(context, attrs, savedInstanceState);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +38,7 @@ public abstract class DefaultFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind((Object) this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void onCreate(Bundle savedInstanceState) {

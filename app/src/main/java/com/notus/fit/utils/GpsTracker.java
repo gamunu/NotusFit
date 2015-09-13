@@ -1,28 +1,30 @@
 package com.notus.fit.utils;
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.notus.fit.R;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:15 PM
  */
 public class GpsTracker extends Service
         implements LocationListener {
 
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 2L;
-    private static final long MIN_TIME_BW_UPDATES = 60000L;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 2;
+    private static final long MIN_TIME_BW_UPDATES = 60000;
     private final Context mContext;
     protected LocationManager locationManager;
     boolean canGetLocation;
@@ -54,12 +56,13 @@ public class GpsTracker extends Service
     public Location getLocation() {
         try {
             locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-            isGPSEnabled = locationManager.isProviderEnabled("gps");
-            isNetworkEnabled = locationManager.isProviderEnabled("network");
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            ;
+            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
             if (isGPSEnabled || isNetworkEnabled) {
                 canGetLocation = true;
                 if (isNetworkEnabled) {
-                    locationManager.requestLocationUpdates("network", 60000L, 2.0F, this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this, Looper.getMainLooper());
                     Log.d("Network", "Network");
                     if (locationManager != null) {
                         location = locationManager.getLastKnownLocation("network");
@@ -70,10 +73,10 @@ public class GpsTracker extends Service
                     }
                 }
                 if (isGPSEnabled && location == null) {
-                    locationManager.requestLocationUpdates("gps", 60000L, 2.0F, this);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this, Looper.getMainLooper());
                     Log.d("GPS Enabled", "GPS Enabled");
                     if (locationManager != null) {
-                        location = locationManager.getLastKnownLocation("gps");
+                        location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
@@ -120,7 +123,7 @@ public class GpsTracker extends Service
 
             public void onPositive(MaterialDialog materialdialog) {
                 super.onPositive(materialdialog);
-                Intent intent = new Intent("android.settings.LOCATION_SOURCE_SETTINGS");
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 GpsTracker.this.mContext.startActivity(intent);
             }
         }).build().show();
@@ -128,17 +131,6 @@ public class GpsTracker extends Service
 
     public void stopUsingGPS() {
         if (locationManager != null) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    public void requestPermissions(@NonNull String[] permissions, int requestCode)
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for Activity#requestPermissions for more details.
-                Log.e("LocationManager", "Missing permission");
-                return;
-            }
             locationManager.removeUpdates(this);
         }
     }

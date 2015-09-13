@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.notus.fit.R;
 
-public class MisfitOauthActivity extends ActionBarActivity {
+public class MisfitOauthActivity extends AppCompatActivity {
     private static final String TAG = MisfitOauthActivity.class.getSimpleName();
     private String accessCode;
 
@@ -20,8 +20,8 @@ public class MisfitOauthActivity extends ActionBarActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((int) R.layout.activity_oauth_base);
-        Uri uri = (Uri) getIntent().getParcelableExtra(MisfitClient.AUTH_URI);
+        setContentView(R.layout.activity_oauth_base);
+        Uri uri = getIntent().getParcelableExtra(MisfitClient.AUTH_URI);
         WebView webview = (WebView) findViewById(R.id.webview);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setWebViewClient(new ViewClient());

@@ -46,92 +46,91 @@ public class AccountFragment extends FitnessFragment implements View.OnClickList
 
     protected ParseObject currentParseObject;
     @Bind(R.id.average_steps)
-    SwitchCompat averageSteps;
+    SwitchCompat mAverageSteps;
     @Bind(R.id.btn_edit_account)
-    FloatingActionButton btnEditAccount;
+    FloatingActionButton mBtnEditAccount;
     @Bind(R.id.changePassword)
-    Button changePassword;
+    Button mChangePassword;
     @Bind(R.id.email)
-    EditText email;
+    EditText mEmail;
     @Bind(R.id.fit_logo)
-    ImageView fitLogo;
+    ImageView mFitLogo;
     @Bind(R.id.fitbit_logo)
-    ImageView fitbitLogo;
+    ImageView mFitbitLogo;
     String[] genderArray;
     @Bind(R.id.gender_spinner)
-    Spinner genderSpinner;
+    Spinner mGenderSpinner;
     @Bind(R.id.height_ft)
-    EditText heightFt;
+    EditText mHeightFt;
     @Bind(R.id.height_in)
-    EditText heightIn;
+    EditText mHeightIn;
     @Bind(R.id.height_units_1)
-    TextView heightUnits1;
+    TextView mHeightUnits1;
     @Bind(R.id.height_units_2)
-    TextView heightUnits2;
+    TextView mHeightUnits2;
     @Bind(R.id.misfit_logo)
-    ImageView misfitLogo;
+    ImageView mMisfitLogo;
     @Bind(R.id.moves_logo)
-    ImageView movesLogo;
+    ImageView mMovesLogo;
     @Bind(R.id.name)
-    EditText nameLastName;
+    EditText mMameLastName;
     @Bind(R.id.profile_image)
-    ImageView profileImage;
+    ImageView mProfileImage;
     @Bind(R.id.unit_spinner)
-    Spinner unitSpinner;
+    Spinner mUnitSpinner;
     @Bind(R.id.up_logo)
-    ImageView upLogo;
+    ImageView mUpLogo;
     @Bind(R.id.weight)
     EditText weight;
     @Bind(R.id.weight_units)
-    TextView weightUnits;
-    private boolean isEditMode;
+    TextView mWeightUnits;
+    private boolean mIsEditMode;
     private User user;
-    private String userID;
+    private String mUserID;
 
     public AccountFragment() {
-        this.isEditMode = false;
+        mIsEditMode = false;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.account_fragment, container, false);
-        ButterKnife.bind((Object) this, view);
+        ButterKnife.bind(this, view);
         return view;
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ButterKnife.bind((Object) this, view);
-        this.btnEditAccount.setOnClickListener(this);
-        this.changePassword.setOnClickListener(this);
-        this.genderArray = getResources().getStringArray(R.array.gender_array);
-        this.genderSpinner.setEnabled(false);
-        this.unitSpinner.setEnabled(false);
-        this.userID = PrefManager.with(getActivity()).getString(User.OBJECT_ID, null);
-        if (this.userID != null) {
+        ButterKnife.bind(this, view);
+        mBtnEditAccount.setOnClickListener(this);
+        mChangePassword.setOnClickListener(this);
+        genderArray = getResources().getStringArray(R.array.gender_array);
+        mGenderSpinner.setEnabled(false);
+        mUnitSpinner.setEnabled(false);
+        mUserID = PrefManager.with(getActivity()).getString(User.OBJECT_ID, null);
+        if (mUserID != null) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery(User.CLASS);
             query.fromLocalDatastore();
-            query.getInBackground(this.userID, new GetCallback<ParseObject>() {
+            query.getInBackground(mUserID, new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject object, ParseException e) {
                     if (object != null) {
-                        AccountFragment.this.user = User.build(object);
-                        AccountFragment.this.updateUserFields();
+                        user = User.build(object);
+                        updateUserFields();
                         return;
                     }
-                    new MaterialDialog.Builder(AccountFragment.this.getActivity()).title("Error fetching user data.")
+                    new MaterialDialog.Builder(getActivity()).title("Error fetching user data.")
                             .content("There was an error retrieving user data. Please try again in a few minutes.")
                             .positiveText("Dismiss")
-                            .positiveColor(AccountFragment.this.getResources()
-                                    .getColor(R.color.accent_color)).build().show();
+                            .positiveColor(ContextCompat.getColor(getContext(), R.color.accent_color)).build().show();
 
                 }
             });
-            this.averageSteps.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            mAverageSteps.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        PrefManager.with(AccountFragment.this.getActivity()).save("should_average", true);
+                        PrefManager.with(getActivity()).save("should_average", true);
                     } else {
-                        PrefManager.with(AccountFragment.this.getActivity()).save("should_average", false);
+                        PrefManager.with(getActivity()).save("should_average", false);
                     }
                 }
             });
@@ -142,52 +141,36 @@ public class AccountFragment extends FitnessFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_edit_account:
                 boolean z;
-                this.weight.setEnabled(!this.isEditMode);
-                Spinner spinner = this.unitSpinner;
-                if (this.isEditMode) {
-                    z = false;
-                } else {
-                    z = true;
-                }
+                weight.setEnabled(!mIsEditMode);
+                Spinner spinner = mUnitSpinner;
+                z = !mIsEditMode;
                 spinner.setEnabled(z);
-                spinner = this.genderSpinner;
-                if (this.isEditMode) {
-                    z = false;
-                } else {
-                    z = true;
-                }
+                spinner = mGenderSpinner;
+                z = !mIsEditMode;
                 spinner.setEnabled(z);
-                EditText editText = this.heightIn;
-                if (this.isEditMode) {
-                    z = false;
-                } else {
-                    z = true;
-                }
+                EditText editText = mHeightIn;
+                z = !mIsEditMode;
                 editText.setEnabled(z);
-                editText = this.heightFt;
-                if (this.isEditMode) {
-                    z = false;
-                } else {
-                    z = true;
-                }
+                editText = mHeightFt;
+                z = !mIsEditMode;
                 editText.setEnabled(z);
-                if (this.isEditMode) {
-                    this.btnEditAccount.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_edit));
-                    this.isEditMode = false;
-                    this.user.setObjectId(this.userID);
-                    this.user.setWeight(this.weight.getText().toString());
-                    this.user.setHeight(this.heightFt.getText().toString() + " " + this.heightIn.getText().toString());
-                    this.user.setGender(this.genderArray[this.genderSpinner.getSelectedItemPosition()]);
-                    this.user.setUnits(this.unitSpinner.getSelectedItem().toString());
-                    Log.d(TAG, this.user.toString());
-                    if (this.hasWearDevice) {
+                if (mIsEditMode) {
+                    mBtnEditAccount.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_edit));
+                    mIsEditMode = false;
+                    user.setObjectId(mUserID);
+                    user.setWeight(weight.getText().toString());
+                    user.setHeight(mHeightFt.getText().toString() + " " + mHeightIn.getText().toString());
+                    user.setGender(genderArray[mGenderSpinner.getSelectedItemPosition()]);
+                    user.setUnits(mUnitSpinner.getSelectedItem().toString());
+                    Log.d(TAG, user.toString());
+                    if (mHasWearDevice) {
                         try {
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(new Date());
                             long endTime = cal.getTimeInMillis();
                             long startTime = cal.getTimeInMillis();
-                            final float weightKG = FitnessUtils.convertWeight(Float.parseFloat(this.user.getWeight()), this.user.getUnits());
-                            Fitness.HistoryApi.insertData(((AccountActivity) getActivity()).getGoogleFitClient(), FitnessUtils.createDataForRequest(getActivity(), DataType.TYPE_WEIGHT, 0, Float.valueOf(weightKG), startTime, endTime, TimeUnit.SECONDS))
+                            final float weightKG = FitnessUtils.convertWeight(Float.parseFloat(user.getWeight()), user.getUnits());
+                            Fitness.HistoryApi.insertData(((AccountActivity) getActivity()).getGoogleFitClient(), FitnessUtils.createDataForRequest(getActivity(), DataType.TYPE_WEIGHT, 0, weightKG, startTime, endTime, TimeUnit.SECONDS))
                                     .setResultCallback(new ResultCallback<Status>() {
                                         @Override
                                         public void onResult(Status status) {
@@ -198,99 +181,100 @@ public class AccountFragment extends FitnessFragment implements View.OnClickList
                                             }
                                         }
                                     });
-                        } catch (Exception e) {
+                        } catch (Exception ex) {
+                            Log.e(LOG_TAG, ex.getMessage(), ex);
                         }
                     }
-                    final ParseObject object = User.build(this.user);
+                    final ParseObject object = User.build(user);
                     if (object != null) {
                         object.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
-                                if (AccountFragment.this.getActivity() != null) {
-                                    Toast.makeText(AccountFragment.this.getActivity(), "User successfully updated.", Toast.LENGTH_LONG).show();
+                                if (getActivity() != null) {
+                                    Toast.makeText(getActivity(), "User successfully updated.", Toast.LENGTH_LONG).show();
                                 }
                                 object.pinInBackground();
-                                PrefManager.with(AccountFragment.this.getActivity()).save(User.UNITS, object.getString(User.UNITS) != null ? object.getString(User.UNITS) : AccountFragment.this.getString(R.string.pref_units_imperial));
+                                PrefManager.with(getActivity()).save(User.UNITS, object.getString(User.UNITS) != null ? object.getString(User.UNITS) : getString(R.string.pref_units_imperial));
                             }
                         });
                         return;
                     }
                     return;
                 }
-                this.btnEditAccount.setImageResource(R.drawable.ic_done);
-                this.btnEditAccount.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_done));
-                this.isEditMode = true;
+                mBtnEditAccount.setImageResource(R.drawable.ic_done);
+                mBtnEditAccount.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_done));
+                mIsEditMode = true;
             default:
         }
     }
 
     public void updateUserFields() {
         if (PrefManager.with(getActivity()).getBoolean("should_average", true)) {
-            this.averageSteps.setChecked(true);
+            mAverageSteps.setChecked(true);
         }
-        if (!this.hasWearDevice) {
-            this.fitLogo.setVisibility(View.GONE);
+        if (!mHasWearDevice) {
+            mFitLogo.setVisibility(View.GONE);
         }
-        if (!this.hasFitbit) {
-            this.fitbitLogo.setVisibility(View.GONE);
+        if (!mHasFitbit) {
+            mFitbitLogo.setVisibility(View.GONE);
         }
-        if (!this.hasJawbone) {
-            this.upLogo.setVisibility(View.GONE);
+        if (!mHasJawbone) {
+            mUpLogo.setVisibility(View.GONE);
         }
-        if (!this.hasMisfit) {
-            this.misfitLogo.setVisibility(View.GONE);
+        if (!mHasMisfit) {
+            mMisfitLogo.setVisibility(View.GONE);
         }
-        if (!this.hasMoves) {
-            this.movesLogo.setVisibility(View.GONE);
+        if (!mHasMoves) {
+            mMovesLogo.setVisibility(View.GONE);
         }
-        this.user.setHasFitbit(this.hasFitbit);
-        this.user.setHasGoogleFit(this.hasWearDevice);
-        this.user.setHasJawbone(this.hasJawbone);
-        this.user.setHasMisfit(this.hasJawbone);
-        this.user.setHasMoves(this.hasMoves);
-        Picasso.with(getActivity()).load(this.user.getAvatarUrl()).fit().centerCrop().into(this.profileImage);
-        this.nameLastName.setText(this.user.getFirstName() + " " + this.user.getLastName());
-        this.email.setText(this.user.getEmail());
-        if (this.user.getGender() != null) {
-            if (this.user.getGender().equals("Male")) {
-                this.genderSpinner.setSelection(1);
-            } else if (this.user.getGender().equals("Female")) {
-                this.genderSpinner.setSelection(0);
-            } else if (this.user.getGender().equals("Other")) {
-                this.genderSpinner.setSelection(2);
+        user.setHasFitbit(mHasFitbit);
+        user.setHasGoogleFit(mHasWearDevice);
+        user.setHasJawbone(mHasJawbone);
+        user.setHasMisfit(mHasJawbone);
+        user.setHasMoves(mHasMoves);
+        Picasso.with(getActivity()).load(user.getAvatarUrl()).fit().centerCrop().into(mProfileImage);
+        mMameLastName.setText(user.getFirstName() + " " + user.getLastName());
+        mEmail.setText(user.getEmail());
+        if (user.getGender() != null) {
+            if (user.getGender().equals("Male")) {
+                mGenderSpinner.setSelection(1);
+            } else if (user.getGender().equals("Female")) {
+                mGenderSpinner.setSelection(0);
+            } else if (user.getGender().equals("Other")) {
+                mGenderSpinner.setSelection(2);
             } else {
-                this.genderSpinner.setSelection(3);
+                mGenderSpinner.setSelection(3);
             }
         }
-        if (this.user.getUnits() != null) {
-            if (this.user.getUnits().equals(FitnessUtils.UNIT_IMPERIAL)) {
-                this.unitSpinner.setSelection(0);
-                this.weightUnits.setText("lbs");
-                this.heightUnits1.setText("ft");
-                this.heightUnits2.setText("in");
+        if (user.getUnits() != null) {
+            if (user.getUnits().equals(FitnessUtils.UNIT_IMPERIAL)) {
+                mUnitSpinner.setSelection(0);
+                mWeightUnits.setText("lbs");
+                mHeightUnits1.setText("ft");
+                mHeightUnits2.setText("in");
             } else {
-                this.unitSpinner.setSelection(1);
-                this.weightUnits.setText("Kg");
-                this.heightUnits1.setText("m");
-                this.heightUnits2.setText("cm");
+                mUnitSpinner.setSelection(1);
+                mWeightUnits.setText("Kg");
+                mHeightUnits1.setText("m");
+                mHeightUnits2.setText("cm");
             }
         }
-        if (this.user.getWeight() != null) {
-            this.weight.setText(this.user.getWeight());
+        if (user.getWeight() != null) {
+            weight.setText(user.getWeight());
         }
-        if (this.user.getHeight() != null) {
-            String[] height = this.user.getHeight().split(" ");
+        if (user.getHeight() != null) {
+            String[] height = user.getHeight().split(" ");
             if (height.length != 0) {
-                this.heightFt.setText(height[0]);
+                mHeightFt.setText(height[0]);
             }
             if (height.length > 1) {
-                this.heightIn.setText(height[1]);
+                mHeightIn.setText(height[1]);
             }
         }
-        this.genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AccountFragment.this.user.setGender((String) AccountFragment.this.genderSpinner.getItemAtPosition(position));
+                user.setGender((String) mGenderSpinner.getItemAtPosition(position));
             }
 
             @Override
@@ -298,10 +282,10 @@ public class AccountFragment extends FitnessFragment implements View.OnClickList
 
             }
         });
-        this.unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AccountFragment.this.user.setUnits((String) AccountFragment.this.unitSpinner.getItemAtPosition(position));
+                user.setUnits((String) mUnitSpinner.getItemAtPosition(position));
             }
 
             @Override

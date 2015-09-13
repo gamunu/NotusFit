@@ -46,13 +46,17 @@ import org.joda.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import retrofit.RestAdapter;
 import retrofit.RestAdapter.LogLevel;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:10 PM
  */
 public class FitnessUtils {
     public static final int CURRENT_WEEK = 0;
@@ -93,11 +97,11 @@ public class FitnessUtils {
         DataPoint dataPoint = dataSet.createDataPoint().setTimeInterval(startTime, endTime, timeUnit);
         if (values instanceof Integer) {
             int[] iArr = new int[PAST_WEEK];
-            iArr[CURRENT_WEEK] = ((Integer) values).intValue();
+            iArr[CURRENT_WEEK] = (Integer) values;
             dataPoint = dataPoint.setIntValues(iArr);
         } else {
             float[] fArr = new float[PAST_WEEK];
-            fArr[CURRENT_WEEK] = ((Float) values).floatValue();
+            fArr[CURRENT_WEEK] = (Float) values;
             dataPoint = dataPoint.setFloatValues(fArr);
         }
         dataSet.add(dataPoint);
@@ -113,12 +117,12 @@ public class FitnessUtils {
 
     private static void dumpDataSet(DataSet dataSet) {
         Log.i(LOG_TAG, "Data returned for Data type: " + dataSet.getDataType().getName());
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
         for (DataPoint dp : dataSet.getDataPoints()) {
             Log.i(LOG_TAG, "Data point:");
             Log.i(LOG_TAG, "\tType: " + dp.getDataType().getName());
-            Log.i(LOG_TAG, "\tStart: " + dateFormat.format(Long.valueOf(dp.getStartTime(TimeUnit.MILLISECONDS))));
-            Log.i(LOG_TAG, "\tEnd: " + dateFormat.format(Long.valueOf(dp.getEndTime(TimeUnit.MILLISECONDS))));
+            Log.i(LOG_TAG, "\tStart: " + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
+            Log.i(LOG_TAG, "\tEnd: " + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
             for (Field field : dp.getDataType().getFields()) {
                 Log.i(LOG_TAG, "\tField: " + field.getName() + " Value: " + dp.getValue(field));
             }
@@ -131,33 +135,37 @@ public class FitnessUtils {
             List<String> fullDates = requestTime.getFullDates();
             List<String> localDates = requestTime.getLocalDates();
             String[] weekdays = context.getResources().getStringArray(R.array.weekdays_short);
-            HashMap<Integer, DayReport> dayReports = new HashMap();
-            DataReadResult dataReadResult = (DataReadResult) Fitness.HistoryApi.readData(mClient, readRequest).await(1, TimeUnit.MINUTES);
+            Map<Integer, DayReport> dayReports = new HashMap<>();
+            DataReadResult dataReadResult = Fitness.HistoryApi.readData(mClient, readRequest).await(1, TimeUnit.MINUTES);
+            //printData(dataReadResult);
+           // DataSet daSet = dataReadResult.getDataSet(DataType.STEP_COUNT_DELTA);
             int counter = CURRENT_WEEK;
             for (Bucket bucket : dataReadResult.getBuckets()) {
                 for (DataSet dataSet : bucket.getDataSets()) {
                     for (DataPoint dp : dataSet.getDataPoints()) {
                         DayReport dayReport = new DayReport();
                         dayReport.setSteps(Integer.parseInt(dp.getValue(Field.FIELD_STEPS).toString()));
-                        ReportDate rD = new ReportDate(LocalDate.parse((String) localDates.get(counter)));
+                        ReportDate rD = new ReportDate(LocalDate.parse(localDates.get(counter)));
                         dayReport.setWeekDay(weekdays[counter]);
-                        dayReport.setFullDate((String) fullDates.get(counter));
-                        dayReports.put(Integer.valueOf(rD.getWeekDayNum()), dayReport);
+                        dayReport.setFullDate(fullDates.get(counter));
+                        dayReports.put(rD.getWeekDayNum(), dayReport);
                         counter += PAST_WEEK;
                     }
                 }
             }
             return new WeekReport.Builder(context).setDays(dayReports).setDevice(Devices.GOOGLE_FIT).build();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e(LOG_TAG, "Error getting Wear Report", ex);
             return new WeekReport();
         }
     }
 
     public static WeekReport getFitbitWeekReport(FitbitSeriesRequest seriesRequest, Context context) {
         try {
-            FitbitWeekSteps fitbitDailySteps = ((FitbitClient.Activities) FitbitClient.getBaseRestAdapter(new FitbitInterceptor(context, FitbitClient.getUrlStepsSeries(seriesRequest.getDate(), seriesRequest.getPeriod())), context).create(FitbitClient.Activities.class)).getTimeSeries(seriesRequest.getDate(), seriesRequest.getPeriod());
-            HashMap<Integer, DayReport> fitbitDayReports = new HashMap();
+            FitbitWeekSteps fitbitDailySteps = FitbitClient.getBaseRestAdapter(new FitbitInterceptor(context, FitbitClient.getUrlStepsSeries(seriesRequest.getDate(), seriesRequest.getPeriod())), context)
+                    .create(FitbitClient.Activities.class)
+                    .getTimeSeries(seriesRequest.getDate(), seriesRequest.getPeriod());
+            Map<Integer, DayReport> fitbitDayReports = new HashMap<>();
             if (fitbitDailySteps.getFitbitDailySteps() != null) {
                 for (FitbitDailyStep f : fitbitDailySteps.getFitbitDailySteps()) {
                     ReportDate reportDate = new ReportDate(LocalDate.parse(f.getDateTime()));
@@ -165,12 +173,12 @@ public class FitnessUtils {
                     dayReport.setSteps(Integer.parseInt(f.getValue()));
                     dayReport.setWeekDay(reportDate.getWeekDayShort());
                     dayReport.setFullDate(reportDate.getFullDateString());
-                    fitbitDayReports.put(Integer.valueOf(reportDate.getWeekDayNum()), dayReport);
+                    fitbitDayReports.put(reportDate.getWeekDayNum(), dayReport);
                 }
             }
             return new WeekReport.Builder(context).setDays(fitbitDayReports).setDevice(Devices.FITBIT).build();
         } catch (Exception ex) {
-            Log.d(LOG_TAG, "Eeror getting Fitbit Report: " + ex.getMessage());
+            Log.e(LOG_TAG, "Error getting Fitbit Report", ex);
             return new WeekReport();
         }
     }
@@ -178,17 +186,18 @@ public class FitnessUtils {
     public static WeekReport getMisfitWeekReport(MisfitDateRequest dateRequest, Context context) {
         try {
             MisfitSummary summary = new MisfitClient(context).getAuthenticatedInterface().getSummary(TimeUtils.sanitizeDate(dateRequest.getStartDate()), TimeUtils.sanitizeDate(dateRequest.getEndDate()), true);
-            HashMap<Integer, DayReport> misfitDayReports = new HashMap();
+            Map<Integer, DayReport> misfitDayReports = new HashMap<>();
             for (MisfitDay d : summary.getSummary()) {
                 ReportDate reportDate = new ReportDate(LocalDate.parse(d.getDate()));
                 DayReport dayReport = new DayReport();
-                dayReport.setSteps(d.getSteps().intValue());
+                dayReport.setSteps(d.getSteps());
                 dayReport.setWeekDay(reportDate.getWeekDayShort());
                 dayReport.setFullDate(reportDate.getFullDateString());
-                misfitDayReports.put(Integer.valueOf(reportDate.getWeekDayNum()), dayReport);
+                misfitDayReports.put(reportDate.getWeekDayNum(), dayReport);
             }
             return new WeekReport.Builder(context).setDays(misfitDayReports).setDevice(Devices.MISFIT).build();
         } catch (Exception e) {
+            Log.e(LOG_TAG, "Error getting MisFit Report", e);
             return new WeekReport();
         }
     }
@@ -205,7 +214,7 @@ public class FitnessUtils {
             }
             RestAdapter restAdapter = MoveApiClient.getBaseRestAdapter(context);
             restAdapter.setLogLevel(LogLevel.FULL);
-            MoveApiClient.MovesConnector movesConnecor = (MoveApiClient.MovesConnector) restAdapter.create(MoveApiClient.MovesConnector.class);
+            MoveApiClient.MovesConnector movesConnecor = restAdapter.create(MoveApiClient.MovesConnector.class);
             DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd");
             LocalDate sDate = LocalDate.parse(startDate.toString(), format);
             LocalDate eDate = LocalDate.parse(endDate.toString(), format);
@@ -230,11 +239,11 @@ public class FitnessUtils {
             } else {
                 movesActivity = movesConnecor.getActivity(localDate.toString(), eDate.toString());
             }
-            HashMap<Integer, DayReport> dayReports = new HashMap();
+            Map<Integer, DayReport> dayReports = new HashMap<>();
             if (movesActivity != null) {
                 for (MovesActivity m : movesActivity) {
                     if (m.getSummary() != null) {
-                        ReportDate reportDate = new ReportDate(TimeUtils.convertFromJawboneDate(Integer.valueOf(Integer.parseInt(m.getDate()))));
+                        ReportDate reportDate = new ReportDate(TimeUtils.convertFromJawboneDate(Integer.parseInt(m.getDate())));
                         DayReport dayReport = new DayReport();
                         dayReport.setWeekDay(reportDate.getWeekDayShort());
                         dayReport.setFullDate(reportDate.getFullDateString());
@@ -243,7 +252,7 @@ public class FitnessUtils {
                             steps += summary.getSteps();
                         }
                         dayReport.setSteps(steps);
-                        dayReports.put(Integer.valueOf(reportDate.getWeekDayNum()), dayReport);
+                        dayReports.put(reportDate.getWeekDayNum(), dayReport);
                     }
                 }
             }
@@ -267,7 +276,7 @@ public class FitnessUtils {
             HashMap<String, Integer> jawboneRequestMap = new Params.Builder().setStartTime((int) (startDate.toDateTime().getMillis() / 1000)).setEndTime((int) (endDate.toDateTime().getMillis() / 1000)).build();
             ApiManager.getRequestInterceptor().setAccessToken(jawboneAPI.getAccessToken());
             List<MoveItem> moveItems = ApiManager.getRestApiInterface().getMoveEventsList("v.1.1", jawboneRequestMap).getMoveData().getMoveItems();
-            HashMap<Integer, DayReport> dayReports = new HashMap();
+            Map<Integer, DayReport> dayReports = new HashMap<>();
             if (moveItems.size() < PAST_WEEK) {
                 return new WeekReport();
             }
@@ -276,8 +285,8 @@ public class FitnessUtils {
                 DayReport dayReport = new DayReport();
                 dayReport.setWeekDay(reportDate.getWeekDayShort());
                 dayReport.setFullDate(reportDate.getFullDateString());
-                dayReport.setSteps(m.getDetails().getSteps().intValue());
-                dayReports.put(Integer.valueOf(reportDate.getWeekDayNum()), dayReport);
+                dayReport.setSteps(m.getDetails().getSteps());
+                dayReports.put(reportDate.getWeekDayNum(), dayReport);
             }
             return new WeekReport.Builder(context).setDays(dayReports).setDevice(Devices.JAWBONE).build();
         } catch (Exception ex) {

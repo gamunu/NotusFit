@@ -1,15 +1,18 @@
 package com.notus.fit.network.misfit;
 
 import com.notus.fit.models.misfit.MisfitSummary;
+import com.notus.fit.models.misfit.MisfitToken;
 
 import retrofit.Callback;
-
-// Referenced classes of package com.notus.fit.network.misfit:
-//            RequestTokenBody
+import retrofit.http.Body;
+import retrofit.http.GET;
+import retrofit.http.POST;
+import retrofit.http.Query;
 
 public interface MisfitApiInterface {
+    @POST("/auth/tokens/exchange")
+    void getAccessToken(@Body RequestTokenBody requestTokenBody, Callback<MisfitToken> callback);
 
-    public abstract void getAccessToken(RequestTokenBody requesttokenbody, Callback callback);
-
-    public abstract MisfitSummary getSummary(String s, String s1, boolean flag);
+    @GET("/move/resource/v1/user/me/activity/summary")
+    MisfitSummary getSummary(@Query("start_date") String str, @Query("end_date") String str2, @Query("detail") boolean z);
 }

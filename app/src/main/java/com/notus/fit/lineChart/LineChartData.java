@@ -3,24 +3,27 @@ package com.notus.fit.lineChart;
 import com.notus.fit.models.WeekReport;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 7:52 PM
  */
 public class LineChartData {
     String bottomText;
-    ArrayList<WeekReport> weekReports;
+    List<WeekReport> weekReports;
 
-    public LineChartData(ArrayList<WeekReport> weekReports, String bottomText) {
+    public LineChartData(List<WeekReport> weekReports, String bottomText) {
         this.weekReports = weekReports;
         this.bottomText = bottomText;
     }
 
-    public ArrayList<WeekReport> getWeekReports() {
+    public List<WeekReport> getWeekReports() {
         return this.weekReports;
     }
 
-    public void setWeekReports(ArrayList<WeekReport> weekReports) {
+    public void setWeekReports(List<WeekReport> weekReports) {
         this.weekReports = weekReports;
     }
 

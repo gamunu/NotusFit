@@ -31,7 +31,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <com.gabilheri.fithub.ui_elements.FloatLabelLayout
+            <com.notus.fit.ui_elements.FloatLabelLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 app:floatLabelTextAppearance="@style/TextAppearance.Fitness.FloatLabel.SignIn">
@@ -47,9 +47,9 @@
                     android:singleLine="true"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white" />
-            </com.gabilheri.fithub.ui_elements.FloatLabelLayout>
+            </com.notus.fit.ui_elements.FloatLabelLayout>
 
-            <com.gabilheri.fithub.ui_elements.FloatLabelLayout
+            <com.notus.fit.ui_elements.FloatLabelLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 app:floatLabelTextAppearance="@style/TextAppearance.Fitness.FloatLabel.SignIn">
@@ -65,7 +65,7 @@
                     android:singleLine="true"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white" />
-            </com.gabilheri.fithub.ui_elements.FloatLabelLayout>
+            </com.notus.fit.ui_elements.FloatLabelLayout>
         </LinearLayout>
     </LinearLayout>
 

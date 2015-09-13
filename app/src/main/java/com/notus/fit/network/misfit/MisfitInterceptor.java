@@ -17,6 +17,6 @@ public class MisfitInterceptor
 
     public void intercept(retrofit.RequestInterceptor.RequestFacade requestfacade) {
         requestfacade.addHeader("Accept", "application/json");
-        requestfacade.addHeader("Authorization", (new StringBuilder()).append("Bearer ").append(PrefManager.with(context).getString("misfit_token", "")).toString());
+        requestfacade.addHeader("Authorization", "Bearer " + PrefManager.with(context).getString("misfit_token", ""));
     }
 }

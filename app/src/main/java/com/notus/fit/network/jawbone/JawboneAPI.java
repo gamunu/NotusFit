@@ -45,7 +45,7 @@ public class JawboneAPI {
             if (result.access_token != null) {
                 try {
                     ParseObject userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, PrefManager.with(JawboneAPI.this.context).getString(User.OBJECT_ID, BuildConfig.FLAVOR)).getFirst();
-                    userObject.put(User.HAS_JAWBONE, Boolean.valueOf(true));
+                    userObject.put(User.HAS_JAWBONE, true);
                     userObject.put(User.JAWBONE_TOKEN, result.access_token);
                     userObject.save();
                 } catch (ParseException ex) {
@@ -73,7 +73,7 @@ public class JawboneAPI {
         this.accessTokenRequestListener = TokenCallback;
         this.context = context;
         this.destinationActivity = destinationActivity;
-        this.authScope = new ArrayList();
+        this.authScope = new ArrayList<>();
         this.authScope.add(UpPlatformAuthScope.ALL);
     }
 
@@ -91,7 +91,7 @@ public class JawboneAPI {
 
     public Intent getIntentForWebView() {
         Builder builder = OauthUtils.setOauthParameters(CLIENT_ID, OAUTH_CALLBACK_URL, this.authScope);
-        Intent intent = new Intent(OauthWebViewActivity.class.getName());
+        Intent intent = new Intent(context, OauthWebViewActivity.class);
         intent.putExtra(MisfitClient.AUTH_URI, builder.build());
         return intent;
     }
@@ -101,19 +101,19 @@ public class JawboneAPI {
     }
 
     public HashMap<String, Integer> getWeekMoveEventsListRequestParams() {
-        HashMap<String, Integer> queryHashMap = new HashMap();
+        HashMap<String, Integer> queryHashMap = new HashMap<>();
         LocalDateTime now = LocalDateTime.now();
-        queryHashMap.put("start_time", Integer.valueOf(now.withDayOfWeek(1).withTime(0, 0, 0, 0).getMillisOfSecond()));
-        queryHashMap.put("end_time", Integer.valueOf(now.getMillisOfSecond()));
+        queryHashMap.put("start_time", now.withDayOfWeek(1).withTime(0, 0, 0, 0).getMillisOfSecond());
+        queryHashMap.put("end_time", now.getMillisOfSecond());
         return queryHashMap;
     }
 
     public HashMap<String, Integer> getPreviousWeekMoveEventsListRequestParams() {
-        HashMap<String, Integer> queryHashMap = new HashMap();
+        HashMap<String, Integer> queryHashMap = new HashMap<>();
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime endDate = now.withDayOfWeek(7).minusWeeks(1).withTime(23, 59, 59, 999);
-        queryHashMap.put("start_time", Integer.valueOf(now.withDayOfWeek(1).withTime(0, 0, 0, 0).minusWeeks(1).getMillisOfSecond()));
-        queryHashMap.put("end_time", Integer.valueOf(endDate.getMillisOfSecond()));
+        queryHashMap.put("start_time", now.withDayOfWeek(1).withTime(0, 0, 0, 0).minusWeeks(1).getMillisOfSecond());
+        queryHashMap.put("end_time", endDate.getMillisOfSecond());
         return queryHashMap;
     }
 }

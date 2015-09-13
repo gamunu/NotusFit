@@ -24,8 +24,8 @@ public class RemindersReceiver extends WakefulBroadcastReceiver {
         this.alarmIntent = PendingIntent.getBroadcast(context, 0, new Intent(context, AlarmReceiver.class), 0);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(11, 8);
-        calendar.set(12, 30);
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 30);
         this.alarmMgr.setInexactRepeating(0, calendar.getTimeInMillis(), 1800000, this.alarmIntent);
         context.getPackageManager().setComponentEnabledSetting(new ComponentName(context, BootReceiver.class), 1, 1);
     }

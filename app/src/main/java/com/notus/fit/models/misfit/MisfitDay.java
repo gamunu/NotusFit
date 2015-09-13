@@ -1,18 +1,26 @@
 package com.notus.fit.models.misfit;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:54 AM
  */
 @Parcel
 public class MisfitDay {
+    @SerializedName("activity_calories")
     float activityCalories;
+    @SerializedName("date")
     String date;
+    @SerializedName("distance")
     float distance;
+    @SerializedName("points")
     float points;
+    @SerializedName("steps")
     Integer steps;
-
     public String getDate() {
         return this.date;
     }

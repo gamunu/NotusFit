@@ -3,6 +3,7 @@ package com.notus.fit.ui_elements;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
@@ -38,10 +39,10 @@ public class TimePreference extends DialogPreference {
         return Integer.parseInt(s.split(":")[1].split(" ")[0]);
     }
 
-    protected void onBindDialogView(View view) {
+    protected void onBindDialogView(@NonNull View view) {
         super.onBindDialogView(view);
-        picker.setCurrentHour(Integer.valueOf(lastHour));
-        picker.setCurrentMinute(Integer.valueOf(lastMinute));
+        picker.setCurrentHour(lastHour);
+        picker.setCurrentMinute(lastMinute);
     }
 
     protected View onCreateDialogView() {
@@ -52,17 +53,17 @@ public class TimePreference extends DialogPreference {
     protected void onDialogClosed(boolean flag) {
         super.onDialogClosed(flag);
         if (flag) {
-            lastHour = picker.getCurrentHour().intValue();
-            lastMinute = picker.getCurrentMinute().intValue();
+            lastHour = picker.getCurrentHour();
+            lastMinute = picker.getCurrentMinute();
             String s = "AM";
             if (lastHour > 12) {
                 lastHour = lastHour - 12;
                 s = "PM";
             }
             s = (new StringBuilder()).append(String.format("%02d", new Object[]{
-                    Integer.valueOf(lastHour)
+                    lastHour
             })).append(":").append(String.format("%02d", new Object[]{
-                    Integer.valueOf(lastMinute)
+                    lastMinute
             })).append(" ").append(s).toString();
             if (callChangeListener(s)) {
                 persistString(s);

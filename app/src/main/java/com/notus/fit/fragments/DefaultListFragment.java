@@ -18,9 +18,9 @@ import it.gmariotti.cardslib.library.recyclerview.view.CardRecyclerView;
 public abstract class DefaultListFragment extends FitnessFragment {
     protected CardArrayRecyclerViewAdapter mCardArrayAdapter;
     @Bind(R.id.progress_wheel)
-    protected ProgressWheel progressWheel;
+    protected ProgressWheel mProgressWheel;
     @Bind(R.id.recycler_list)
-    protected CardRecyclerView recyclerViewList;
+    protected CardRecyclerView mRecyclerViewList;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -28,18 +28,18 @@ public abstract class DefaultListFragment extends FitnessFragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind((Object) this, view);
-        this.recyclerViewList.setHasFixedSize(true);
-        this.recyclerViewList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ButterKnife.bind(this, view);
+        mRecyclerViewList.setHasFixedSize(true);
+        mRecyclerViewList.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     public Runnable refreshList() {
         return new Runnable() {
             @Override
             public void run() {
-                DefaultListFragment.this.mCardArrayAdapter.notifyDataSetChanged();
-                DefaultListFragment.this.recyclerViewList.refreshDrawableState();
-                DefaultListFragment.this.recyclerViewList.invalidate();
+                mCardArrayAdapter.notifyDataSetChanged();
+                mRecyclerViewList.refreshDrawableState();
+                mRecyclerViewList.invalidate();
             }
         };
     }

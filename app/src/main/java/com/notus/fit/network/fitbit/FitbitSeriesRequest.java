@@ -5,8 +5,7 @@ import com.notus.fit.utils.TimeUtils;
 
 import org.joda.time.LocalDate;
 
-public class FitbitSeriesRequest
-        implements DateTimeRequestObject {
+public class FitbitSeriesRequest implements DateTimeRequestObject {
 
     public static final String MAX_PERIOD = "max";
     public static final String MONTH_PERIOD = "1m";
@@ -19,49 +18,48 @@ public class FitbitSeriesRequest
     private String period;
 
     public FitbitSeriesRequest() {
-        endDate = LocalDate.now().withDayOfWeek(7);
-        period = "1w";
+        this.endDate = LocalDate.now().withDayOfWeek(7);
+        this.period = WEEK_PERIOD;
     }
 
-    public FitbitSeriesRequest(LocalDate localdate, String s) {
-        endDate = localdate;
-        period = s;
+    public FitbitSeriesRequest(LocalDate endDate, String period) {
+        this.endDate = endDate;
+        this.period = period;
+    }
+
+    public String getDate() {
+        String month = TimeUtils.addZero(this.endDate.getMonthOfYear());
+        this.date = this.endDate.getYear() + "-" + month + "-" + TimeUtils.addZero(this.endDate.getDayOfMonth());
+        return this.date;
+    }
+
+    public String getPeriod() {
+        return this.period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public FitbitSeriesRequest getCurrentWeek() {
         return this;
     }
 
-    public String getDate() {
-        String s = TimeUtils.addZero(endDate.getMonthOfYear());
-        String s1 = TimeUtils.addZero(endDate.getDayOfMonth());
-        date = (new StringBuilder()).append(endDate.getYear()).append("-").append(s).append("-").append(s1).toString();
-        return date;
-    }
-
-    public void setDate(String s) {
-        date = s;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate localdate) {
-        endDate = localdate;
-    }
-
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String s) {
-        period = s;
-    }
-
     public FitbitSeriesRequest getPreviousWeek() {
-        endDate = LocalDate.now().withDayOfWeek(7).minusWeeks(1);
-        period = "1w";
+        this.endDate = LocalDate.now().withDayOfWeek(7).minusWeeks(1);
+        this.period = WEEK_PERIOD;
         return this;
     }
 }

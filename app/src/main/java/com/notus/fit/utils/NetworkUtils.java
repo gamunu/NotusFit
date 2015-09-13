@@ -29,7 +29,9 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:15 PM
  */
 public class NetworkUtils {
     private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
@@ -61,6 +63,7 @@ public class NetworkUtils {
                 }
             }
         } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage());
         }
         return null;
     }
@@ -94,7 +97,7 @@ public class NetworkUtils {
             }
         }
         if (userObject.getBoolean(User.HAS_MOVES)) {
-            ((MoveApiClient.MovesConnector) MoveApiClient.getBaseRestAdapter(context).create(MoveApiClient.MovesConnector.class)).getUser(new Callback<MovesUser>() {
+            MoveApiClient.getBaseRestAdapter(context).create(MoveApiClient.MovesConnector.class).getUser(new Callback<MovesUser>() {
                 @Override
                 public void success(MovesUser movesUser, Response response) {
                     PrefManager.with(context).save(MoveApiClient.MOVES_FIRST_DATE, movesUser.getProfile().getFirstDate());

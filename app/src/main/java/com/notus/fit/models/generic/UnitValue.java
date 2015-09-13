@@ -1,7 +1,9 @@
 package com.notus.fit.models.generic;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 5:00 PM
  */
 public class UnitValue {
     private String unit;

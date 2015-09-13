@@ -10,9 +10,12 @@ import org.joda.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
- * Created by VBALAUD on 9/9/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/9/2015 8:16 PM
  */
 public class TimeUtils {
     public static final LocalDateTime JAN_1_1970 = new LocalDateTime(1970, 1, 1, 0, 0);
@@ -26,9 +29,9 @@ public class TimeUtils {
         return num > 9 ? BuildConfig.FLAVOR + num : AppEventsConstants.EVENT_PARAM_VALUE_NO + num;
     }
 
-    public static ArrayList<String> getFitbitWeekRequest() {
+    public static List<String> getFitbitWeekRequest() {
         LocalDate now = LocalDate.now();
-        ArrayList<String> dates = new ArrayList();
+        List<String> dates = new ArrayList<>();
         LocalDate startDate = now.withDayOfWeek(1);
         while (startDate.isBefore(now)) {
             dates.add(startDate.getYear() + "-" + startDate.getMonthOfYear() + "-" + startDate.getMonthOfYear());

@@ -11,18 +11,20 @@ import android.widget.TextView;
 import com.notus.fit.R;
 import com.notus.fit.ui_elements.SpinnerItem;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by VBALAUD on 9/1/2015.
+ * Project: NotusFit
+ * Created by VBALAUD
+ * Last Modified: 9/1/2015 1:13 PM
  */
 public class DashboardSpinnerAdapter extends BaseAdapter {
     ImageView spinnerIcon;
     TextView spinnerText;
     private Context context;
-    private ArrayList<SpinnerItem> objects;
+    private List<SpinnerItem> objects;
 
-    public DashboardSpinnerAdapter(Context context, ArrayList<SpinnerItem> objects) {
+    public DashboardSpinnerAdapter(Context context, List<SpinnerItem> objects) {
         this.objects = objects;
         this.context = context;
     }
@@ -31,10 +33,8 @@ public class DashboardSpinnerAdapter extends BaseAdapter {
         convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dashboard_spinner_item, null);
         this.spinnerText = (TextView) convertView.findViewById(R.id.spinner_text);
         this.spinnerIcon = (ImageView) convertView.findViewById(R.id.spinner_icon);
-        convertView.setBackgroundColor(this.context.getResources().getColor(R.color.primary));
-        this.spinnerText.setTextColor(this.context.getResources().getColor(R.color.grey_100));
-        this.spinnerText.setText(((SpinnerItem) this.objects.get(position)).getText());
-        this.spinnerIcon.setImageDrawable(this.context.getResources().getDrawable(((SpinnerItem) this.objects.get(position)).getDrawableResourceId()));
+        this.spinnerText.setText(this.objects.get(position).getText());
+        this.spinnerIcon.setImageDrawable(this.context.getResources().getDrawable(this.objects.get(position).getDrawableResourceId()));
         return convertView;
     }
 
@@ -43,8 +43,8 @@ public class DashboardSpinnerAdapter extends BaseAdapter {
         convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dashboard_spinner_item, null);
         this.spinnerText = (TextView) convertView.findViewById(R.id.spinner_text);
         this.spinnerIcon = (ImageView) convertView.findViewById(R.id.spinner_icon);
-        this.spinnerText.setText(((SpinnerItem) this.objects.get(position)).getText());
-        this.spinnerIcon.setImageDrawable(this.context.getResources().getDrawable(((SpinnerItem) this.objects.get(position)).getDrawableResourceId()));
+        this.spinnerText.setText(this.objects.get(position).getText());
+        this.spinnerIcon.setImageDrawable(this.context.getResources().getDrawable(this.objects.get(position).getDrawableResourceId()));
         return convertView;
     }
 

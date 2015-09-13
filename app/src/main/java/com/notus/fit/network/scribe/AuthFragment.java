@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class AuthFragment extends DefaultFragment {
     private static final String LOG_TAG = AuthFragment.class.getSimpleName();
-    @Bind(2131558543)
+    @Bind(R.id.wvAuthorise)
     WebView wvAuthorise;
 
     public void onViewCreated(View view, Bundle savedInstanceState) {

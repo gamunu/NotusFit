@@ -46,7 +46,7 @@ public class MisfitClient {
                 if (result.getToken() != null) {
                     try {
                         ParseObject userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, PrefManager.with(MisfitClient.this.context).getString(User.OBJECT_ID, BuildConfig.FLAVOR)).getFirst();
-                        userObject.put(User.HAS_MISFIT, Boolean.valueOf(true));
+                        userObject.put(User.HAS_MISFIT, true);
                         userObject.put(MisfitClient.MISFIT_TOKEN, result.getToken());
                         userObject.save();
                     } catch (ParseException ex) {
@@ -84,6 +84,11 @@ public class MisfitClient {
         RestAdapter.Builder builder = new RestAdapter.Builder();
         builder.setEndpoint(API_URL);
         builder.setErrorHandler(new CustomErrorHandler());
+        builder.setLogLevel(RestAdapter.LogLevel.FULL).setLog(new RestAdapter.Log() {
+            public void log(String msg) {
+                Log.e("retrofit", msg);
+            }
+        });
         return builder.build();
     }
 
@@ -92,13 +97,18 @@ public class MisfitClient {
         builder.setClient(new OkClient(Client.getInstance(context)));
         builder.setEndpoint(API_URL);
         builder.setRequestInterceptor(interceptor);
+        builder.setLogLevel(RestAdapter.LogLevel.FULL).setLog(new RestAdapter.Log() {
+            public void log(String msg) {
+                Log.e("retrofit", msg);
+            }
+        });
         return builder.build();
     }
 
     public static MisfitApiInterface getRestApiInterface() {
         RestAdapter restAdapter = getBaseRestAdapter();
         if (restApiInterface == null) {
-            restApiInterface = (MisfitApiInterface) restAdapter.create(MisfitApiInterface.class);
+            restApiInterface = restAdapter.create(MisfitApiInterface.class);
         }
         return restApiInterface;
     }
@@ -112,7 +122,7 @@ public class MisfitClient {
 
     public Intent getIntentForWebView() {
         Builder builder = setOauthParameters(MISFIT_APP_KEY, REDIRECTION_URI, "public,birthday,email");
-        Intent intent = new Intent(MisfitOauthActivity.class.getName());
+        Intent intent = new Intent(context, MisfitOauthActivity.class);
         intent.putExtra(AUTH_URI, builder.build());
         return intent;
     }
@@ -120,7 +130,7 @@ public class MisfitClient {
     public MisfitApiInterface getAuthenticatedInterface() {
         RestAdapter restAdapter = getBaseRestAdapter(new MisfitInterceptor(this.context), this.context);
         if (restApiInterface == null) {
-            restApiInterface = (MisfitApiInterface) restAdapter.create(MisfitApiInterface.class);
+            restApiInterface = restAdapter.create(MisfitApiInterface.class);
         }
         return restApiInterface;
     }

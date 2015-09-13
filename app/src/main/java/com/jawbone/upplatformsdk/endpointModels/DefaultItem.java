@@ -1,23 +1,40 @@
 package com.jawbone.upplatformsdk.endpointModels;
 
 import com.google.gson.annotations.SerializedName;
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkUtils;
 
+/**
+ * Created by <a href="mailto:marcusandreog@gmail.com">Marcus Gabilheri</a>
+ *
+ * @author Marcus Gabilheri
+ * @version 1.0
+ * @since 2/14/15.
+ */
 public class DefaultItem {
-    @SerializedName("date")
-    protected Integer date;
-    @SerializedName("time_completed")
-    protected Long timeCompleted;
-    @SerializedName("time_created")
-    protected Long timeCreated;
-    @SerializedName("title")
-    protected String title;
-    @SerializedName("type")
-    protected String type;
+
     @SerializedName("xid")
     protected String xid;
 
+    @SerializedName("title")
+    protected String title;
+
+    @SerializedName("type")
+    protected String type;
+
+    @SerializedName("time_created")
+    protected Long timeCreated;
+
+    @SerializedName("time_completed")
+    protected Long timeCompleted;
+
+    @SerializedName("date")
+    protected Integer date;
+
+    public DefaultItem() {
+    }
+
     public String getXid() {
-        return this.xid;
+        return xid;
     }
 
     public void setXid(String xid) {
@@ -25,7 +42,7 @@ public class DefaultItem {
     }
 
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
     public void setTitle(String title) {
@@ -33,7 +50,7 @@ public class DefaultItem {
     }
 
     public String getType() {
-        return this.type;
+        return type;
     }
 
     public void setType(String type) {
@@ -41,7 +58,7 @@ public class DefaultItem {
     }
 
     public Long getTimeCreated() {
-        return this.timeCreated;
+        return timeCreated;
     }
 
     public void setTimeCreated(Long timeCreated) {
@@ -49,7 +66,7 @@ public class DefaultItem {
     }
 
     public Long getTimeCompleted() {
-        return this.timeCompleted;
+        return timeCompleted;
     }
 
     public void setTimeCompleted(Long timeCompleted) {
@@ -57,10 +74,15 @@ public class DefaultItem {
     }
 
     public Integer getDate() {
-        return this.date;
+        return date;
     }
 
     public void setDate(Integer date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return UpPlatformSdkUtils.toJson(this);
     }
 }

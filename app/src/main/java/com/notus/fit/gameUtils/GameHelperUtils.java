@@ -16,7 +16,9 @@ import java.security.NoSuchAlgorithmException;
 
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 9:59 AM
  */
 
 //https://github.com/playgameservices/android-basic-samples/blob/master/BasicSamples/libraries/BaseGameUtils/src/main/java/com/google/example/games/basegameutils/GameHelperUtils.java

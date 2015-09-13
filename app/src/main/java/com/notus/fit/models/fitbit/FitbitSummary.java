@@ -1,21 +1,35 @@
 package com.notus.fit.models.fitbit;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 10:00 AM
  */
 @Parcel
 public class FitbitSummary {
+    @SerializedName("activityCalories")
     int activityCalories;
+    @SerializedName("activityScore")
     int activityScore;
+    @SerializedName("caloriesBMR")
     int caloriesBMR;
+    @SerializedName("caloriesOut")
     int caloriesOut;
+    @SerializedName("fairlyActiveMinutes")
     int fairlyActiveMinutes;
+    @SerializedName("lightlyActiveMinutes")
     int lightlyActiveMinutes;
+    @SerializedName("marginalCalories")
     int marginalCalories;
+    @SerializedName("sedentaryMinutes")
     int sedentaryMinutes;
+    @SerializedName("steps")
     int steps;
+    @SerializedName("veryActiveMinutes")
     int veryActiveMinutes;
 
     public int getActivityScore() {

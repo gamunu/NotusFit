@@ -8,7 +8,9 @@ import com.notus.fit.R;
 import java.util.Random;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:10 PM
  */
 public class ColorUtils {
     public ColorUtils() {

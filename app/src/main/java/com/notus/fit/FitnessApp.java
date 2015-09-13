@@ -7,18 +7,13 @@ import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.parse.Parse;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.picasso.Picasso;
 
 import net.danlew.android.joda.JodaTimeAndroid;
-
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.Kit;
 
 public class FitnessApp extends Application {
 
@@ -28,20 +23,16 @@ public class FitnessApp extends Application {
     }
 
     public Tracker getTracker() {
-        Tracker tracker = GoogleAnalytics.getInstance(this).newTracker(0x7f060003);
+        Tracker tracker = GoogleAnalytics.getInstance(this).newTracker(R.xml.tracker);
         tracker.enableAdvertisingIdCollection(true);
         return tracker;
     }
 
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Kit[]{
-                new Crashlytics()
-        });
         JodaTimeAndroid.init(this);
-        LeakCanary.install(this);
         Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "PV9mMaJEOsBPHMonhbZKh3v7H6qDxvpI0GGRDARb", "3bv40mF10tmfm2Kc70SxPcfeNeJWznfWavasks9k");
+        Parse.initialize(this, "bZkpVQnX2Z5F9bPWvQwdg3h2W0aj2zunUi1O11SX", "x9betK202bbhMQZ11yJhjlQxnOPECXvvFR0pgK1G");
         DrawerImageLoader.init(new com.mikepenz.materialdrawer.util.DrawerImageLoader.IDrawerImageLoader() {
             public void cancel(ImageView imageview) {
                 Picasso.with(imageview.getContext()).cancelRequest(imageview);

@@ -1,32 +1,32 @@
 package com.notus.fit.network.moves;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class MovesActivity {
-
+    @SerializedName("date")
     String date;
+    @SerializedName("summary")
     List<MovesSummary> summary;
 
-    public MovesActivity() {
-    }
-
     public String getDate() {
-        return date;
+        return this.date;
     }
 
-    public void setDate(String s) {
-        date = s;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public List<MovesSummary> getSummary() {
-        return summary;
+        return this.summary;
     }
 
-    public void setSummary(List<MovesSummary> list) {
-        summary = list;
+    public void setSummary(List<MovesSummary> summary) {
+        this.summary = summary;
     }
 
     public String toString() {
-        return (new StringBuilder()).append("MovesActivity{date='").append(date).append('\'').append(", summary=").append(summary).append('}').toString();
+        return "MovesActivity{date='" + this.date + '\'' + ", summary=" + this.summary + '}';
     }
 }

@@ -28,7 +28,6 @@ import com.notus.fit.models.api_models.User;
 import com.notus.fit.network.fitbit.FitbitSeriesRequest;
 import com.notus.fit.network.misfit.MisfitDateRequest;
 import com.notus.fit.network.weather.WeatherApiClient;
-import com.notus.fit.network.weather.models.Weather;
 import com.notus.fit.network.weather.models.WeatherResponse;
 import com.notus.fit.ui_elements.CardBarChart;
 import com.notus.fit.ui_elements.CardLineChart;
@@ -61,112 +60,105 @@ import rx.functions.Func5;
 import rx.schedulers.Schedulers;
 
 public class DashboardFragment extends DefaultListFragment {
+    private static final String TAG = DashboardFragment.class.getName();
     public static final String DEVICE = "DEVICE";
     public static final String WEEK = "WEEK";
-    public int deviceType;
+    public int deviceType = -1;
     public Subscriber<WeekReport> weekSubscriber;
-    public int weekType;
-    protected WeekReport androidWearWeekReport;
-    protected MisfitDateRequest dateRequest;
-    protected WeekReport fitbitWeekReport;
-    protected WeekReport jawboneWeekReport;
+    public int weekType = -1;
+    protected WeekReport mAndroidWearWeekReport;
+    protected MisfitDateRequest mDateRequest;
+    protected WeekReport mFitbitWeekReport;
+    protected WeekReport mJawboneWeekReport;
     protected GoogleApiClient mWearClient;
-    protected WeekReport misfitWeekReport;
-    protected WeekReport movesWeekReport;
-    protected RequestTime requestTime;
-    protected WeekReport weekReport;
-    ArrayList<Card> cards;
+    protected WeekReport mMisfitWeekReport;
+    protected WeekReport mMovesWeekReport;
+    protected RequestTime mRequestTime;
+    protected WeekReport mWeekReport;
+    List<Card> mCards;
     @Bind(R.id.dashboard_layout)
-    LinearLayout dashboardLayout;
-    ArrayList<WeekReport> weekReports;
-    private boolean barChart;
+    LinearLayout mDashboardLayout;
+    List<WeekReport> mWeekReports;
+    private boolean mBarChart = true;
 
 
     public DashboardFragment() {
-        this.weekType = -1;
-        this.deviceType = -1;
-        this.requestTime = null;
-        this.barChart = true;
         this.weekSubscriber = new Subscriber<WeekReport>() {
             @Override
             public void onCompleted() {
-                Log.d(FitnessFragment.TAG, "Hello from completed....");
+                Log.i(TAG, "Hello from completed....");
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.d(FitnessFragment.TAG, "Hello from error....");
-                e.printStackTrace();
+                Log.e(TAG, "Hello from error....", e);
             }
 
             @Override
             public void onNext(WeekReport rWeekReport) {
-                Log.d(FitnessFragment.TAG, "Hello from next....");
-                DashboardFragment.this.weekReport = rWeekReport;
-                DashboardFragment.this.weekReports.add(DashboardFragment.this.weekReport);
-                if ((DashboardFragment.this.getActivity() instanceof DrawerPagerActivity) && DashboardFragment.this.weekType == 0) {
-                    PrefManager.with(DashboardFragment.this.getActivity()).save(PreferenceUtils.WEEK_AVERAGE, String.valueOf(DashboardFragment.this.weekReport.getWeekAverage()));
+                Log.i(TAG, "Hello from next....");
+                mWeekReport = rWeekReport;
+                mWeekReports.add(mWeekReport);
+                if ((getActivity() instanceof DrawerPagerActivity) && weekType == 0) {
+                    PrefManager.with(getContext()).save(PreferenceUtils.WEEK_AVERAGE, String.valueOf(mWeekReport.getWeekAverage()));
                 }
-                DashboardFragment.this.setDevice();
-                final GoogleApiClient gamesApiClient = ((DrawerActivity) DashboardFragment.this.getActivity()).getGamesClient();
+                setDevice();
+                final GoogleApiClient gamesApiClient = ((DrawerActivity) getActivity()).getGamesClient();
 
-                if (PrefManager.with(DashboardFragment.this.getActivity()).getBoolean(DashboardFragment.this.getString(R.string.games_enabled), true) && (DashboardFragment.this.getActivity() instanceof MainActivity)) {
+                if (PrefManager.with(getContext()).getBoolean(getString(R.string.games_enabled), true) && (getActivity() instanceof MainActivity)) {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (gamesApiClient != null && gamesApiClient.isConnected()) {
                                 Iterator it;
-                                if (DashboardFragment.this.weekType == 0) {
+                                if (weekType == 0) {
                                     int maxSteps = 0;
-                                    it = DashboardFragment.this.weekReport.getStepList().iterator();
+                                    it = mWeekReport.getStepList().iterator();
                                     while (it.hasNext()) {
                                         Integer steps = (Integer) it.next();
-                                        DashboardFragment.this.unlockAchievements(steps.intValue(), gamesApiClient);
-                                        maxSteps += steps.intValue();
+                                        unlockAchievements(steps, gamesApiClient);
+                                        maxSteps += steps;
                                     }
                                     try {
-                                        Games.Leaderboards.submitScore(gamesApiClient, DashboardFragment.this.getString(R.string.leaderboard_max_total_steps_in_1_week), (long) maxSteps);
+                                        Games.Leaderboards.submitScore(gamesApiClient, getString(R.string.leaderboard_max_total_steps_in_1_week), (long) maxSteps);
                                     } catch (Exception ex) {
                                         if (ex.getMessage() != null) {
-                                            Log.d(FitnessFragment.TAG, "Games Exception: " + ex.getMessage());
+                                            Log.e(TAG, "Games Exception", ex);
                                         }
                                     }
                                 }
-                                if (DashboardFragment.this.weekType == 1) {
+                                if (weekType == 1) {
                                     boolean hardWorker = true;
                                     boolean superWeek = true;
                                     int totalSteps = 0;
-                                    it = DashboardFragment.this.weekReport.getStepList().iterator();
+                                    it = mWeekReport.getStepList().iterator();
                                     while (it.hasNext()) {
                                         Integer i = (Integer) it.next();
-                                        totalSteps += i.intValue();
-                                        if (i.intValue() < GameUtils.WELCOME_FITHUB) {
+                                        totalSteps += i;
+                                        if (i < GameUtils.WELCOME_NOTUSFIT) {
                                             hardWorker = false;
                                         }
-                                        if (i.intValue() < GameUtils.OVERACHIEVER) {
+                                        if (i < GameUtils.OVERACHIEVER) {
                                             superWeek = false;
                                         }
                                         try {
-                                            Games.Leaderboards.submitScore(gamesApiClient, DashboardFragment.this.getString(R.string.leaderboard_max_steps_1_day), (long) i.intValue());
-                                        } catch (Exception ex2) {
-                                            if (ex2.getMessage() != null) {
-                                                Log.d(FitnessFragment.TAG, "Games Exception: " + ex2.getMessage());
-                                            }
+                                            Games.Leaderboards.submitScore(gamesApiClient, getString(R.string.leaderboard_max_steps_1_day), (long) i);
+                                        } catch (Exception ex) {
+                                            Log.e(TAG, "Games Exception", ex);
+
                                         }
-                                        DashboardFragment.this.unlockAchievements(i.intValue(), gamesApiClient);
+                                        unlockAchievements(i, gamesApiClient);
                                     }
                                     try {
-                                        Games.Leaderboards.submitScore(gamesApiClient, DashboardFragment.this.getString(R.string.leaderboard_max_total_steps_in_1_week), (long) totalSteps);
-                                    } catch (Exception ex22) {
-                                        if (ex22.getMessage() != null) {
-                                            Log.d(FitnessFragment.TAG, "Games Exception: " + ex22.getMessage());
-                                        }
+                                        Games.Leaderboards.submitScore(gamesApiClient, getString(R.string.leaderboard_max_total_steps_in_1_week), (long) totalSteps);
+                                    } catch (Exception ex) {
+                                        Log.e(TAG, "Games Exception", ex);
                                     }
                                     if (hardWorker) {
-                                        Games.Achievements.unlock(gamesApiClient, DashboardFragment.this.getString(R.string.achievement_hard_worker));
+                                        Games.Achievements.unlock(gamesApiClient, getString(R.string.achievement_hard_worker));
                                     }
                                     if (superWeek) {
-                                        Games.Achievements.unlock(gamesApiClient, DashboardFragment.this.getString(R.string.achievement_super_week));
+                                        Games.Achievements.unlock(gamesApiClient, getString(R.string.achievement_super_week));
                                     }
                                 }
                             }
@@ -179,22 +171,23 @@ public class DashboardFragment extends DefaultListFragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.weekReports = new ArrayList();
+        this.mWeekReports = new ArrayList<>();
         if (getArguments() != null) {
-            this.requestTime = (RequestTime) Parcels.unwrap(getArguments().getParcelable(RequestTime.REQUEST_TIME));
-            this.dateRequest = (MisfitDateRequest) Parcels.unwrap(getArguments().getParcelable(MisfitDateRequest.MISFIT_DATE));
+            this.mRequestTime = Parcels.unwrap(getArguments().getParcelable(RequestTime.REQUEST_TIME));
+            this.mDateRequest = Parcels.unwrap(getArguments().getParcelable(MisfitDateRequest.MISFIT_DATE));
             this.weekType = getArguments().getInt(WEEK, -1);
             this.deviceType = getArguments().getInt(DEVICE, -1);
         }
-        this.recyclerViewList.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        this.mRecyclerViewList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (DashboardFragment.this.cards != null) {
-                    for (int i = 1; i < DashboardFragment.this.cards.size(); i++) {
+                if (mCards != null) {
+                    for (int i = 1; i < mCards.size(); i++) {
                         try {
-                            ((DailyListCard) DashboardFragment.this.cards.get(i)).refreshCard();
-                        } catch (Exception e) {
+                            ((DailyListCard) mCards.get(i)).refreshCard();
+                        } catch (Exception ex) {
+                            Log.e(LOG_TAG, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -206,97 +199,96 @@ public class DashboardFragment extends DefaultListFragment {
         } else if (this.weekType == 1) {
             seriesRequest = new FitbitSeriesRequest().getPreviousWeek();
         }
-        Observable<WeekReport> allDevicesWeekReport = Observable.zip(this.hasWearDevice ? getAndroidWearWeekReport(this.requestTime) : getWeekReport(), this.hasFitbit ? getFitbitWeekReport(seriesRequest) : getWeekReport(), this.hasJawbone ? getJawboneWeekReport(this.weekType) : getWeekReport(), this.hasMisfit ? getMisfitWeekReport(this.dateRequest) : getWeekReport(), this.hasMoves ? getMovesWeekReport(this.weekType) : getWeekReport(), new Func5<WeekReport, WeekReport, WeekReport, WeekReport, WeekReport, WeekReport>() {
+        Observable<WeekReport> allDevicesWeekReport = Observable.zip(mHasWearDevice ? getAndroidWearWeekReport(this.mRequestTime) : getWeekReport(), this.mHasFitbit ? getFitbitWeekReport(seriesRequest) : getWeekReport(), this.mHasJawbone ? getJawboneWeekReport(this.weekType) : getWeekReport(), this.mHasMisfit ? getMisfitWeekReport(this.mDateRequest) : getWeekReport(), this.mHasMoves ? getMovesWeekReport(this.weekType) : getWeekReport(), new Func5<WeekReport, WeekReport, WeekReport, WeekReport, WeekReport, WeekReport>() {
             @Override
             public WeekReport call(WeekReport androidWear, WeekReport fitbit, WeekReport jawbone, WeekReport misfit, WeekReport moves) {
-                DashboardFragment.this.addWeekToList(DashboardFragment.this.hasWearDevice ? androidWear : null);
-                DashboardFragment.this.addWeekToList(DashboardFragment.this.hasWearDevice ? androidWear : null);
-                DashboardFragment.this.addWeekToList(DashboardFragment.this.hasFitbit ? fitbit : null);
-                DashboardFragment.this.addWeekToList(DashboardFragment.this.hasJawbone ? jawbone : null);
-                DashboardFragment.this.addWeekToList(DashboardFragment.this.hasMisfit ? misfit : null);
-                DashboardFragment.this.addWeekToList(DashboardFragment.this.hasMoves ? moves : null);
-                DashboardFragment.this.androidWearWeekReport = androidWear;
-                DashboardFragment.this.fitbitWeekReport = fitbit;
-                DashboardFragment.this.jawboneWeekReport = jawbone;
-                DashboardFragment.this.misfitWeekReport = misfit;
-                DashboardFragment.this.movesWeekReport = moves;
-                WeekReport weekReport = new AllDevicesWeekReport.Builder(DashboardFragment.this.getActivity()).setFitbitWeekReport(DashboardFragment.this.fitbitWeekReport).setGoogleFitWeekReport(DashboardFragment.this.androidWearWeekReport).setJawboneWeekReport(DashboardFragment.this.jawboneWeekReport).setMisfitWeekReport(DashboardFragment.this.misfitWeekReport).setMovesWeekReport(DashboardFragment.this.movesWeekReport).build();
-                if (DashboardFragment.this.mWearClient == null) {
-                    DashboardFragment.this.initWearClient();
+                addWeekToList(mHasWearDevice ? androidWear : null);
+                addWeekToList(mHasWearDevice ? androidWear : null);
+                addWeekToList(mHasFitbit ? fitbit : null);
+                addWeekToList(mHasJawbone ? jawbone : null);
+                addWeekToList(mHasMisfit ? misfit : null);
+                addWeekToList(mHasMoves ? moves : null);
+                mAndroidWearWeekReport = androidWear;
+                mFitbitWeekReport = fitbit;
+                mJawboneWeekReport = jawbone;
+                mMisfitWeekReport = misfit;
+                mMovesWeekReport = moves;
+                WeekReport weekReport = new AllDevicesWeekReport.Builder(getActivity()).setFitbitWeekReport(mFitbitWeekReport).setGoogleFitWeekReport(mAndroidWearWeekReport).setJawboneWeekReport(mJawboneWeekReport).setMisfitWeekReport(mMisfitWeekReport).setMovesWeekReport(mMovesWeekReport).build();
+                if (mWearClient == null) {
+                    initWearClient();
                 }
                 int todaySteps = 0;
                 try {
-                    todaySteps = ((DayReport) weekReport.getDays().get(weekReport.getRealListSize() - 1)).getSteps();
+                    todaySteps = weekReport.getDays().get(weekReport.getRealListSize() - 1).getSteps();
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    ex.printStackTrace();
+                    Log.e(LOG_TAG, ex.getMessage(), ex);
                 }
                 try {
-                    if (DashboardFragment.this.weekType == 0) {
-                        if (DashboardFragment.this.getActivity() != null) {
-                            PrefManager.with(DashboardFragment.this.getActivity()).save(DashboardFragment.this.getString(R.string.today_steps), todaySteps);
+                    if (weekType == 0) {
+                        if (getActivity() != null) {
+                            PrefManager.with(getContext()).save(getString(R.string.today_steps), todaySteps);
                         }
                     }
-                } catch (Exception ex2) {
-                    ex2.printStackTrace();
+                } catch (Exception ex) {
+                    Log.e(LOG_TAG, ex.getMessage(), ex);
                 }
-                if (DashboardFragment.this.weekType == 0) {
+                if (weekType == 0) {
                     try {
-                        if (PrefManager.with(DashboardFragment.this.getActivity()).getString(User.UNITS, null) == null) {
-                            String id = PrefManager.with(DashboardFragment.this.getActivity()).getString(User.OBJECT_ID, null);
+                        if (PrefManager.with(getContext()).getString(User.UNITS, null) == null) {
+                            String id = PrefManager.with(getContext()).getString(User.OBJECT_ID, null);
                             if (id != null) {
                                 ParseObject userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, id).getFirst();
-                                PrefManager.with(DashboardFragment.this.getActivity()).save(User.UNITS, userObject.getString(User.UNITS));
+                                PrefManager.with(getContext()).save(User.UNITS, userObject.getString(User.UNITS));
                                 userObject.save();
                                 userObject.pinInBackground();
                             }
                         }
-                    } catch (Exception ex22) {
-                        ex22.printStackTrace();
+                    } catch (Exception ex) {
+                        Log.e(LOG_TAG, ex.getMessage(), ex);
                     }
-                    if (PrefManager.with(DashboardFragment.this.getActivity()).getString("temp", null) == null) {
-                        GpsTracker tracker = new GpsTracker(DashboardFragment.this.getActivity());
+                    if (PrefManager.with(getContext()).getString("temp", null) == null) {
+                        GpsTracker tracker = new GpsTracker(getActivity());
                         float longitude = 0.0f;
                         float f = 0.0f;
                         try {
                             f = (float) tracker.getLatitude();
                             longitude = (float) tracker.getLongitude();
-                        } catch (Exception ex222) {
-                            ex222.printStackTrace();
+                        } catch (Exception ex) {
+                            Log.e(LOG_TAG, ex.getMessage(), ex);
                         }
                         tracker.stopUsingGPS();
-                        WeatherApiClient.WeatherApi weatherApi = (WeatherApiClient.WeatherApi) WeatherApiClient.getBaseRestAdapter(DashboardFragment.this.getActivity()).create(WeatherApiClient.WeatherApi.class);
+                        WeatherApiClient.WeatherApi weatherApi = WeatherApiClient.getBaseRestAdapter(getActivity()).create(WeatherApiClient.WeatherApi.class);
                         String units = "imperial";
-                        if (PrefManager.with(DashboardFragment.this.getActivity()).getString(User.UNITS, DashboardFragment.this.getString(R.string.pref_units_imperial)).equals(DashboardFragment.this.getString(R.string.pref_units_metric))) {
+                        if (PrefManager.with(getContext()).getString(User.UNITS, getString(R.string.pref_units_imperial)).equals(getString(R.string.pref_units_metric))) {
                             units = "metric";
                         }
                         WeatherResponse response = weatherApi.getWeather(f, longitude, units, WeatherApiClient.API_KEY);
-                        PrefManager.with(DashboardFragment.this.getActivity()).save("temp", String.valueOf(response.getMainWeather().getTemp()));
+                        PrefManager.with(getContext()).save("temp", String.valueOf(response.getMainWeather().getTemp()));
                         try {
-                            PrefManager.with(DashboardFragment.this.getActivity()).save("weather_id", String.valueOf(((Weather) response.getWeather().get(0)).getId()));
-                        } catch (Exception ex2222) {
-                            ex2222.printStackTrace();
+                            PrefManager.with(getContext()).save("weather_id", String.valueOf(response.getWeather().get(0).getId()));
+                        } catch (Exception ex) {
+                            Log.e(LOG_TAG, ex.getMessage(), ex);
                         }
                     }
-                    if (DashboardFragment.this.mWearClient != null) {
-                        if (DashboardFragment.this.mWearClient.isConnected()) {
+                    if (mWearClient != null) {
+                        if (mWearClient.isConnected()) {
                             try {
-                                if (DashboardFragment.this.getActivity() != null) {
-                                    PutDataMapRequest request = PutDataMapRequest.create("/com.gabilheri.fithub.steps");
+                                if (getActivity() != null) {
+                                    PutDataMapRequest request = PutDataMapRequest.create("/com.notus.fit.steps");
                                     DataMap map = request.getDataMap();
-                                    map.putFloat("temp", Float.parseFloat(PrefManager.with(DashboardFragment.this.getActivity()).getString("temp", AppEventsConstants.EVENT_PARAM_VALUE_NO)));
+                                    map.putFloat("temp", Float.parseFloat(PrefManager.with(getContext()).getString("temp", AppEventsConstants.EVENT_PARAM_VALUE_NO)));
                                     map.putString(User.UNITS, "imperial");
                                     map.putInt("steps", todaySteps);
                                     try {
-                                        map.putInt("weather_id", Integer.parseInt(PrefManager.with(DashboardFragment.this.getActivity()).getString("weather_id", "800")));
-                                    } catch (Exception e) {
+                                        map.putInt("weather_id", Integer.parseInt(PrefManager.with(getContext()).getString("weather_id", "800")));
+                                    } catch (Exception ex) {
+                                        Log.e(LOG_TAG, ex.getMessage(), ex);
                                     }
-                                    map.putString("step_goal", PrefManager.with(DashboardFragment.this.getActivity()).getString(DashboardFragment.this.getResources().getString(R.string.steps_goal), "10000"));
-                                    Wearable.DataApi.putDataItem(DashboardFragment.this.mWearClient, request.asPutDataRequest());
+                                    map.putString("step_goal", PrefManager.with(getContext()).getString(getResources().getString(R.string.steps_goal), "10000"));
+                                    Wearable.DataApi.putDataItem(mWearClient, request.asPutDataRequest());
                                 }
-                            } catch (Exception ex22222) {
-                                if (ex22222.getMessage() != null) {
-                                    Log.d(FitnessFragment.TAG, ex22222.getMessage());
-                                }
+                            } catch (Exception ex) {
+                                Log.e(LOG_TAG, ex.getMessage(), ex);
                             }
                         }
                     }
@@ -310,7 +302,7 @@ public class DashboardFragment extends DefaultListFragment {
 
     public void addWeekToList(WeekReport w) {
         if (w != null) {
-            this.weekReports.add(w);
+            this.mWeekReports.add(w);
         }
     }
 
@@ -320,92 +312,92 @@ public class DashboardFragment extends DefaultListFragment {
 
     public void setDevice(int device) {
         this.deviceType = device;
-        if (this.weekReport != null) {
-            this.progressWheel.setVisibility(View.VISIBLE);
+        if (this.mWeekReport != null) {
+            this.mProgressWheel.setVisibility(View.VISIBLE);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    DashboardFragment.this.setDevice();
+                    setDevice();
                 }
             }, 400);
         }
     }
 
-    public void setBarChart(boolean barChart) {
-        this.barChart = barChart;
+    public void setmBarChart(boolean mBarChart) {
+        this.mBarChart = mBarChart;
     }
 
     public void setDevice() {
         List<DayReport> days = null;
         int weekAverage = 0;
-        ArrayList<Integer> stepsList = new ArrayList();
-        ArrayList<WeekReport> singleReport = new ArrayList();
+        List<Integer> stepsList = new ArrayList<>();
+        List<WeekReport> singleReport = new ArrayList<>();
         switch (this.deviceType) {
             case YearMonthDay.YEAR /*0*/:
-                weekAverage = this.weekReport.getWeekAverage();
-                stepsList = this.weekReport.getStepList();
-                days = this.weekReport.getDays();
+                weekAverage = this.mWeekReport.getWeekAverage();
+                stepsList = this.mWeekReport.getStepList();
+                days = this.mWeekReport.getDays();
                 break;
             case IslamicChronology.AH /*1*/:
-                weekAverage = this.androidWearWeekReport.getWeekAverage();
-                stepsList = this.androidWearWeekReport.getStepList();
-                days = this.androidWearWeekReport.getDays();
-                singleReport.add(this.androidWearWeekReport);
+                weekAverage = this.mAndroidWearWeekReport.getWeekAverage();
+                stepsList = this.mAndroidWearWeekReport.getStepList();
+                days = this.mAndroidWearWeekReport.getDays();
+                singleReport.add(this.mAndroidWearWeekReport);
                 break;
             case YearMonthDay.DAY_OF_MONTH /*2*/:
-                weekAverage = this.fitbitWeekReport.getWeekAverage();
-                stepsList = this.fitbitWeekReport.getStepList();
-                days = this.fitbitWeekReport.getDays();
-                singleReport.add(this.fitbitWeekReport);
+                weekAverage = this.mFitbitWeekReport.getWeekAverage();
+                stepsList = this.mFitbitWeekReport.getStepList();
+                days = this.mFitbitWeekReport.getDays();
+                singleReport.add(this.mFitbitWeekReport);
                 break;
             case TimeOfDay.MILLIS_OF_SECOND /*3*/:
-                weekAverage = this.jawboneWeekReport.getWeekAverage();
-                stepsList = this.jawboneWeekReport.getStepList();
-                days = this.jawboneWeekReport.getDays();
-                singleReport.add(this.jawboneWeekReport);
+                weekAverage = this.mJawboneWeekReport.getWeekAverage();
+                stepsList = this.mJawboneWeekReport.getStepList();
+                days = this.mJawboneWeekReport.getDays();
+                singleReport.add(this.mJawboneWeekReport);
                 break;
             case MutableDateTime.ROUND_HALF_CEILING /*4*/:
-                weekAverage = this.misfitWeekReport.getWeekAverage();
-                stepsList = this.misfitWeekReport.getStepList();
-                days = this.misfitWeekReport.getDays();
-                singleReport.add(this.misfitWeekReport);
+                weekAverage = this.mMisfitWeekReport.getWeekAverage();
+                stepsList = this.mMisfitWeekReport.getStepList();
+                days = this.mMisfitWeekReport.getDays();
+                singleReport.add(this.mMisfitWeekReport);
                 break;
             case MutableDateTime.ROUND_HALF_EVEN /*5*/:
-                weekAverage = this.movesWeekReport.getWeekAverage();
-                stepsList = this.movesWeekReport.getStepList();
-                days = this.movesWeekReport.getDays();
-                singleReport.add(this.movesWeekReport);
+                weekAverage = this.mMovesWeekReport.getWeekAverage();
+                stepsList = this.mMovesWeekReport.getStepList();
+                days = this.mMovesWeekReport.getDays();
+                singleReport.add(this.mMovesWeekReport);
                 break;
         }
         String bottomText = "Week Average: " + weekAverage + " Steps.";
-        this.cards = new ArrayList();
-        if (this.barChart) {
-            this.cards.add(new CardBarChart(getActivity(), new BarChartData().setBottomText(bottomText).setMaxVisibleValue(50000).setUnits(" Steps").setType(BarChartDataBuilder.STEPS).setxValues(WeekReport.getWeekLabels()).setyValues(stepsList).build()));
+        this.mCards = new ArrayList<>();
+        if (this.mBarChart) {
+            this.mCards.add(new CardBarChart(getActivity(), new BarChartData().setBottomText(bottomText).setMaxVisibleValue(50000).setUnits(" Steps").setType(BarChartDataBuilder.STEPS).setxValues(WeekReport.getWeekLabels()).setyValues(stepsList).build()));
         } else {
             LineChartData lineChartData;
             if (this.deviceType == 0) {
-                Log.d(TAG, "Week Reports Size: " + this.weekReports.size());
-                lineChartData = new LineChartData(this.weekReports, bottomText);
+                Log.d(TAG, "Week Reports Size: " + this.mWeekReports.size());
+                lineChartData = new LineChartData(this.mWeekReports, bottomText);
             } else {
-                singleReport.add(this.weekReport);
+                singleReport.add(this.mWeekReport);
                 lineChartData = new LineChartData(singleReport, bottomText);
             }
-            this.cards.add(new CardLineChart(getActivity(), lineChartData));
+            this.mCards.add(new CardLineChart(getActivity(), lineChartData));
         }
         if (days != null) {
             for (int i = 0; i < days.size(); i++) {
-                DayReport d = (DayReport) days.get(i);
+                DayReport d = days.get(i);
                 if (d.getSteps() != 0) {
-                    this.cards.add(new DailyListCard(getActivity(), d));
+                    this.mCards.add(new DailyListCard(getActivity(), d));
                 }
             }
         }
-        this.mCardArrayAdapter = new CardArrayRecyclerViewAdapter(getActivity(), this.cards);
-        this.recyclerViewList.setAdapter(this.mCardArrayAdapter);
-        this.recyclerViewList.invalidate();
+        this.mCardArrayAdapter = new CardArrayRecyclerViewAdapter(getActivity(), this.mCards);
+        this.mRecyclerViewList.setAdapter(this.mCardArrayAdapter);
+        this.mRecyclerViewList.invalidate();
         refreshList().run();
-        this.progressWheel.setVisibility(View.GONE);
-        this.dashboardLayout.invalidate();
+        this.mProgressWheel.setVisibility(View.GONE);
+        this.mDashboardLayout.invalidate();
     }
 
     public void onStart() {
@@ -423,13 +415,13 @@ public class DashboardFragment extends DefaultListFragment {
     }
 
     public void initWearClient() {
-        if (this.hasWearDevice && this.weekType == 0 && getActivity() != null && (getActivity() instanceof MainActivity) && this.mWearClient == null) {
+        if (this.mHasWearDevice && this.weekType == 0 && getActivity() != null && (getActivity() instanceof MainActivity) && this.mWearClient == null) {
             this.mWearClient = ((MainActivity) getActivity()).initWearClient();
         }
     }
 
     public void unlockAchievements(int totalSteps, GoogleApiClient gamesApiClient) {
-        if (totalSteps > GameUtils.WELCOME_FITHUB) {
+        if (totalSteps > GameUtils.WELCOME_NOTUSFIT) {
             Games.Achievements.unlock(gamesApiClient, getString(R.string.achievement_welcome_to_fithub));
         }
         if (totalSteps > GameUtils.OVERACHIEVER) {
@@ -447,9 +439,7 @@ public class DashboardFragment extends DefaultListFragment {
         try {
             Games.Leaderboards.submitScore(gamesApiClient, getString(R.string.leaderboard_max_steps_1_day), (long) totalSteps);
         } catch (Exception ex) {
-            if (ex.getMessage() != null) {
-                Log.d(TAG, "Games Exception: " + ex.getMessage());
-            }
+            Log.e(LOG_TAG, ex.getMessage(), ex);
         }
     }
 }

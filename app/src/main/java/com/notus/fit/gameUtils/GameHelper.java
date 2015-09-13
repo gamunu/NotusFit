@@ -28,7 +28,9 @@ import com.google.android.gms.plus.Plus.PlusOptions;
 import java.util.ArrayList;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:00 PM
  */
 public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -43,60 +45,39 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
     static final int RC_RESOLVE = 9001;
     static final int RC_UNUSED = 9002;
     static final String TAG = "GameHelper";
-    private final String GAMEHELPER_SHARED_PREFS;
-    private final String KEY_SIGN_IN_CANCELLATIONS;
+    private final String GAMEHELPER_SHARED_PREFS = "GAMEHELPER_SHARED_PREFS";
+    private final String KEY_SIGN_IN_CANCELLATIONS = "KEY_SIGN_IN_CANCELLATIONS";
     Activity mActivity;
     Context mAppContext;
     NoOptions mAppStateApiOptions;
-    boolean mConnectOnStart;
+    boolean mConnectOnStart = true;
     ConnectionResult mConnectionResult;
-    boolean mDebugLog;
-    boolean mExpectingResolution;
+    boolean mDebugLog = false;
+    boolean mExpectingResolution = false;
     GamesOptions mGamesApiOptions;
     GoogleApiClient mGoogleApiClient;
     Builder mGoogleApiClientBuilder;
-    Handler mHandler;
+    Handler mHandler = new Handler();
     Invitation mInvitation;
     GameHelperListener mListener;
     int mMaxAutoSignInAttempts;
     PlusOptions mPlusApiOptions;
-    int mRequestedClients;
+    int mRequestedClients = CLIENT_NONE;
     ArrayList<GameRequest> mRequests;
-    boolean mShowErrorDialogs;
-    boolean mSignInCancelled;
+    boolean mShowErrorDialogs = true;
+    boolean mSignInCancelled = false;
     SignInFailureReason mSignInFailureReason;
     TurnBasedMatch mTurnBasedMatch;
-    boolean mUserInitiatedSignIn;
-    private boolean mConnecting;
-    private boolean mSetupDone;
+    boolean mUserInitiatedSignIn = false;
+    private boolean mConnecting = false;
+    private boolean mSetupDone = false;
 
     public GameHelper(Activity activity, int clientsToUse) {
-        this.mSetupDone = false;
-        this.mConnecting = false;
-        this.mExpectingResolution = false;
-        this.mSignInCancelled = false;
-        this.mActivity = null;
-        this.mAppContext = null;
-        this.mGoogleApiClientBuilder = null;
         this.mGamesApiOptions = Games.GamesOptions.builder().build();
-        this.mPlusApiOptions = null;
-        this.mAppStateApiOptions = null;
-        this.mGoogleApiClient = null;
-        this.mRequestedClients = CLIENT_NONE;
-        this.mConnectOnStart = true;
-        this.mUserInitiatedSignIn = false;
-        this.mConnectionResult = null;
-        this.mSignInFailureReason = null;
-        this.mShowErrorDialogs = true;
-        this.mDebugLog = false;
-        this.mListener = null;
         this.mMaxAutoSignInAttempts = DEFAULT_MAX_SIGN_IN_ATTEMPTS;
-        this.GAMEHELPER_SHARED_PREFS = "GAMEHELPER_SHARED_PREFS";
-        this.KEY_SIGN_IN_CANCELLATIONS = "KEY_SIGN_IN_CANCELLATIONS";
         this.mActivity = activity;
         this.mAppContext = activity.getApplicationContext();
         this.mRequestedClients = clientsToUse;
-        this.mHandler = new Handler();
     }
 
     public static void showFailureDialog(Activity activity, int actResp, int errorCode) {
@@ -392,9 +373,8 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
     }
 
     void notifyListener(boolean success) {
-        StringBuilder append = new StringBuilder().append("Notifying LISTENER of sign-in ");
         String str = success ? "SUCCESS" : this.mSignInFailureReason != null ? "FAILURE (error)" : "FAILURE (no error)";
-        debugLog(append.append(str).toString());
+        debugLog("Notifying LISTENER of sign-in " + str);
         if (this.mListener == null) {
             return;
         }
@@ -456,7 +436,7 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
         debugLog("onConnected: connected!");
         if (connectionHint != null) {
             debugLog("onConnected: connection hint provided. Checking for invite.");
-            Invitation inv = (Invitation) connectionHint.getParcelable("invitation");
+            Invitation inv = connectionHint.getParcelable("invitation");
             if (!(inv == null || inv.getInvitationId() == null)) {
                 debugLog("onConnected: connection hint has a room invite!");
                 this.mInvitation = inv;
@@ -467,7 +447,7 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
                 debugLog("onConnected: connection hint has " + this.mRequests.size() + " request(s)");
             }
             debugLog("onConnected: connection hint provided. Checking for TBMP game.");
-            this.mTurnBasedMatch = (TurnBasedMatch) connectionHint.getParcelable("turn_based_match");
+            this.mTurnBasedMatch = connectionHint.getParcelable("turn_based_match");
         }
         succeedSignIn();
     }
@@ -489,14 +469,14 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
         int cancellations = getSignInCancellations();
         Editor editor = this.mAppContext.getSharedPreferences("GAMEHELPER_SHARED_PREFS", CLIENT_NONE).edit();
         editor.putInt("KEY_SIGN_IN_CANCELLATIONS", cancellations + CLIENT_GAMES);
-        editor.commit();
+        editor.apply();
         return cancellations + CLIENT_GAMES;
     }
 
     void resetSignInCancellations() {
         Editor editor = this.mAppContext.getSharedPreferences("GAMEHELPER_SHARED_PREFS", CLIENT_NONE).edit();
         editor.putInt("KEY_SIGN_IN_CANCELLATIONS", CLIENT_NONE);
-        editor.commit();
+        editor.apply();
     }
 
     public void onConnectionFailed(ConnectionResult result) {

@@ -1,83 +1,86 @@
 package com.notus.fit.network.weather.models;
 
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
-// Referenced classes of package com.notus.fit.network.weather.models:
-//            MainWeather
+import java.util.List;
 
 public class WeatherResponse {
 
+    @SerializedName("base")
     String base;
+    @SerializedName("cod")
     int cod;
+    @SerializedName("dt")
     long dt;
+    @SerializedName("id")
     int id;
+    @SerializedName("main")
     MainWeather mainWeather;
+    @SerializedName("name")
     String stillwater;
-    List weather;
+    @SerializedName("weather")
+    List<Weather> weather;
 
-    public WeatherResponse() {
+    public List<Weather> getWeather() {
+        return this.weather;
+    }
+
+    public WeatherResponse setWeather(List<Weather> weather) {
+        this.weather = weather;
+        return this;
     }
 
     public String getBase() {
-        return base;
+        return this.base;
     }
 
-    public WeatherResponse setBase(String s) {
-        base = s;
-        return this;
-    }
-
-    public int getCod() {
-        return cod;
-    }
-
-    public WeatherResponse setCod(int i) {
-        cod = i;
-        return this;
-    }
-
-    public long getDt() {
-        return dt;
-    }
-
-    public WeatherResponse setDt(long l) {
-        dt = l;
-        return this;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public WeatherResponse setId(int i) {
-        id = i;
+    public WeatherResponse setBase(String base) {
+        this.base = base;
         return this;
     }
 
     public MainWeather getMainWeather() {
-        return mainWeather;
+        return this.mainWeather;
     }
 
-    public WeatherResponse setMainWeather(MainWeather mainweather) {
-        mainWeather = mainweather;
+    public WeatherResponse setMainWeather(MainWeather mainWeather) {
+        this.mainWeather = mainWeather;
+        return this;
+    }
+
+    public long getDt() {
+        return this.dt;
+    }
+
+    public WeatherResponse setDt(long dt) {
+        this.dt = dt;
+        return this;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public WeatherResponse setId(int id) {
+        this.id = id;
         return this;
     }
 
     public String getStillwater() {
-        return stillwater;
+        return this.stillwater;
     }
 
-    public WeatherResponse setStillwater(String s) {
-        stillwater = s;
+    public WeatherResponse setStillwater(String stillwater) {
+        this.stillwater = stillwater;
         return this;
     }
 
-    public List getWeather() {
-        return weather;
+    public int getCod() {
+        return this.cod;
     }
 
-    public WeatherResponse setWeather(List list) {
-        weather = list;
+    public WeatherResponse setCod(int cod) {
+        this.cod = cod;
         return this;
     }
 }

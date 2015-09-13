@@ -1,6 +1,7 @@
 package com.notus.fit.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.notus.fit.R;
@@ -17,11 +18,11 @@ public abstract class BasePagerActivity extends BaseActivity
         implements MaterialTabListener {
 
     protected static String LOG_TAG = BasePagerActivity.class.getSimpleName();
-    protected BaseViewPagerAdapter adapter;
-    protected List fragmentList;
-    protected ViewPager pager;
-    protected MaterialTabHost tabHost;
-    protected List titleList;
+    protected BaseViewPagerAdapter mAdapter;
+    protected List<Fragment> mFragmentList;
+    protected ViewPager mPager;
+    protected MaterialTabHost mTabHost;
+    protected List<CharSequence> mTitleList;
 
     public BasePagerActivity() {
     }
@@ -31,12 +32,12 @@ public abstract class BasePagerActivity extends BaseActivity
     }
 
     public void initPager() {
-        this.adapter = new BaseViewPagerAdapter(getSupportFragmentManager(), this.fragmentList, this.titleList);
-        this.pager.setAdapter(this.adapter);
-        this.pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        this.mAdapter = new BaseViewPagerAdapter(getSupportFragmentManager(), mFragmentList, mTitleList);
+        this.mPager.setAdapter(this.mAdapter);
+        this.mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             public void onPageSelected(int position) {
-                BasePagerActivity.this.tabHost.setSelectedNavigationItem(position);
+                mTabHost.setSelectedNavigationItem(position);
             }
 
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -46,33 +47,33 @@ public abstract class BasePagerActivity extends BaseActivity
             }
 
         });
-        for (int i = 0; i < this.adapter.getCount(); i++) {
-            this.tabHost.addTab(this.tabHost.newTab().setText(this.adapter.getPageTitle(i)).setTabListener(this));
+        for (int i = 0; i < this.mAdapter.getCount(); i++) {
+            this.mTabHost.addTab(this.mTabHost.newTab().setText(this.mAdapter.getPageTitle(i)).setTabListener(this));
         }
 
     }
 
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        tabHost = (MaterialTabHost) findViewById(R.id.materialTabHost);
-        pager = (ViewPager) findViewById(R.id.pager);
-        fragmentList = new ArrayList();
-        titleList = new ArrayList();
+        mTabHost = (MaterialTabHost) findViewById(R.id.materialTabHost);
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mFragmentList = new ArrayList<>();
+        mTitleList = new ArrayList<>();
     }
 
     public void onTabReselected(MaterialTab materialtab) {
     }
 
     public void onTabSelected(MaterialTab materialtab) {
-        pager.setCurrentItem(materialtab.getPosition());
+        mPager.setCurrentItem(materialtab.getPosition());
     }
 
     public void onTabUnselected(MaterialTab materialtab) {
     }
 
     public void setPagerNumber(int i) {
-        pager.setCurrentItem(i);
-        tabHost.setSelectedNavigationItem(i);
+        mPager.setCurrentItem(i);
+        mTabHost.setSelectedNavigationItem(i);
     }
 
 }

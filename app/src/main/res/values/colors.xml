@@ -676,6 +676,4 @@
     <color name="yellow_A200">#ffffff00</color>
     <color name="yellow_A400">#ffffea00</color>
     <color name="yellow_A700">#ffffd600</color>
-    <item name="common_signin_btn_text_dark" type="color">false</item>
-    <item name="common_signin_btn_text_light" type="color">false</item>
 </resources>

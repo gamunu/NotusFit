@@ -10,7 +10,7 @@ public class FriendListActivity extends DrawerActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Friends");
+        setTitle("Friends");
         enableBackNav();
         CustomUtils.addFragmentToContainer(new UserListFragment(), R.id.container, this);
     }

@@ -3,7 +3,6 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/background_color"
     android:clipToPadding="true"
     android:fillViewport="true">
 
@@ -16,7 +15,7 @@
         android:paddingTop="8.0dip">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/fithub_expalanation_image"
+            android:id="@+id/notusfit_expalanation_image"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -36,7 +35,7 @@
                     android:background="@color/accent_color"
                     android:gravity="center"
                     android:padding="8.0sp"
-                    android:text="@string/welcome_fithub"
+                    android:text="@string/welcome_notusfit"
                     android:textColor="@android:color/white"
                     android:textSize="20.0sp"
                     android:textStyle="bold" />
@@ -45,16 +44,16 @@
                     android:layout_width="fill_parent"
                     android:layout_height="200.0dip"
                     android:layout_margin="@dimen/activity_vertical_margin"
-                    android:contentDescription="@string/fithub_explanation"
+                    android:contentDescription="@string/notusfit_explanation"
                     android:src="@drawable/hub_explanation" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/fithub_explanation_text"
+            android:id="@+id/notusfit_explanation_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fithub_expalanation_image"
+            android:layout_below="@id/notusfit_expalanation_image"
             android:layout_gravity="center"
             android:background="@android:color/white"
             card_view:cardBackgroundColor="@android:color/white"
@@ -74,7 +73,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/fithub_explanation_text"
+            android:layout_below="@id/notusfit_explanation_text"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:orientation="vertical"
             android:weightSum="10.0">

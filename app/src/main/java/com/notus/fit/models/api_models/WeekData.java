@@ -1,26 +1,42 @@
 package com.notus.fit.models.api_models;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 9:59 AM
  */
 @Parcel
 public class WeekData {
-
+    @SerializedName("average")
     int average;
+    @SerializedName("end_date")
     String endDate;
+    @SerializedName("friday")
     int friday;
+    @SerializedName("id")
     int id;
+    @SerializedName("monday")
     int monday;
+    @SerializedName("saturday")
     int saturday;
+    @SerializedName("start_date")
     String startDate;
+    @SerializedName("sunday")
     int sunday;
+    @SerializedName("thursday")
     int thursday;
+    @SerializedName("tuesday")
     int tuesday;
+    @SerializedName("user_w")
     User user;
+    @SerializedName("wednesday")
     int wednesday;
 
     public int getId() {
@@ -131,15 +147,15 @@ public class WeekData {
         return this;
     }
 
-    public ArrayList<Integer> getStepList() {
-        ArrayList<Integer> stepList = new ArrayList();
-        stepList.add(Integer.valueOf(this.monday));
-        stepList.add(Integer.valueOf(this.tuesday));
-        stepList.add(Integer.valueOf(this.wednesday));
-        stepList.add(Integer.valueOf(this.thursday));
-        stepList.add(Integer.valueOf(this.friday));
-        stepList.add(Integer.valueOf(this.saturday));
-        stepList.add(Integer.valueOf(this.sunday));
+    public List<Integer> getStepList() {
+        List<Integer> stepList = new ArrayList<>();
+        stepList.add(this.monday);
+        stepList.add(this.tuesday);
+        stepList.add(this.wednesday);
+        stepList.add(this.thursday);
+        stepList.add(this.friday);
+        stepList.add(this.saturday);
+        stepList.add(this.sunday);
         return stepList;
     }
 

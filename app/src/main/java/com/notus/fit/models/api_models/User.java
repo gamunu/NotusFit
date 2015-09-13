@@ -1,67 +1,108 @@
 package com.notus.fit.models.api_models;
 
+import com.google.gson.annotations.SerializedName;
 import com.notus.fit.BuildConfig;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import org.parceler.Parcel;
+import org.parceler.Transient;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 9:59 AM
  */
 
 @Parcel
 public class User {
+    @Transient
     public static final String AVATAR_URL = "avatar_url";
+    @Transient
     public static final String BIRTHDAY = "birthday";
+    @Transient
     public static final String CLASS = "Users";
+    @Transient
     public static final String COUNTRY = "country";
+    @Transient
     public static final String EMAIL = "email";
+    @Transient
     public static final String FIRST_NAME = "firstName";
+    @Transient
     public static final String FITBIT_TOKEN = "fitbit_token";
+    @Transient
     public static final String GENDER = "gender";
+    @Transient
     public static final String HAS_FITBIT = "has_fitbit";
+    @Transient
     public static final String HAS_GOOGLEFIT = "has_googlefit";
+    @Transient
     public static final String HAS_JAWBONE = "has_jawbone";
+    @Transient
     public static final String HAS_MISFIT = "has_misfit";
+    @Transient
     public static final String HAS_MOVES = "has_moves";
+    @Transient
     public static final String HEIGHT = "height";
+    @Transient
     public static final String JAWBONE_TOKEN = "jawbone_token";
+    @Transient
     public static final String LAST_NAME = "lastName";
+    @Transient
     public static final String MISFIT_TOKEN = "misfit_token";
+    @Transient
     public static final String MOVES_REFRESH_TOKEN = "moves_refresh_token";
+    @Transient
     public static final String MOVES_TOKEN = "moves_token";
+    @Transient
     public static final String OBJECT_ID = "objectId";
+    @Transient
     public static final String STEPS_AVERAGE = "steps_average";
+    @Transient
     public static final String TIME_ZONE = "time_zone";
+    @Transient
     public static final String UNITS = "units";
+    @Transient
     public static final String USERNAME = "username";
+    @Transient
     public static final String WEIGHT = "weight";
 
     String avatarUrl;
+    @SerializedName("birthday")
     String birthday;
+    @SerializedName("country")
     String country;
+    @SerializedName("email")
     String email;
+    @SerializedName("first_name")
     String firstName;
     String fitbitToken;
+    @SerializedName("gender")
     String gender;
     boolean hasFitbit;
     boolean hasGoogleFit;
     boolean hasJawbone;
     boolean hasMisfit;
     boolean hasMoves;
+    @SerializedName("height")
     String height;
     String jawboneToken;
+    @SerializedName("last_name")
     String lastName;
     String misfitToken;
     String movesToken;
+    @SerializedName("objectId")
     String objectId;
     String refreshMovesToken;
     int stepsAverage;
+    @SerializedName("time_zone")
     String timeZone;
+    @SerializedName("units")
     String units;
+    @SerializedName("username")
     String username;
+    @SerializedName("weight")
     String weight;
 
     public static User build(ParseObject object) {
@@ -102,18 +143,18 @@ public class User {
             object.put(FIRST_NAME, user.getFirstName() != null ? user.getFirstName() : BuildConfig.FLAVOR);
             object.put(LAST_NAME, user.getLastName() != null ? user.getLastName() : BuildConfig.FLAVOR);
             object.put(AVATAR_URL, user.getAvatarUrl() != null ? user.getAvatarUrl() : BuildConfig.FLAVOR);
-            object.put(HAS_FITBIT, Boolean.valueOf(user.hasFitbit()));
-            object.put(HAS_JAWBONE, Boolean.valueOf(user.hasJawbone()));
-            object.put(HAS_GOOGLEFIT, Boolean.valueOf(user.hasGoogleFit()));
-            object.put(HAS_MOVES, Boolean.valueOf(user.hasMoves()));
-            object.put(HAS_MISFIT, Boolean.valueOf(user.hasMisfit()));
+            object.put(HAS_FITBIT, user.hasFitbit());
+            object.put(HAS_JAWBONE, user.hasJawbone());
+            object.put(HAS_GOOGLEFIT, user.hasGoogleFit());
+            object.put(HAS_MOVES, user.hasMoves());
+            object.put(HAS_MISFIT, user.hasMisfit());
             object.put(BIRTHDAY, user.getBirthday() != null ? user.getBirthday() : BuildConfig.FLAVOR);
             object.put(COUNTRY, user.getCountry() != null ? user.getCountry() : BuildConfig.FLAVOR);
             object.put(HEIGHT, user.getHeight() != null ? user.getHeight() : BuildConfig.FLAVOR);
             object.put(WEIGHT, user.getWeight() != null ? user.getWeight() : BuildConfig.FLAVOR);
             object.put(UNITS, user.getUnits() != null ? user.getUnits() : BuildConfig.FLAVOR);
             object.put(GENDER, user.getGender() != null ? user.getGender() : BuildConfig.FLAVOR);
-            object.put(STEPS_AVERAGE, Integer.valueOf(user.getStepsAverage()));
+            object.put(STEPS_AVERAGE, user.getStepsAverage());
             object.put(JAWBONE_TOKEN, user.getJawboneToken() != null ? user.getJawboneToken() : BuildConfig.FLAVOR);
             object.put(FITBIT_TOKEN, user.getFitbitToken() != null ? user.getFitbitToken() : BuildConfig.FLAVOR);
             object.put(MISFIT_TOKEN, user.getMisfitToken() != null ? user.getMisfitToken() : BuildConfig.FLAVOR);
@@ -322,6 +363,6 @@ public class User {
     }
 
     public String toString() {
-        return "User{objectId='" + this.objectId + '\'' + ", username='" + this.username + '\'' + ", firstName='" + this.firstName + '\'' + ", lastName='" + this.lastName + '\'' + ", email='" + this.email + '\'' + ", fitbitToken='" + this.fitbitToken + '\'' + ", misfitToken='" + this.misfitToken + '\'' + ", jawboneToken='" + this.jawboneToken + '\'' + ", avatarUrl='" + this.avatarUrl + '\'' + ", weight='" + this.weight + '\'' + ", height='" + this.height + '\'' + ", country='" + this.country + '\'' + ", units='" + this.units + '\'' + ", timeZone='" + this.timeZone + '\'' + ", birthday='" + this.birthday + '\'' + ", gender='" + this.gender + '\'' + ", hasMisfit=" + this.hasMisfit + ", hasFitbit=" + this.hasFitbit + ", hasGoogleFit=" + this.hasGoogleFit + ", hasJawbone=" + this.hasJawbone + ", stepsAverage=" + this.stepsAverage + '}';
+        return "User{objectId='" + this.objectId + '\'' + ", username='" + this.username + '\'' + ", firstName='" + this.firstName + '\'' + ", lastName='" + this.lastName + '\'' + ", email='" + this.email + '\'' + ", fitbitToken='" + this.fitbitToken + '\'' + ", misfitToken='" + this.misfitToken + '\'' + ", jawboneToken='" + this.jawboneToken + '\'' + ", avatarUrl='" + this.avatarUrl + '\'' + ", weight='" + this.weight + '\'' + ", height='" + this.height + '\'' + ", country='" + this.country + '\'' + ", units='" + this.units + '\'' + ", timeZone='" + this.timeZone + '\'' + ", birthday='" + this.birthday + '\'' + ", gender='" + this.gender + '\'' + ", mHasMisfit=" + this.hasMisfit + ", mHasFitbit=" + this.hasFitbit + ", hasGoogleFit=" + this.hasGoogleFit + ", mHasJawbone=" + this.hasJawbone + ", stepsAverage=" + this.stepsAverage + '}';
     }
 }

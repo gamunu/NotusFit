@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -106,14 +107,9 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
     private MisfitClient misfitClient;
 
 
-    public AddAccountsFragment() {
-        this.accessToken = null;
-        this.userObject = null;
-    }
-
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind((Object) this, view);
+        ButterKnife.bind(this, view);
         this.userID = PrefManager.with(getActivity()).getString(User.OBJECT_ID, null);
         if (this.userID != null) {
             Log.d(TAG, "User ID: " + this.userID);
@@ -131,36 +127,36 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
         this.disconnectMisfit.setOnClickListener(this);
         this.connectMoves.setOnClickListener(this);
         this.disconnectMoves.setOnClickListener(this);
-        if (this.hasWearDevice) {
-            this.baseActivity.setConnected(this.connectGoogleFit, this.disconnectGoogleFit);
+        if (this.mHasWearDevice) {
+            this.mBaseActivity.setConnected(this.connectGoogleFit, this.disconnectGoogleFit);
             this.disconnectGoogleFit.setVisibility(View.VISIBLE);
             this.connectGoogleFit.setEnabled(false);
         }
-        if (this.hasFitbit) {
-            this.baseActivity.setConnected(this.connectFitbit, this.disconnectFitbit);
+        if (this.mHasFitbit) {
+            this.mBaseActivity.setConnected(this.connectFitbit, this.disconnectFitbit);
             this.disconnectFitbit.setVisibility(View.VISIBLE);
             this.connectFitbit.setEnabled(false);
         }
-        if (this.hasJawbone) {
-            this.baseActivity.setConnected(this.connectUp, this.disconnectUp);
+        if (this.mHasJawbone) {
+            this.mBaseActivity.setConnected(this.connectUp, this.disconnectUp);
             this.disconnectUp.setVisibility(View.VISIBLE);
             this.connectUp.setEnabled(false);
         }
-        if (this.hasMisfit) {
-            this.baseActivity.setConnected(this.connectMisfit, this.disconnectMisfit);
+        if (this.mHasMisfit) {
+            this.mBaseActivity.setConnected(this.connectMisfit, this.disconnectMisfit);
             this.disconnectMisfit.setVisibility(View.VISIBLE);
             this.connectMisfit.setEnabled(false);
         }
-        if (this.hasMoves) {
-            this.baseActivity.setConnected(this.connectMoves, this.disconnectMoves);
+        if (this.mHasMoves) {
+            this.mBaseActivity.setConnected(this.connectMoves, this.disconnectMoves);
             this.disconnectMoves.setVisibility(View.VISIBLE);
             this.connectMoves.setEnabled(false);
         }
-        Picasso.with(getActivity()).load((int) R.drawable.ic_fitbit_logo_horizontal).placeholder((int) R.drawable.ic_fitbit_logo_horizontal).into(this.fitbitLogo);
-        Picasso.with(getActivity()).load((int) R.drawable.ic_fit_large).placeholder((int) R.drawable.ic_fit_large).into(this.googleFitLogo);
-        Picasso.with(getActivity()).load((int) R.drawable.ic_up_logo).placeholder((int) R.drawable.ic_up_logo).into(this.upLogo);
-        Picasso.with(getActivity()).load((int) R.drawable.ic_logo_misfit_name).placeholder((int) R.drawable.ic_logo_misfit_name).into(this.misfitLogo);
-        Picasso.with(getActivity()).load((int) R.drawable.ic_moves_logo).placeholder((int) R.drawable.ic_moves_logo).into(this.movesLogo);
+        Picasso.with(getActivity()).load(R.drawable.ic_fitbit_logo_horizontal).placeholder(R.drawable.ic_fitbit_logo_horizontal).into(this.fitbitLogo);
+        Picasso.with(getActivity()).load(R.drawable.ic_fit_large).placeholder(R.drawable.ic_fit_large).into(this.googleFitLogo);
+        Picasso.with(getActivity()).load(R.drawable.ic_up_logo).placeholder(R.drawable.ic_up_logo).into(this.upLogo);
+        Picasso.with(getActivity()).load(R.drawable.ic_logo_misfit_name).placeholder(R.drawable.ic_logo_misfit_name).into(this.misfitLogo);
+        Picasso.with(getActivity()).load(R.drawable.ic_moves_logo).placeholder(R.drawable.ic_moves_logo).into(this.movesLogo);
         if (getArguments() != null && !getArguments().getBoolean(NativeProtocol.METHOD_ARGS_LINK)) {
             hideFinishSetup();
         }
@@ -177,16 +173,19 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.connect_google_fit:
-                this.baseActivity.buildFitnessClient(this.connectGoogleFit, this.disconnectGoogleFit);
+                this.mBaseActivity.buildFitnessClient(this.connectGoogleFit, this.disconnectGoogleFit);
+                return;
             case R.id.disconnect_google_fit:
                 ((BaseActivity) getActivity()).revokeGoogleFitAccess();
                 ((BaseActivity) getActivity()).setDisconnected(this.connectGoogleFit, getString(R.string.connect_google_fit));
                 PrefManager.with(getActivity()).save(User.HAS_GOOGLEFIT, false);
                 this.disconnectGoogleFit.setVisibility(View.GONE);
                 enableButton(this.connectGoogleFit, R.drawable.google_fit_btn_selector, R.string.connect_google_fit);
+                return;
             case R.id.connect_up:
                 this.jawboneAPI = new JawboneAPI(getActivity(), getActivity().getClass());
-                startActivityForResult(this.jawboneAPI.getIntentForWebView(), 120501);
+                startActivityForResult(this.jawboneAPI.getIntentForWebView(), 12050);
+                return;
             case R.id.disconnect_up:
                 ((BaseActivity) getActivity()).setDisconnected(this.connectUp, getString(R.string.connect_jawbone));
                 PrefManager.with(getActivity()).save(User.HAS_JAWBONE, false);
@@ -194,8 +193,10 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
                 PrefManager.with(getActivity()).remove(ServerProtocol.DIALOG_PARAM_ACCESS_TOKEN);
                 PrefManager.with(getActivity()).remove("refresh_token");
                 enableButton(this.connectUp, R.drawable.jawbone_btn_selector, R.string.connect_jawbone);
+                return;
             case R.id.connect_fitbit:
-                startActivityForResult(new Intent(getActivity(), AuthActivity.class), ParseException.OBJECT_NOT_FOUND);
+                startActivityForResult(new Intent(getActivity(), AuthActivity.class), 101);
+                return;
             case R.id.disconnect_fitbit:
                 PrefManager.with(getActivity()).remove(FitbitClient.FITBIT_TOKEN);
                 PrefManager.with(getActivity()).remove(FitbitClient.FITBIT_TOKEN_SECRET);
@@ -205,9 +206,11 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
                 ((BaseActivity) getActivity()).setDisconnected(this.connectFitbit, getString(R.string.connect_fitbit));
                 this.disconnectFitbit.setVisibility(View.GONE);
                 enableButton(this.connectFitbit, R.drawable.fitbit_btn_selector, R.string.connect_fitbit);
+                return;
             case R.id.connect_misfit:
                 this.misfitClient = new MisfitClient(getActivity());
                 startActivityForResult(this.misfitClient.getIntentForWebView(), MisfitClient.MISFIT_AUTORIZE_ACCES_CODE);
+                return;
             case R.id.disconnect_misfit:
                 ((BaseActivity) getActivity()).setDisconnected(this.connectMisfit, getString(R.string.connect_misfit));
                 PrefManager.with(getActivity()).save(User.HAS_MISFIT, false);
@@ -215,27 +218,30 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
                 PrefManager.with(getActivity()).remove(User.HAS_MISFIT);
                 PrefManager.with(getActivity()).remove(MisfitClient.MISFIT_TOKEN);
                 enableButton(this.connectMisfit, R.drawable.jawbone_btn_selector, R.string.connect_misfit);
+                return;
             case R.id.connect_moves:
                 try {
                     startActivityForResult(new Intent("android.intent.action.VIEW", MoveApiClient.createAuthUri("moves", "app", "/authorize").build()), MoveApiClient.REQUEST_AUTHORIZE);
-                } catch (ActivityNotFoundException e) {
+                } catch (ActivityNotFoundException ex) {
+                    Log.e(LOG_TAG, ex.getMessage(), ex);
                     Toast.makeText(getActivity(), "Moves app not installed", Toast.LENGTH_SHORT).show();
                 }
+                return;
             case R.id.disconnect_moves:
                 new MaterialDialog.Builder(getActivity()).title("Disconnect Moves").content("To disconnect moves please go to the Moves app and select \"Connected Apps\". Find FitHub and click on \"Revoke Access\". If you select OK, FitHub will not try to make any request to Moves in your behalf and will assume that you disconnected FitHub within the Moves App.").positiveText("OK")
-                        .positiveColor(getResources().getColor(R.color.primary_dark))
-                        .negativeColor(getResources().getColor(R.color.accent_color))
+                        .positiveColor(ContextCompat.getColor(getContext(), R.color.primary_dark))
+                        .negativeColor(ContextCompat.getColor(getContext(), R.color.accent_color))
                         .negativeText("Dismiss").callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         super.onPositive(dialog);
-                        ((BaseActivity) AddAccountsFragment.this.getActivity()).setDisconnected(AddAccountsFragment.this.connectMoves, AddAccountsFragment.this.getString(R.string.connect_moves));
-                        PrefManager.with(AddAccountsFragment.this.getActivity()).save(User.HAS_MOVES, false);
-                        AddAccountsFragment.this.disconnectMoves.setVisibility(View.GONE);
-                        PrefManager.with(AddAccountsFragment.this.getActivity()).remove(User.HAS_MOVES);
-                        PrefManager.with(AddAccountsFragment.this.getActivity()).remove(User.MOVES_TOKEN);
-                        PrefManager.with(AddAccountsFragment.this.getActivity()).remove(User.MOVES_REFRESH_TOKEN);
-                        AddAccountsFragment.this.enableButton(AddAccountsFragment.this.connectMoves, R.drawable.moves_btn_selector, R.string.connect_moves);
+                        ((BaseActivity) getActivity()).setDisconnected(connectMoves, getString(R.string.connect_moves));
+                        PrefManager.with(getActivity()).save(User.HAS_MOVES, false);
+                        disconnectMoves.setVisibility(View.GONE);
+                        PrefManager.with(getActivity()).remove(User.HAS_MOVES);
+                        PrefManager.with(getActivity()).remove(User.MOVES_TOKEN);
+                        PrefManager.with(getActivity()).remove(User.MOVES_REFRESH_TOKEN);
+                        enableButton(connectMoves, R.drawable.moves_btn_selector, R.string.connect_moves);
                     }
 
                     @Override
@@ -244,13 +250,13 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
                         dialog.dismiss();
                     }
                 }).build().show();
+                return;
             case R.id.finishButton:
                 PrefManager.with(getActivity()).save(PreferenceUtils.FIRST_TIME, false);
                 Intent i = new Intent(getActivity(), MainActivity.class);
-                i.addFlags(335544320);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 getActivity().finish();
-            default:
         }
     }
 
@@ -275,107 +281,109 @@ public class AddAccountsFragment extends FitnessFragment implements View.OnClick
                         @Override
                         public void run() {
                             try {
-                                AddAccountsFragment.this.accessToken = AddAccountsFragment.service.getAccessToken(AddAccountsFragment.requestToken, verifier);
-                                PrefManager.with(AddAccountsFragment.this.getActivity()).save(User.HAS_FITBIT, true);
-                                PrefManager.with(AddAccountsFragment.this.getActivity()).save(FitbitClient.FITBIT_TOKEN, AddAccountsFragment.this.accessToken.getToken());
-                                PrefManager.with(AddAccountsFragment.this.getActivity()).save(FitbitClient.FITBIT_TOKEN_SECRET, AddAccountsFragment.this.accessToken.getSecret());
-                                PrefManager.with(AddAccountsFragment.this.getActivity()).save(FitbitClient.FITBIT_TOKEN_RAW, AddAccountsFragment.this.accessToken.getRawResponse());
-                                PrefManager.with(AddAccountsFragment.this.getActivity()).save(FitbitClient.FITBIT_PIN, pin);
+                                accessToken = AddAccountsFragment.service.getAccessToken(AddAccountsFragment.requestToken, verifier);
+                                PrefManager.with(getActivity()).save(User.HAS_FITBIT, true);
+                                PrefManager.with(getActivity()).save(FitbitClient.FITBIT_TOKEN, accessToken.getToken());
+                                PrefManager.with(getActivity()).save(FitbitClient.FITBIT_TOKEN_SECRET, accessToken.getSecret());
+                                PrefManager.with(getActivity()).save(FitbitClient.FITBIT_TOKEN_RAW, accessToken.getRawResponse());
+                                PrefManager.with(getActivity()).save(FitbitClient.FITBIT_PIN, pin);
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        AddAccountsFragment.this.baseActivity.setConnected(AddAccountsFragment.this.connectFitbit, AddAccountsFragment.this.disconnectFitbit);
+                                        mBaseActivity.setConnected(connectFitbit, disconnectFitbit);
                                     }
                                 });
-                                AddAccountsFragment.this.userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, AddAccountsFragment.this.userID).getFirst();
-                                AddAccountsFragment.this.userObject.put(User.HAS_FITBIT, Boolean.valueOf(true));
-                                AddAccountsFragment.this.userObject.put(User.FITBIT_TOKEN, (AddAccountsFragment.this.accessToken.getToken() + "," + AddAccountsFragment.this.accessToken.getSecret()) + "," + AddAccountsFragment.this.accessToken.getRawResponse());
-                                AddAccountsFragment.this.userObject.save();
+                                userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, userID).getFirst();
+                                userObject.put(User.HAS_FITBIT, true);
+                                userObject.put(User.FITBIT_TOKEN, (accessToken.getToken() + "," + accessToken.getSecret()) + "," + accessToken.getRawResponse());
+                                userObject.save();
                             } catch (Exception ex) {
                                 if (ex.getMessage() != null) {
-                                    Log.d(FitnessFragment.TAG, "Failed to add fitbit: " + ex.getMessage());
+                                    Log.d(FitnessFragment.TAG, "Failed to add fitbit", ex);
                                 }
                             }
                         }
                     }).start();
                 }
             }
-        } else if (requestCode == 120501 && resultCode == -1) {
+        } else if (requestCode == 12050 && resultCode == -1) {
             try {
                 String code = data.getStringExtra("code");
                 if (code != null) {
                     PrefManager.with(getActivity()).save(User.HAS_JAWBONE, true);
                     ApiManager.getRequestInterceptor().clearAccessToken();
                     ApiManager.getRestApiInterface().getAccessToken(JawboneAPI.CLIENT_ID, JawboneAPI.CLIENT_SECRET, code, this.jawboneAPI.getAccessTokenRequestListener());
-                    this.baseActivity.setConnected(this.connectUp, this.disconnectUp);
+                    this.mBaseActivity.setConnected(this.connectUp, this.disconnectUp);
                 }
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Log.e(LOG_TAG, ex.getMessage(), ex);
             }
         } else if (requestCode == 18723 && resultCode == -1) {
             try {
                 String code = data.getStringExtra(MisfitClient.ACCESS_CODE);
                 if (code != null) {
                     MisfitClient.getRestApiInterface().getAccessToken(new RequestTokenBody(code), this.misfitClient.getAccessTokenRequestListener());
-                    this.baseActivity.setConnected(this.connectMisfit, this.disconnectMisfit);
+                    this.mBaseActivity.setConnected(this.connectMisfit, this.disconnectMisfit);
                     return;
                 }
                 Log.d(TAG, "Code is null!");
-            } catch (Exception ex2) {
-                ex2.printStackTrace();
+            } catch (Exception ex) {
+                Log.e(LOG_TAG, ex.getMessage(), ex);
             }
-        } else if (requestCode == 3998 && resultCode == -1) {
-            try {
-                Uri resultUri = data.getData();
-                Log.d(TAG, resultUri.toString());
-                RestAdapter movesRestAdapter = MoveApiClient.getBaseRestAdapter();
-                movesRestAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-                ((MoveApiClient.MovesConnector) movesRestAdapter.create(MoveApiClient.MovesConnector.class)).authorize("authorization_code", MoveApiClient.extractCodeFromCallbackURL(resultUri.toString()), MoveApiClient.CLIENT_ID, MoveApiClient.CLIENT_SECRET, MoveApiClient.REDIRECT_URI, new Callback<MovesAccessToken>() {
+        } else {
+            if (requestCode == 3998 && resultCode == -1) {
+                try {
+                    Uri resultUri = data.getData();
+                    Log.d(TAG, resultUri.toString());
+                    RestAdapter movesRestAdapter = MoveApiClient.getBaseRestAdapter();
+                    movesRestAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
+                    movesRestAdapter.create(MoveApiClient.MovesConnector.class).authorize("authorization_code", MoveApiClient.extractCodeFromCallbackURL(resultUri.toString()), MoveApiClient.CLIENT_ID, MoveApiClient.CLIENT_SECRET, MoveApiClient.REDIRECT_URI, new Callback<MovesAccessToken>() {
 
-                    @Override
-                    public void success(MovesAccessToken movesAccessToken, Response response) {
-                        PrefManager.with(AddAccountsFragment.this.getActivity()).save(User.MOVES_TOKEN, movesAccessToken.getAccessToken());
-                        PrefManager.with(AddAccountsFragment.this.getActivity()).save(User.MOVES_REFRESH_TOKEN, movesAccessToken.getRefreshToken());
-                        PrefManager.with(AddAccountsFragment.this.getActivity()).save(User.HAS_MOVES, true);
-                        try {
-                            AddAccountsFragment.this.userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, AddAccountsFragment.this.userID).getFirst();
-                            AddAccountsFragment.this.userObject.put(User.HAS_MOVES, Boolean.valueOf(true));
-                            AddAccountsFragment.this.userObject.put(User.MOVES_TOKEN, movesAccessToken.getAccessToken());
-                            AddAccountsFragment.this.userObject.put(User.MOVES_REFRESH_TOKEN, movesAccessToken.getRefreshToken());
-                            AddAccountsFragment.this.userObject.save();
-                        } catch (ParseException ex) {
-                            ex.printStackTrace();
+                        @Override
+                        public void success(MovesAccessToken movesAccessToken, Response response) {
+                            PrefManager.with(getActivity()).save(User.MOVES_TOKEN, movesAccessToken.getAccessToken());
+                            PrefManager.with(getActivity()).save(User.MOVES_REFRESH_TOKEN, movesAccessToken.getRefreshToken());
+                            PrefManager.with(getActivity()).save(User.HAS_MOVES, true);
+                            try {
+                                userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, userID).getFirst();
+                                userObject.put(User.HAS_MOVES, true);
+                                userObject.put(User.MOVES_TOKEN, movesAccessToken.getAccessToken());
+                                userObject.put(User.MOVES_REFRESH_TOKEN, movesAccessToken.getRefreshToken());
+                                userObject.save();
+                            } catch (ParseException ex) {
+                                Log.e(LOG_TAG, ex.getMessage(), ex);
+                            }
+                            MoveApiClient.getBaseRestAdapter(getActivity()).create(MoveApiClient.MovesConnector.class).getUser(new Callback<MovesUser>() {
+
+                                @Override
+                                public void success(final MovesUser movesUser, Response response) {
+                                    getActivity().runOnUiThread(new Runnable() {
+
+                                        @Override
+                                        public void run() {
+                                            PrefManager.with(getActivity()).save(MoveApiClient.MOVES_FIRST_DATE, movesUser.getProfile().getFirstDate());
+                                            mBaseActivity.setConnected(connectMoves, disconnectMoves);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+
                         }
-                        ((MoveApiClient.MovesConnector) MoveApiClient.getBaseRestAdapter(AddAccountsFragment.this.getActivity()).create(MoveApiClient.MovesConnector.class)).getUser(new Callback<MovesUser>() {
 
-                            @Override
-                            public void success(final MovesUser movesUser, Response response) {
-                                AddAccountsFragment.this.getActivity().runOnUiThread(new Runnable() {
-
-                                    @Override
-                                    public void run() {
-                                        PrefManager.with(AddAccountsFragment.this.getActivity()).save(MoveApiClient.MOVES_FIRST_DATE, movesUser.getProfile().getFirstDate());
-                                        AddAccountsFragment.this.baseActivity.setConnected(AddAccountsFragment.this.connectMoves, AddAccountsFragment.this.disconnectMoves);
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Toast.makeText(AddAccountsFragment.this.getActivity(), "An error occured. Please try again later.", Toast.LENGTH_LONG).show();
-                        Log.d(FitnessFragment.TAG, "Error: " + error.getMessage());
-                    }
-                });
-            } catch (Exception ex22) {
-                ex22.printStackTrace();
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Toast.makeText(getActivity(), "An error occured. Please try again later.", Toast.LENGTH_LONG).show();
+                            Log.d(FitnessFragment.TAG, "Error: " + error.getMessage());
+                        }
+                    });
+                } catch (Exception ex) {
+                    Log.e(LOG_TAG, ex.getMessage(), ex);
+                }
             }
         }
     }

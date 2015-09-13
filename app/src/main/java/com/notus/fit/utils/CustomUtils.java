@@ -19,10 +19,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:09 PM
  */
 public class CustomUtils {
     public static String getMediumDate(Date date, Context context) {
@@ -50,7 +53,7 @@ public class CustomUtils {
 
     public static Date getDateFromString(String dateString) {
         try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateString);
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -59,10 +62,7 @@ public class CustomUtils {
 
     public static String formatLongDate(Context context, String dateString) {
         String[] dates = dateString.split("/");
-        StringBuilder sb = new StringBuilder();
-        sb.append(context.getResources().getStringArray(R.array.months)[Integer.parseInt(dates[0]) - 1]);
-        sb.append(", ").append(getFancyDayNumber(dates[1])).append(" ").append(dates[2]);
-        return sb.toString();
+        return context.getResources().getStringArray(R.array.months)[Integer.parseInt(dates[0]) - 1] + ", " + getFancyDayNumber(dates[1]) + " " + dates[2];
     }
 
     public static String getFancyDayNumber(String day) {
@@ -97,7 +97,7 @@ public class CustomUtils {
     }
 
     public static String getDateToSubmit(Date date) {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date);
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).format(date);
     }
 
     public static String getDateNow() {

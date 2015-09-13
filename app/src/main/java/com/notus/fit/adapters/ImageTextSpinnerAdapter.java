@@ -15,7 +15,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 1:14 PM
  */
 public class ImageTextSpinnerAdapter extends BaseAdapter {
 
@@ -33,18 +35,19 @@ public class ImageTextSpinnerAdapter extends BaseAdapter {
         convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dashboard_spinner_item, null);
         this.spinnerText = (TextView) convertView.findViewById(R.id.spinner_text);
         this.spinnerIcon = (ImageView) convertView.findViewById(R.id.spinner_icon);
-        this.spinnerText.setText(((SpinnerItemUrl) this.objects.get(position)).getText());
-        Picasso.with(this.context).load(((SpinnerItemUrl) this.objects.get(position)).getUrl()).into(this.spinnerIcon);
+        this.spinnerText.setText(this.objects.get(position).getText());
+        Picasso.with(this.context).load(this.objects.get(position).getUrl()).into(this.spinnerIcon);
         return convertView;
     }
 
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         super.getDropDownView(position, convertView, parent);
-        convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.dashboard_spinner_item, null);
+        convertView = ((LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.dashboard_spinner_item, null);
         this.spinnerText = (TextView) convertView.findViewById(R.id.spinner_text);
         this.spinnerIcon = (ImageView) convertView.findViewById(R.id.spinner_icon);
-        this.spinnerText.setText(((SpinnerItemUrl) this.objects.get(position)).getText());
-        Picasso.with(this.context).load(((SpinnerItemUrl) this.objects.get(position)).getUrl()).into(this.spinnerIcon);
+        this.spinnerText.setText(this.objects.get(position).getText());
+        Picasso.with(this.context).load(this.objects.get(position).getUrl()).into(this.spinnerIcon);
         return convertView;
     }
 

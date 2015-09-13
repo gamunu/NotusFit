@@ -4,7 +4,9 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 4:59 PM
  */
 public class ReportDate {
     public static final int FRIDAY = 5;

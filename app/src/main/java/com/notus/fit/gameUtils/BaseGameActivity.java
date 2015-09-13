@@ -9,7 +9,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 8:00 PM
  */
 public abstract class BaseGameActivity extends ActionBarActivity implements GameHelper.GameHelperListener {
     public static final int CLIENT_ALL = 15;

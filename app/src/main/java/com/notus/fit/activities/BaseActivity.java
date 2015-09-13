@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.facebook.AppEventsLogger;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -28,7 +27,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
@@ -57,9 +55,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by VBALAUD on 9/6/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/6/2015 1:12 PM
  */
 public class BaseActivity extends AppCompatActivity {
 
@@ -87,25 +88,32 @@ public class BaseActivity extends AppCompatActivity {
         String[] strArr = new String[STATE_SIGN_IN];
         strArr[STATE_DEFAULT] = "publish_actions";
         PERMISSIONS = Arrays.asList(strArr);
-        LOG_TAG = BaseActivity.class.getSimpleName();
     }
 
-    public Session.StatusCallback statusCallback;
-    protected boolean authInProgress;
-    protected boolean connectFit;
-    protected FrameLayout containerLayout;
-    protected HashMap<Integer, Integer> deviceOrder;
-    protected DateTimeFormatter dtf;
-    protected Session facebookSession;
-    protected Button fitConnectButton;
-    protected Button fitDisconnectButton;
-    protected HashMap<String, String> friendsList;
-    protected boolean hasFitbit;
-    protected boolean hasJawbone;
-    protected boolean hasMisfit;
-    protected boolean hasMoves;
-    protected boolean hasWearDevice;
-    protected boolean isLoggedIn;
+    public Session.StatusCallback statusCallback = new com.facebook.Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState sessionState, Exception e) {
+            if (sessionState.isOpened()) {
+                mFacebookSession = session;
+            }
+        }
+    };
+
+    protected boolean mAuthInProgress = false;
+    protected boolean mConnectFit = false;
+    protected FrameLayout mContainerLayout;
+    protected Map<Integer, Integer> mDeviceOrder;
+    protected DateTimeFormatter mDtf = DateTimeFormat.forPattern("yyyy-MMM-dd");
+    protected Session mFacebookSession;
+    protected Button mFitConnectButton;
+    protected Button mFitDisconnectButton;
+    protected Map<String, String> mFriendsList;
+    protected boolean mHasFitbit = false;
+    protected boolean mHasJawbone = false;
+    protected boolean mHasMisfit = false;
+    protected boolean mHasMoves = false;
+    protected boolean mHasWearDevice = false;
+    protected boolean mIsLoggedIn = false;
     protected ConnectionResult mConnectionResult;
     protected UiLifecycleHelper mFacebookHelper;
     protected GoogleApiClient mGoogleFitClient;
@@ -113,35 +121,14 @@ public class BaseActivity extends AppCompatActivity {
     protected boolean mIntentInProgress;
     protected boolean mSignInClicked;
     protected CharSequence mTitle;
-    protected boolean titleEnabled;
-    protected Toolbar toolbar;
-    protected ImageView toolbarLogo;
-    protected Spinner toolbarSpinner;
-    protected TextView toolbarTitle;
+    protected boolean mTitleEnabled = true;
+    protected Toolbar mToolbar;
+    protected ImageView mToolbarLogo;
+    protected Spinner mToolbarSpinner;
+    protected TextView mToolbarTitle;
     protected User user;
     private int mSignInProgress;
 
-    public BaseActivity() {
-        this.authInProgress = false;
-        this.mGoogleFitClient = null;
-        this.hasFitbit = false;
-        this.hasJawbone = false;
-        this.hasWearDevice = false;
-        this.hasMisfit = false;
-        this.hasMoves = false;
-        this.connectFit = false;
-        this.dtf = DateTimeFormat.forPattern("yyyy-MMM-dd");
-        this.isLoggedIn = false;
-        this.titleEnabled = true;
-        statusCallback = new com.facebook.Session.StatusCallback() {
-            @Override
-            public void call(Session session, SessionState sessionState, Exception e) {
-                if (sessionState.isOpened()) {
-                    BaseActivity.this.facebookSession = session;
-                }
-            }
-        };
-    }
 
     public static void callFacebookLogout(Context context) {
         Session session = Session.getActiveSession();
@@ -159,35 +146,35 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void buildGoogleApiClient() {
-        mGooglePlusClient = (new GoogleApiClient.Builder(getApplicationContext()))
+        mGooglePlusClient = new GoogleApiClient.Builder(getApplicationContext())
                 .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     public void onConnected(Bundle bundle) {
-                        BaseActivity.this.mSignInClicked = false;
-                        if (BaseActivity.this.mGooglePlusClient != null) {
-                            BaseActivity.this.user = BaseActivity.this.getProfileInformation();
+                        mSignInClicked = false;
+                        if (mGooglePlusClient != null) {
+                            user = getProfileInformation();
                         }
                     }
 
                     public void onConnectionSuspended(int i) {
-                        BaseActivity.this.mGooglePlusClient.connect();
+                        mGooglePlusClient.connect();
                     }
 
                 }).addOnConnectionFailedListener(new com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener() {
                     public void onConnectionFailed(ConnectionResult connectionResult) {
-                        BaseActivity.this.mConnectionResult = connectionResult;
+                        mConnectionResult = connectionResult;
                         if (!connectionResult.hasResolution()) {
                             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), BaseActivity.this, BaseActivity.STATE_DEFAULT).show();
-                        } else if (!BaseActivity.this.mIntentInProgress && BaseActivity.this.mSignInClicked) {
-                            BaseActivity.this.resolveSignInError();
+                        } else if (!mIntentInProgress && mSignInClicked) {
+                            resolveSignInError();
                         }
                     }
                 }).addApi(Plus.API).addScope(Plus.SCOPE_PLUS_LOGIN).addScope(Plus.SCOPE_PLUS_PROFILE).build();
     }
 
     public void buildFitnessClient(Button button, Button button1) {
-        fitConnectButton = button;
-        fitDisconnectButton = button1;
-        connectFit = true;
+        mFitConnectButton = button;
+        mFitDisconnectButton = button1;
+        mConnectFit = true;
         if (mGoogleFitClient == null) {
             startFitnessClient();
         }
@@ -217,14 +204,13 @@ public class BaseActivity extends AppCompatActivity {
                 Person mCurrentPerson = Plus.PeopleApi.getCurrentPerson(this.mGooglePlusClient);
                 String personName = mCurrentPerson.getDisplayName();
                 String personPhotoUrl = mCurrentPerson.getImage().getUrl();
-                String personGooglePlusProfile = mCurrentPerson.getUrl();
                 String personEmail = Plus.AccountApi.getAccountName(this.mGooglePlusClient);
                 String[] fullName = personName.split(" ");
                 this.user.setFirstName(fullName[STATE_DEFAULT]);
                 try {
                     this.user.setLastName(fullName[fullName.length - 1]);
                 } catch (ArrayIndexOutOfBoundsException ex) {
-                    ex.printStackTrace();
+                    Log.e(LOG_TAG, ex.getMessage(), ex);
                 }
                 this.user.setEmail(personEmail);
                 this.user.setUsername(personEmail);
@@ -233,8 +219,8 @@ public class BaseActivity extends AppCompatActivity {
                     ((StartActivity) this).getSignUpFragment().executeLogin(this.user);
                 }
             }
-        } catch (Exception ex2) {
-            ex2.printStackTrace();
+        } catch (Exception ex) {
+            Log.e(LOG_TAG, ex.getMessage(), ex);
         }
         return this.user;
     }
@@ -251,22 +237,24 @@ public class BaseActivity extends AppCompatActivity {
                 PrefManager.with(this).save(PreferenceUtils.GPLUS_SIGNED_IN, true);
             }
         } else if (requestCode == STATE_SIGN_IN) {
-            this.authInProgress = false;
+            this.mAuthInProgress = false;
             if (resultCode != -1) {
                 PrefManager.with(this).save(User.HAS_GOOGLEFIT, false);
-            } else if (!(this.mGoogleFitClient.isConnecting() || this.mGoogleFitClient.isConnected())) {
-                this.mGoogleFitClient.connect();
-                PrefManager.with(this).save(User.HAS_GOOGLEFIT, true);
-                this.hasWearDevice = true;
-                if (this.fitConnectButton != null) {
-                    setConnected(this.fitConnectButton, this.fitDisconnectButton);
-                }
-                try {
-                    ParseObject userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, PrefManager.with(this).getString(User.OBJECT_ID, BuildConfig.FLAVOR)).getFirst();
-                    userObject.put(User.HAS_GOOGLEFIT, Boolean.valueOf(true));
-                    userObject.save();
-                } catch (ParseException ex) {
-                    Log.d(LOG_TAG, ex.getMessage());
+            } else {
+                if (!(this.mGoogleFitClient.isConnecting() || this.mGoogleFitClient.isConnected())) {
+                    this.mGoogleFitClient.connect();
+                    PrefManager.with(this).save(User.HAS_GOOGLEFIT, true);
+                    this.mHasWearDevice = true;
+                    if (this.mFitConnectButton != null) {
+                        setConnected(this.mFitConnectButton, this.mFitDisconnectButton);
+                    }
+                    try {
+                        ParseObject userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, PrefManager.with(this).getString(User.OBJECT_ID, BuildConfig.FLAVOR)).getFirst();
+                        userObject.put(User.HAS_GOOGLEFIT, true);
+                        userObject.save();
+                    } catch (ParseException ex) {
+                        Log.e(LOG_TAG, ex.getMessage(), ex);
+                    }
                 }
             }
         }
@@ -286,96 +274,96 @@ public class BaseActivity extends AppCompatActivity {
             this.mFacebookHelper = new UiLifecycleHelper(this, this.statusCallback);
             this.mFacebookHelper.onCreate(savedInstanceState);
         }
-        this.containerLayout = (FrameLayout) findViewById(R.id.container);
-        this.deviceOrder = new HashMap();
+        this.mContainerLayout = (FrameLayout) findViewById(R.id.container);
+        this.mDeviceOrder = new HashMap<>();
         PrefManager.with(this).save(APP_VERSION, APP_VERSION_NUMBER);
         try {
-            this.toolbar = (Toolbar) findViewById(R.id.toolbar_drawer);
+            this.mToolbar = (Toolbar) findViewById(R.id.toolbar_drawer);
         } catch (Exception ex) {
-            Log.d(LOG_TAG, ex.getMessage());
+            Log.e(LOG_TAG, ex.getMessage(), ex);
         }
         Tracker t = ((FitnessApp) getApplication()).getTracker();
         t.setScreenName(getClass().getSimpleName());
         t.setAppVersion(APP_VERSION_NUMBER);
         t.send(new HitBuilders.ScreenViewBuilder().build());
-        this.hasFitbit = PrefManager.with(this).getBoolean(User.HAS_FITBIT, false);
-        this.hasWearDevice = PrefManager.with(this).getBoolean(User.HAS_GOOGLEFIT, false);
-        this.hasJawbone = PrefManager.with(this).getBoolean(User.HAS_JAWBONE, false);
-        this.hasMisfit = PrefManager.with(this).getBoolean(User.HAS_MISFIT, false);
-        this.hasMoves = PrefManager.with(this).getBoolean(User.HAS_MOVES, false);
-        if (this.toolbar == null) {
+        this.mHasFitbit = PrefManager.with(this).getBoolean(User.HAS_FITBIT, false);
+        this.mHasWearDevice = PrefManager.with(this).getBoolean(User.HAS_GOOGLEFIT, false);
+        this.mHasJawbone = PrefManager.with(this).getBoolean(User.HAS_JAWBONE, false);
+        this.mHasMisfit = PrefManager.with(this).getBoolean(User.HAS_MISFIT, false);
+        this.mHasMoves = PrefManager.with(this).getBoolean(User.HAS_MOVES, false);
+        if (this.mToolbar == null) {
             try {
-                this.toolbar = (Toolbar) findViewById(R.id.toolbar_spinner);
-                this.toolbarSpinner = (Spinner) this.toolbar.findViewById(R.id.spinner_toolbar);
-                this.titleEnabled = false;
-                ArrayList<SpinnerItem> spinnerItems = new ArrayList();
-                ArrayList<String> spinnerTitles = new ArrayList();
-                ArrayList<Integer> icons = new ArrayList();
-                spinnerTitles.add(Devices.FITHUB);
-                icons.add(Integer.valueOf(R.mipmap.ic_launcher));
-                this.deviceOrder.put(Integer.valueOf(STATE_DEFAULT), Integer.valueOf(STATE_DEFAULT));
+                this.mToolbar = (Toolbar) findViewById(R.id.toolbar_spinner);
+                this.mToolbarSpinner = (Spinner) this.mToolbar.findViewById(R.id.spinner_toolbar);
+                this.mTitleEnabled = false;
+                List<SpinnerItem> spinnerItems = new ArrayList<>();
+                List<String> spinnerTitles = new ArrayList<>();
+                List<Integer> icons = new ArrayList<>();
+                spinnerTitles.add(Devices.NOTUSFIT);
+                icons.add(R.mipmap.ic_launcher);
+                this.mDeviceOrder.put(STATE_DEFAULT, STATE_DEFAULT);
                 int counter = STATE_DEFAULT + STATE_SIGN_IN;
-                if (this.hasWearDevice) {
+                if (this.mHasWearDevice) {
                     spinnerTitles.add(Devices.GOOGLE_FIT);
-                    icons.add(Integer.valueOf(R.drawable.ic_fit));
-                    this.deviceOrder.put(Integer.valueOf(counter), Integer.valueOf(STATE_SIGN_IN));
+                    icons.add(R.drawable.ic_fit);
+                    this.mDeviceOrder.put(counter, STATE_SIGN_IN);
                     counter += STATE_SIGN_IN;
                 }
-                if (this.hasFitbit) {
+                if (this.mHasFitbit) {
                     spinnerTitles.add(Devices.FITBIT);
-                    icons.add(Integer.valueOf(R.mipmap.ic_fitbit_logo));
-                    this.deviceOrder.put(Integer.valueOf(counter), Integer.valueOf(STATE_IN_PROGRESS));
+                    icons.add(R.mipmap.ic_fitbit_logo);
+                    this.mDeviceOrder.put(counter, STATE_IN_PROGRESS);
                     counter += STATE_SIGN_IN;
                 }
-                if (this.hasJawbone) {
+                if (this.mHasJawbone) {
                     spinnerTitles.add(Devices.JAWBONE);
-                    icons.add(Integer.valueOf(R.mipmap.ic_jawbone_up));
-                    this.deviceOrder.put(Integer.valueOf(counter), Integer.valueOf(JAWBONE));
+                    icons.add(R.mipmap.ic_jawbone_up);
+                    this.mDeviceOrder.put(counter, JAWBONE);
                     counter += STATE_SIGN_IN;
                 }
-                if (this.hasMisfit) {
+                if (this.mHasMisfit) {
                     spinnerTitles.add(Devices.MISFIT);
-                    icons.add(Integer.valueOf(R.drawable.ic_logo_misfit));
-                    this.deviceOrder.put(Integer.valueOf(counter), Integer.valueOf(MISFIT));
+                    icons.add(R.drawable.ic_logo_misfit);
+                    this.mDeviceOrder.put(counter, MISFIT);
                     counter += STATE_SIGN_IN;
                 }
-                if (this.hasMoves) {
+                if (this.mHasMoves) {
                     spinnerTitles.add(Devices.MOVES);
-                    icons.add(Integer.valueOf(R.mipmap.ic_moves_logo_s));
-                    this.deviceOrder.put(Integer.valueOf(counter), Integer.valueOf(MOVES));
+                    icons.add(R.mipmap.ic_moves_logo_s);
+                    this.mDeviceOrder.put(counter, MOVES);
                 }
                 for (int i = STATE_DEFAULT; i < spinnerTitles.size(); i += STATE_SIGN_IN) {
-                    spinnerItems.add(new SpinnerItem((String) spinnerTitles.get(i), ((Integer) icons.get(i)).intValue()));
+                    spinnerItems.add(new SpinnerItem(spinnerTitles.get(i), icons.get(i).intValue()));
                 }
-                this.toolbarSpinner.setAdapter(new DashboardSpinnerAdapter(this, spinnerItems));
-            } catch (Exception ex2) {
-                ex2.printStackTrace();
+                this.mToolbarSpinner.setAdapter(new DashboardSpinnerAdapter(this, spinnerItems));
+            } catch (Exception ex) {
+                Log.e(LOG_TAG, ex.getMessage(), ex);
             }
         }
-        if (this.toolbar == null) {
-            this.toolbar = (Toolbar) findViewById(R.id.toolbar);
-            this.toolbarTitle = (TextView) this.toolbar.findViewById(R.id.text_title);
-            this.toolbarLogo = (ImageView) this.toolbar.findViewById(R.id.logo_image);
-            this.toolbarLogo.setImageResource(R.mipmap.ic_launcher);
+        if (this.mToolbar == null) {
+            this.mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            this.mToolbarTitle = (TextView) this.mToolbar.findViewById(R.id.text_title);
+            this.mToolbarLogo = (ImageView) this.mToolbar.findViewById(R.id.logo_image);
+            this.mToolbarLogo.setImageResource(R.mipmap.ic_launcher);
         }
-        if (this.toolbar != null) {
-            setSupportActionBar(this.toolbar);
+        if (this.mToolbar != null) {
+            setSupportActionBar(this.mToolbar);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
-                getSupportActionBar().setDisplayShowTitleEnabled(this.titleEnabled);
+                getSupportActionBar().setDisplayShowTitleEnabled(this.mTitleEnabled);
             }
         }
         if (savedInstanceState != null) {
-            this.authInProgress = savedInstanceState.getBoolean(AUTH_PENDING);
+            this.mAuthInProgress = savedInstanceState.getBoolean(AUTH_PENDING);
         }
         if ((this instanceof StartActivity) || PrefManager.with(this).getBoolean(PreferenceUtils.GPLUS_SIGNED_IN, false)) {
             buildGoogleApiClient();
         }
-        if (this.hasWearDevice) {
+        if (this.mHasWearDevice) {
             buildFitnessClient(null, null);
-            this.hasWearDevice = true;
+            this.mHasWearDevice = true;
         }
     }
 
@@ -415,7 +403,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putInt("sign_in_progress", mSignInProgress);
-        bundle.putBoolean("auth_state_pending", authInProgress);
+        bundle.putBoolean("auth_state_pending", mAuthInProgress);
         if (mFacebookHelper != null) {
             mFacebookHelper.onSaveInstanceState(bundle);
         }
@@ -427,7 +415,7 @@ public class BaseActivity extends AppCompatActivity {
         if (mGooglePlusClient != null) {
             mGooglePlusClient.connect();
         }
-        if (hasWearDevice && mGoogleFitClient != null) {
+        if (mHasWearDevice && mGoogleFitClient != null) {
             mGoogleFitClient.connect();
         }
     }
@@ -438,17 +426,18 @@ public class BaseActivity extends AppCompatActivity {
         if (mGooglePlusClient != null && mGooglePlusClient.isConnected()) {
             mGooglePlusClient.disconnect();
         }
-        if (hasWearDevice && mGoogleFitClient != null && mGoogleFitClient.isConnected()) {
+        if (mHasWearDevice && mGoogleFitClient != null && mGoogleFitClient.isConnected()) {
             mGoogleFitClient.disconnect();
         }
     }
 
     public void resolveSignInError() {
-        if (mConnectionResult == null || !mConnectionResult.hasResolution()) {
+        if (mConnectionResult.hasResolution()) {
             try {
                 mIntentInProgress = true;
                 mConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
-            } catch (IntentSender.SendIntentException e) {
+            } catch (IntentSender.SendIntentException ex) {
+                Log.e(LOG_TAG, ex.getMessage(), ex);
                 mIntentInProgress = false;
                 mGooglePlusClient.connect();
             }
@@ -457,17 +446,14 @@ public class BaseActivity extends AppCompatActivity {
 
     public void revokeGoogleFitAccess() {
         if (mGoogleFitClient != null && mGoogleFitClient.isConnected()) {
-            Fitness.ConfigApi.disableFit(mGoogleFitClient).setResultCallback(new ResultCallback() {
+            Fitness.ConfigApi.disableFit(mGoogleFitClient).setResultCallback(new ResultCallback<Status>() {
                 @Override
-                public void onResult(Result result) {
-                    Status status = (Status) result;
+                public void onResult(Status status) {
                     if (status.isSuccess()) {
-                        Log.i(BaseActivity.LOG_TAG, "Google Fit disabled");
+                        Log.i(LOG_TAG, "Google Fit disabled");
                         mGoogleFitClient = null;
-                        return;
                     } else {
-                        Log.e(BaseActivity.LOG_TAG, (new StringBuilder()).append("Google Fit wasn't disabled ").append(status).toString());
-                        return;
+                        Log.e(LOG_TAG, "Google Fit wasn't disabled " + status.toString());
                     }
                 }
             });
@@ -478,10 +464,10 @@ public class BaseActivity extends AppCompatActivity {
         if (mGooglePlusClient != null && mGooglePlusClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGooglePlusClient);
             Plus.AccountApi.revokeAccessAndDisconnect(mGooglePlusClient)
-                    .setResultCallback(new ResultCallback() {
+                    .setResultCallback(new ResultCallback<Status>() {
                         @Override
-                        public void onResult(Result result) {
-                            Log.i(BaseActivity.LOG_TAG, "User access revoked");
+                        public void onResult(Status status) {
+                            Log.i(LOG_TAG, "User access revoked");
                             mGooglePlusClient.connect();
                         }
                     });
@@ -538,7 +524,7 @@ public class BaseActivity extends AppCompatActivity {
                 .addScope(new Scope("https://www.googleapis.com/auth/fitness.body.write"))
                 .addConnectionCallbacks(new com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks() {
                     public void onConnected(Bundle bundle) {
-                        if (hasWearDevice) {
+                        if (mHasWearDevice) {
                             mGoogleFitClient.connect();
                         }
                     }
@@ -547,22 +533,21 @@ public class BaseActivity extends AppCompatActivity {
                         // If your connection to the sensor gets lost at some point,
                         // you'll be able to determine the reason and react to it here.
                         if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
-                            Log.i(BaseActivity.LOG_TAG, "Connection lost.  Cause: Network Lost.");
+                            Log.i(LOG_TAG, "Connection lost.  Cause: Network Lost.");
                         } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
-                            Log.i(BaseActivity.LOG_TAG, "Connection lost.  Reason: Service Disconnected");
+                            Log.i(LOG_TAG, "Connection lost.  Reason: Service Disconnected");
                         }
                     }
                 }).addOnConnectionFailedListener(new com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener() {
                     public void onConnectionFailed(ConnectionResult connectionresult) {
-                        if (!authInProgress) {
+                        if (!mAuthInProgress) {
                             try {
-                                Log.i(BaseActivity.LOG_TAG, "Attempting to resolve failed connection");
-                                authInProgress = true;
+                                Log.i(LOG_TAG, "Attempting to resolve failed connection");
+                                mAuthInProgress = true;
                                 connectionresult.startResolutionForResult(BaseActivity.this,
                                         REQUEST_OAUTH);
                             } catch (IntentSender.SendIntentException e) {
-                                Crashlytics.logException(e);
-                                Log.e(BaseActivity.LOG_TAG, "Exception while starting resolution activity", e);
+                                Log.e(LOG_TAG, "Exception while starting resolution activity", e);
                             }
                         }
                     }

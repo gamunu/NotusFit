@@ -10,15 +10,15 @@ import com.notus.fit.utils.CustomUtils;
 import org.parceler.Parcels;
 
 public class WeekDetailActivity extends BaseActivity {
-    WeekData weekData;
+    WeekData mWeekData;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         enableBackNav();
         if (getIntent().getExtras() != null) {
-            this.weekData = (WeekData) Parcels.unwrap(getIntent().getParcelableExtra("week"));
-            if (this.weekData != null) {
-                setTitle("Week of " + CustomUtils.formatLongDate(this, this.weekData.getStartDate()));
+            mWeekData = Parcels.unwrap(getIntent().getParcelableExtra("week"));
+            if (mWeekData != null) {
+                setTitle("Week of " + CustomUtils.formatLongDate(this, mWeekData.getStartDate()));
                 WeekDetailFragment weekDetailFragment = new WeekDetailFragment();
                 weekDetailFragment.setArguments(getIntent().getExtras());
                 CustomUtils.addFragmentToContainer(weekDetailFragment, R.id.container, this);

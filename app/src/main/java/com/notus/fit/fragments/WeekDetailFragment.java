@@ -20,6 +20,7 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.recyclerview.internal.CardArrayRecyclerViewAdapter;
@@ -34,35 +35,35 @@ public class WeekDetailFragment extends DefaultListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) {
-            this.weekData = (WeekData) Parcels.unwrap(getArguments().getParcelable("week"));
+            this.weekData = Parcels.unwrap(getArguments().getParcelable("week"));
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (WeekDetailFragment.this.weekData != null) {
-                        String bottomText = "Week Average: " + WeekDetailFragment.this.weekData.getAverage() + " Steps.";
-                        ArrayList<Card> cards = new ArrayList();
-                        cards.add(new CardBarChart(WeekDetailFragment.this.getActivity(), new BarChartData().setBottomText(bottomText).setMaxVisibleValue(30000).setUnits(" Steps").setType(BarChartDataBuilder.STEPS).setxValues(WeekReport.getWeekLabels()).setyValues(WeekDetailFragment.this.weekData.getStepList()).build()));
-                        String[] weekdays = WeekDetailFragment.this.getActivity().getResources().getStringArray(R.array.weekdays_short);
+                    if (weekData != null) {
+                        String bottomText = "Week Average: " + weekData.getAverage() + " Steps.";
+                        List<Card> cards = new ArrayList<>();
+                        cards.add(new CardBarChart(getActivity(), new BarChartData().setBottomText(bottomText).setMaxVisibleValue(30000).setUnits(" Steps").setType(BarChartDataBuilder.STEPS).setxValues(WeekReport.getWeekLabels()).setyValues(weekData.getStepList()).build()));
+                        String[] weekdays = getActivity().getResources().getStringArray(R.array.weekdays_short);
                         int counter = 0;
-                        Object date = CustomUtils.getDate(WeekDetailFragment.this.weekData.getStartDate());
-                        Iterator it = WeekDetailFragment.this.weekData.getStepList().iterator();
+                        Object date = CustomUtils.getDate(weekData.getStartDate());
+                        Iterator it = weekData.getStepList().iterator();
                         while (it.hasNext()) {
-                            int i = ((Integer) it.next()).intValue();
+                            int i = (Integer) it.next();
                             DayReport d = new DayReport();
                             d.setFullDate(new ReportDate(new LocalDate(date).plusDays(counter)).getFullDateString());
                             d.setSteps(i);
                             d.setWeekDay(weekdays[counter]);
-                            cards.add(new DailyListCard(WeekDetailFragment.this.getActivity(), d));
+                            cards.add(new DailyListCard(getActivity(), d));
                             counter++;
                         }
-                        WeekDetailFragment.this.mCardArrayAdapter = new CardArrayRecyclerViewAdapter(WeekDetailFragment.this.getActivity(), cards);
-                        WeekDetailFragment.this.recyclerViewList.setAdapter(WeekDetailFragment.this.mCardArrayAdapter);
-                        WeekDetailFragment.this.refreshList().run();
-                        if (WeekDetailFragment.this.progressWheel.isEnabled()) {
-                            WeekDetailFragment.this.progressWheel.setEnabled(false);
+                        mCardArrayAdapter = new CardArrayRecyclerViewAdapter(getActivity(), cards);
+                        mRecyclerViewList.setAdapter(mCardArrayAdapter);
+                        refreshList().run();
+                        if (mProgressWheel.isEnabled()) {
+                            mProgressWheel.setEnabled(false);
                         }
-                        if (WeekDetailFragment.this.progressWheel != null) {
-                            WeekDetailFragment.this.progressWheel.setVisibility(View.GONE);
+                        if (mProgressWheel != null) {
+                            mProgressWheel.setVisibility(View.GONE);
                         }
                     }
                 }

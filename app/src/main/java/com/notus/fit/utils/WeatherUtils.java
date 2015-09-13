@@ -11,9 +11,12 @@ import com.parse.ParseException;
 import org.joda.time.LocalDateTime;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
- * Created by VBALAUD on 9/8/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/8/2015 5:00 PM
  */
 public class WeatherUtils {
     public static String getDayName(Context context, long dateInMillis) {
@@ -28,7 +31,7 @@ public class WeatherUtils {
             return context.getString(R.string.tomorrow);
         }
         new Time().setToNow();
-        return new SimpleDateFormat("EEEE").format(Long.valueOf(dateInMillis));
+        return new SimpleDateFormat("EEEE", Locale.US).format(dateInMillis);
     }
 
     public static String getFormattedWind(Context context, float windSpeed, float degrees) {
@@ -57,7 +60,7 @@ public class WeatherUtils {
         } else if (((double) degrees) >= 292.5d && ((double) degrees) < 337.5d) {
             direction = "NW";
         }
-        return String.format(context.getString(windFormat), new Object[]{Float.valueOf(windSpeed), direction});
+        return String.format(context.getString(windFormat), windSpeed, direction);
     }
 
     public static int getIconResourceForWeatherCondition(int weatherId) {

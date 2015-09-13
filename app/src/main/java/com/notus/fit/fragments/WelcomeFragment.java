@@ -20,7 +20,7 @@ public class WelcomeFragment extends FitnessFragment {
         this.next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((StartActivity) WelcomeFragment.this.getActivity()).setPagerNumber(1);
+                ((StartActivity) getActivity()).setPagerNumber(1);
             }
         });
     }

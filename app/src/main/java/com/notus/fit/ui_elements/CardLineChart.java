@@ -25,9 +25,9 @@ import butterknife.ButterKnife;
 
 public class CardLineChart extends com.notus.fit.ui_elements.CardWithChart {
 
-    @Bind(2131558560)
+    @Bind(R.id.chart)
     LineChart lineChart;
-    @Bind(2131558571)
+    @Bind(R.id.week_average)
     TextView weekAverage;
     private LineChartData lineChartData;
 
@@ -42,7 +42,7 @@ public class CardLineChart extends com.notus.fit.ui_elements.CardWithChart {
 
     public void setupInnerViewElements(ViewGroup parent, View view) {
         super.setupInnerViewElements(parent, view);
-        ButterKnife.bind((Object) this, view);
+        ButterKnife.bind(this, view);
         List dataSets = new ArrayList();
         this.lineChart.setDrawGridBackground(false);
         this.lineChart.getAxisRight().setEnabled(false);
@@ -52,32 +52,39 @@ public class CardLineChart extends com.notus.fit.ui_elements.CardWithChart {
         Iterator it = this.lineChartData.getWeekReports().iterator();
         while (it.hasNext()) {
             WeekReport w = (WeekReport) it.next();
-            ArrayList<Entry> values = new ArrayList();
+            List<Entry> values = new ArrayList<>();
             if (w.getStepList() != null) {
                 int i;
-                ArrayList<Integer> steps = w.getStepList();
+                List<Integer> steps = w.getStepList();
                 for (i = 0; i < steps.size(); i++) {
-                    values.add(new Entry((float) ((Integer) steps.get(i)).intValue(), i));
+                    values.add(new Entry((float) steps.get(i), i));
                 }
                 if (steps.size() == 0) {
                     for (i = 0; i < 7; i++) {
-                        steps.add(Integer.valueOf(0));
+                        steps.add(0);
                     }
                 }
                 LineDataSet d = new LineDataSet(values, w.getDevice());
                 try {
-                    if (w.getDevice().equals(Devices.GOOGLE_FIT)) {
-                        d.setColor(getContext().getResources().getColor(R.color.red_400));
-                    } else if (w.getDevice().equals(Devices.FITBIT)) {
-                        d.setColor(getContext().getResources().getColor(R.color.teal_400));
-                    } else if (w.getDevice().equals(Devices.JAWBONE)) {
-                        d.setColor(getContext().getResources().getColor(R.color.blue_500));
-                    } else if (w.getDevice().equals(Devices.MISFIT)) {
-                        d.setColor(getContext().getResources().getColor(R.color.grey_black_1000));
-                    } else if (w.getDevice().equals(Devices.MOVES)) {
-                        d.setColor(getContext().getResources().getColor(R.color.green_400));
-                    } else {
-                        d.setColor(getContext().getResources().getColor(R.color.purple_700));
+                    switch (w.getDevice()) {
+                        case Devices.GOOGLE_FIT:
+                            d.setColor(getContext().getResources().getColor(R.color.red_400));
+                            break;
+                        case Devices.FITBIT:
+                            d.setColor(getContext().getResources().getColor(R.color.teal_400));
+                            break;
+                        case Devices.JAWBONE:
+                            d.setColor(getContext().getResources().getColor(R.color.blue_500));
+                            break;
+                        case Devices.MISFIT:
+                            d.setColor(getContext().getResources().getColor(R.color.grey_black_1000));
+                            break;
+                        case Devices.MOVES:
+                            d.setColor(getContext().getResources().getColor(R.color.green_400));
+                            break;
+                        default:
+                            d.setColor(getContext().getResources().getColor(R.color.purple_700));
+                            break;
                     }
                     d.setLineWidth(2.0f);
                     d.setCircleSize(3.0f);

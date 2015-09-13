@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.crashlytics.android.Crashlytics;
 import com.notus.fit.BuildConfig;
 import com.notus.fit.R;
 import com.notus.fit.activities.WeekDetailActivity;
@@ -57,7 +56,7 @@ public class CardWeekReport extends Card
         try {
             this.date.setBackgroundColor(getContext().getResources().getColor(ColorUtils.getRandomColor()));
         } catch (Exception ex) {
-            Crashlytics.logException(ex);
+            //Crashlytics.logException(ex);
         }
     }
 

@@ -1,67 +1,72 @@
 package com.notus.fit.network.moves;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class MovesSummary {
 
+    @SerializedName("activity")
     String activity;
+    @SerializedName("calories")
     int calories;
+    @SerializedName("distance")
     int distance;
+    @SerializedName("duration")
     int duration;
+    @SerializedName("group")
     String group;
+    @SerializedName("steps")
     int steps;
 
-    public MovesSummary() {
-    }
-
     public String getActivity() {
-        return activity;
+        return this.activity;
     }
 
-    public void setActivity(String s) {
-        activity = s;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int i) {
-        calories = i;
-    }
-
-    public int getDistance() {
-        return distance;
-    }
-
-    public void setDistance(int i) {
-        distance = i;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int i) {
-        duration = i;
+    public void setActivity(String activity) {
+        this.activity = activity;
     }
 
     public String getGroup() {
-        return group;
+        return this.group;
     }
 
-    public void setGroup(String s) {
-        group = s;
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public int getDuration() {
+        return this.duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getDistance() {
+        return this.distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     public int getSteps() {
-        return steps;
+        return this.steps;
     }
 
-    public void setSteps(int i) {
-        steps = i;
+    public void setSteps(int steps) {
+        this.steps = steps;
+    }
+
+    public int getCalories() {
+        return this.calories;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 
     public String toString() {
-        return (new StringBuilder()).append("MovesSummary{activity='").append(activity).append('\'').append(", group='").append(group).append('\'').append(", duration=").append(duration).append(", distance=").append(distance).append(", steps=").append(steps).append(", calories=").append(calories).append('}').toString();
+        return "MovesSummary{activity='" + this.activity + '\'' + ", group='" + this.group + '\'' + ", duration=" + this.duration + ", distance=" + this.distance + ", steps=" + this.steps + ", calories=" + this.calories + '}';
     }
 }

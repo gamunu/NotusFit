@@ -21,9 +21,9 @@ public class ChallengesActivity extends DrawerPagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Challenges");
-        this.titleList.add("Active");
-        this.titleList.add("My Challenges");
-        this.titleList.add("Not Active");
+        this.mTitleList.add("Active");
+        this.mTitleList.add("My Challenges");
+        this.mTitleList.add("Not Active");
         ChallengesFragment activeChallenges = new ChallengesFragment();
         Bundle b = new Bundle();
         b.putString("type", "active");
@@ -36,9 +36,9 @@ public class ChallengesActivity extends DrawerPagerActivity {
         Bundle b2 = new Bundle();
         b2.putString("type", "past_challenges");
         pastChallenges.setArguments(b2);
-        this.fragmentList.add(activeChallenges);
-        this.fragmentList.add(myChallenges);
-        this.fragmentList.add(pastChallenges);
+        this.mFragmentList.add(activeChallenges);
+        this.mFragmentList.add(myChallenges);
+        this.mFragmentList.add(pastChallenges);
         initPager();
     }
 
@@ -57,11 +57,11 @@ public class ChallengesActivity extends DrawerPagerActivity {
     }
 
     public void setTabSelected(int i) {
-        tabHost.setSelectedNavigationItem(i);
-        pager.setCurrentItem(i);
+        mTabHost.setSelectedNavigationItem(i);
+        mPager.setCurrentItem(i);
     }
 
     public void showInfoDialog() {
-        new Builder(this).customView((int) R.layout.dialog_challenge_info, true).positiveText("Dismiss").positiveColor(getResources().getColor(R.color.green_700)).build().show();
+        new Builder(this).customView(R.layout.dialog_challenge_info, true).positiveText("Dismiss").positiveColor(getResources().getColor(R.color.green_700)).build().show();
     }
 }

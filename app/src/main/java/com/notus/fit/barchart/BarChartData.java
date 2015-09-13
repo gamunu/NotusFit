@@ -1,17 +1,19 @@
 package com.notus.fit.barchart;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 7:45 PM
  */
 public class BarChartData {
     private String bottomText;
     private int maxVisibleValue;
     private int type;
     private String units;
-    private ArrayList<String> xValues;
-    private ArrayList<Integer> yValues;
+    private List<String> xValues;
+    private List<Integer> yValues;
 
     public String getUnits() {
         return this.units;
@@ -40,20 +42,20 @@ public class BarChartData {
         return this;
     }
 
-    public ArrayList<Integer> getyValues() {
+    public List<Integer> getyValues() {
         return this.yValues;
     }
 
-    public BarChartData setyValues(ArrayList<Integer> yValues) {
+    public BarChartData setyValues(List<Integer> yValues) {
         this.yValues = yValues;
         return this;
     }
 
-    public ArrayList<String> getxValues() {
+    public List<String> getxValues() {
         return this.xValues;
     }
 
-    public BarChartData setxValues(ArrayList<String> xValues) {
+    public BarChartData setxValues(List<String> xValues) {
         this.xValues = xValues;
         return this;
     }

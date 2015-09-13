@@ -3,6 +3,7 @@ package com.notus.fit.ui_elements;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.text.Editable;
@@ -85,7 +86,7 @@ public class FloatLabelLayout extends LinearLayout {
     }
 
     @Override
-    public final void addView(View child, int index, ViewGroup.LayoutParams params) {
+    public final void addView(@NonNull View child, int index, ViewGroup.LayoutParams params) {
         if (child instanceof EditText) {
             setEditText((EditText) child);
         }

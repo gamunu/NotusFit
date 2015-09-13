@@ -1,55 +1,89 @@
 package com.jawbone.upplatformsdk.endpointModels.move;
 
 import com.google.gson.annotations.SerializedName;
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkUtils;
 
 import java.util.Map;
 
+/**
+ * Created by <a href="mailto:marcusandreog@gmail.com">Marcus Gabilheri</a>
+ *
+ * @author Marcus Gabilheri
+ * @version 1.0
+ * @since 2/13/15.
+ */
 public class MoveDetails {
-    @SerializedName("bg_calories")
-    Float bgCalories;
-    @SerializedName("bmr_day")
-    Float bmrDay;
-    @SerializedName("calories")
-    Float calories;
+
     @SerializedName("distance")
-    Float distance;
-    @SerializedName("hourly_totals")
-    Map<String, HourlyEvent> hourlyTotals;
-    @SerializedName("inactive_time")
-    Integer inactiveTime;
+    Integer distance;
+
     @SerializedName("km")
     String km;
-    @SerializedName("longest_active")
-    Integer longestActive;
-    @SerializedName("longest_idle")
-    Integer longestIdle;
+
     @SerializedName("steps")
     Integer steps;
-    @SerializedName("sunrise")
-    Long sunrise;
-    @SerializedName("sunset")
-    Long sunset;
-    @SerializedName("tz")
-    String timeZone;
-    @SerializedName("tzs")
-    Map<Integer, String> tzs;
-    @SerializedName("wo_active_time")
-    Integer woActiveTime;
+
+    @SerializedName("longest_active")
+    Integer longestActive;
+
+    @SerializedName("inactive_time")
+    Integer inactiveTime;
+
+    @SerializedName("longest_idle")
+    Integer longestIdle;
+
+    @SerializedName("calories")
+    Float calories;
+
+    @SerializedName("bmr_day")
+    Float bmrDay;
+
+    @SerializedName("bg_calories")
+    Float bgCalories;
+
     @SerializedName("wo_calories")
     Float woCalories;
-    @SerializedName("wo_count")
-    Integer woCount;
-    @SerializedName("wo_longest")
-    Integer woLongest;
+
     @SerializedName("wo_time")
     Integer woTime;
 
-    public Float getDistance() {
-        return this.distance;
+    @SerializedName("wo_active_time")
+    Integer woActiveTime;
+
+    @SerializedName("wo_count")
+    Integer woCount;
+
+    @SerializedName("wo_longest")
+    Integer woLongest;
+
+    @SerializedName("sunrise")
+    Long sunrise;
+
+    @SerializedName("sunset")
+    Long sunset;
+
+    @SerializedName("tz")
+    String timeZone;
+
+    @SerializedName("tzs")
+    Map<Integer, String> tzs;
+
+    @SerializedName("hourly_totals")
+    Map<String, HourlyEvent> hourlyTotals;
+
+    public MoveDetails() {
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
     }
 
     public String getKm() {
-        return this.km;
+        return km;
     }
 
     public void setKm(String km) {
@@ -57,7 +91,7 @@ public class MoveDetails {
     }
 
     public Integer getSteps() {
-        return this.steps;
+        return steps;
     }
 
     public void setSteps(Integer steps) {
@@ -65,7 +99,7 @@ public class MoveDetails {
     }
 
     public Integer getLongestActive() {
-        return this.longestActive;
+        return longestActive;
     }
 
     public void setLongestActive(Integer longestActive) {
@@ -73,7 +107,7 @@ public class MoveDetails {
     }
 
     public Integer getInactiveTime() {
-        return this.inactiveTime;
+        return inactiveTime;
     }
 
     public void setInactiveTime(Integer inactiveTime) {
@@ -81,7 +115,7 @@ public class MoveDetails {
     }
 
     public Integer getLongestIdle() {
-        return this.longestIdle;
+        return longestIdle;
     }
 
     public void setLongestIdle(Integer longestIdle) {
@@ -89,7 +123,7 @@ public class MoveDetails {
     }
 
     public Float getCalories() {
-        return this.calories;
+        return calories;
     }
 
     public void setCalories(Float calories) {
@@ -97,7 +131,7 @@ public class MoveDetails {
     }
 
     public Float getBmrDay() {
-        return this.bmrDay;
+        return bmrDay;
     }
 
     public void setBmrDay(Float bmrDay) {
@@ -105,7 +139,7 @@ public class MoveDetails {
     }
 
     public Float getBgCalories() {
-        return this.bgCalories;
+        return bgCalories;
     }
 
     public void setBgCalories(Float bgCalories) {
@@ -113,7 +147,7 @@ public class MoveDetails {
     }
 
     public Float getWoCalories() {
-        return this.woCalories;
+        return woCalories;
     }
 
     public void setWoCalories(Float woCalories) {
@@ -121,7 +155,7 @@ public class MoveDetails {
     }
 
     public Integer getWoTime() {
-        return this.woTime;
+        return woTime;
     }
 
     public void setWoTime(Integer woTime) {
@@ -129,7 +163,7 @@ public class MoveDetails {
     }
 
     public Integer getWoActiveTime() {
-        return this.woActiveTime;
+        return woActiveTime;
     }
 
     public void setWoActiveTime(Integer woActiveTime) {
@@ -137,7 +171,7 @@ public class MoveDetails {
     }
 
     public Integer getWoCount() {
-        return this.woCount;
+        return woCount;
     }
 
     public void setWoCount(Integer woCount) {
@@ -145,7 +179,7 @@ public class MoveDetails {
     }
 
     public Integer getWoLongest() {
-        return this.woLongest;
+        return woLongest;
     }
 
     public void setWoLongest(Integer woLongest) {
@@ -153,7 +187,7 @@ public class MoveDetails {
     }
 
     public Long getSunrise() {
-        return this.sunrise;
+        return sunrise;
     }
 
     public void setSunrise(Long sunrise) {
@@ -161,7 +195,7 @@ public class MoveDetails {
     }
 
     public Long getSunset() {
-        return this.sunset;
+        return sunset;
     }
 
     public void setSunset(Long sunset) {
@@ -169,7 +203,7 @@ public class MoveDetails {
     }
 
     public String getTimeZone() {
-        return this.timeZone;
+        return timeZone;
     }
 
     public void setTimeZone(String timeZone) {
@@ -177,7 +211,7 @@ public class MoveDetails {
     }
 
     public Map<Integer, String> getTzs() {
-        return this.tzs;
+        return tzs;
     }
 
     public void setTzs(Map<Integer, String> tzs) {
@@ -185,10 +219,19 @@ public class MoveDetails {
     }
 
     public Map<String, HourlyEvent> getHourlyTotals() {
-        return this.hourlyTotals;
+        return hourlyTotals;
     }
 
     public void setHourlyTotals(Map<String, HourlyEvent> hourlyTotals) {
         this.hourlyTotals = hourlyTotals;
     }
+
+    @Override
+    public String toString() {
+        return UpPlatformSdkUtils.toJson(this);
+    }
 }
+
+
+
+

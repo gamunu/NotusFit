@@ -19,14 +19,14 @@ public class DoneFragment extends DefaultFragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind((Object) this, view);
+        ButterKnife.bind(this, view);
         this.finishSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PrefManager.with(DoneFragment.this.getActivity()).save(PreferenceUtils.FIRST_TIME, false);
-                Intent i = new Intent(DoneFragment.this.getActivity(), MainActivity.class);
+                PrefManager.with(getActivity()).save(PreferenceUtils.FIRST_TIME, false);
+                Intent i = new Intent(getActivity(), MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                DoneFragment.this.startActivity(i);
+                startActivity(i);
             }
         });
     }

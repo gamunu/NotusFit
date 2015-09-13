@@ -1,99 +1,99 @@
+/**
+ * @author Omer Muhammed
+ * Copyright 2014 (c) Jawbone. All rights reserved.
+ *
+ */
 package com.jawbone.upplatformsdk.oauth;
 
-import android.net.Uri.Builder;
+import android.net.Uri;
 import android.util.Log;
 
-import com.facebook.internal.ServerProtocol;
-import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants.UpPlatformAuthScope;
-
-import org.joda.time.DateTimeConstants;
-import org.joda.time.MutableDateTime;
-import org.joda.time.TimeOfDay;
-import org.joda.time.YearMonthDay;
-import org.joda.time.chrono.IslamicChronology;
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkConstants;
 
 import java.util.List;
 
-import it.neokree.materialtabs.R;
-
+/**
+ * This class provide the API end point to make the OAuth Web View request.
+ * Note that it does not use Retrofit library.
+ */
 public class OauthUtils {
+
     private static final String TAG = OauthUtils.class.getSimpleName();
 
-    static {
+    public static Uri.Builder setOauthParameters(String clientId, String callbackUrl, List<UpPlatformSdkConstants.UpPlatformAuthScope> scope) {
+        Uri.Builder builder = setBaseParameters();
 
-    }
-
-    public static Builder setOauthParameters(String clientId, String callbackUrl, List<UpPlatformAuthScope> scope) {
-        Builder builder = setBaseParameters();
         builder.appendPath("auth");
         builder.appendPath("oauth2");
         builder.appendPath("auth");
-        builder.appendQueryParameter(ServerProtocol.DIALOG_PARAM_RESPONSE_TYPE, "code");
-        builder.appendQueryParameter(ServerProtocol.DIALOG_PARAM_CLIENT_ID, clientId);
+        builder.appendQueryParameter("response_type", "code");
+        builder.appendQueryParameter("client_id", clientId);
         builder = setOauthScopeParameters(scope, builder);
-        builder.appendQueryParameter(ServerProtocol.DIALOG_PARAM_REDIRECT_URI, callbackUrl);
+        builder.appendQueryParameter("redirect_uri", callbackUrl);
+
         return builder;
     }
 
-    public static Builder setOauthScopeParameters(List<UpPlatformAuthScope> scopeArrayList, Builder builder) {
+    public static Uri.Builder setOauthScopeParameters(List<UpPlatformSdkConstants.UpPlatformAuthScope> scopeArrayList, Uri.Builder builder) {
         StringBuilder scopeValues = new StringBuilder();
-        for (UpPlatformAuthScope scope : scopeArrayList) {
-            switch (Scope.UpPlatformSdkConstants[scope.ordinal()]) {
-                case IslamicChronology.AH /*1*/:
+
+        for (UpPlatformSdkConstants.UpPlatformAuthScope scope : scopeArrayList) {
+            switch (scope) {
+                case BASIC_READ:
                     scopeValues.append("basic_read ");
                     break;
-                case YearMonthDay.DAY_OF_MONTH /*2*/:
+                case EXTENDED_READ:
                     scopeValues.append("extended_read ");
                     break;
-                case TimeOfDay.MILLIS_OF_SECOND /*3*/:
+                case LOCATION_READ:
                     scopeValues.append("location_read ");
                     break;
-                case MutableDateTime.ROUND_HALF_CEILING /*4*/:
+                case FRIENDS_READ:
                     scopeValues.append("friends_read ");
                     break;
-                case MutableDateTime.ROUND_HALF_EVEN /*5*/:
+                case MOOD_READ:
                     scopeValues.append("mood_read ");
                     break;
-                case DateTimeConstants.SATURDAY /*6*/:
+                case MOOD_WRITE:
                     scopeValues.append("mood_write ");
                     break;
-                case DateTimeConstants.SUNDAY /*7*/:
+                case MOVE_READ:
                     scopeValues.append("move_read ");
                     break;
-                case DateTimeConstants.AUGUST /*8*/:
+                case MOVE_WRITE:
                     scopeValues.append("move_write ");
                     break;
-                case DateTimeConstants.SEPTEMBER /*9*/:
+                case SLEEP_READ:
                     scopeValues.append("sleep_read ");
                     break;
-                case DateTimeConstants.OCTOBER /*10*/:
+                case SLEEP_WRITE:
                     scopeValues.append("sleep_write ");
                     break;
-                case DateTimeConstants.NOVEMBER /*11*/:
+                case MEAL_READ:
                     scopeValues.append("meal_read ");
                     break;
-                case DateTimeConstants.DECEMBER /*12*/:
+                case MEAL_WRITE:
                     scopeValues.append("meal_write ");
                     break;
-                case R.styleable.Toolbar_titleMarginEnd /*13*/:
+                case WEIGHT_READ:
                     scopeValues.append("weight_read ");
                     break;
-                case R.styleable.Toolbar_titleMarginTop /*14*/:
+                case WEIGHT_WRITE:
                     scopeValues.append("weight_write ");
                     break;
-                case R.styleable.Toolbar_titleMarginBottom /*15*/:
+                case CARDIAC_READ:
                     scopeValues.append("cardiac_read ");
                     break;
-                case R.styleable.Toolbar_maxButtonHeight /*16*/:
+                case CARDIAC_WRITE:
                     scopeValues.append("cardiac_write ");
                     break;
-                case R.styleable.Toolbar_collapseIcon /*17*/:
+                case GENERIC_EVENT_READ:
                     scopeValues.append("generic_event_read ");
                     break;
-                case R.styleable.Toolbar_collapseContentDescription /*18*/:
+                case GENERIC_EVENT_WRITE:
                     scopeValues.append("generic_event_write ");
                     break;
-                case R.styleable.Toolbar_navigationIcon /*19*/:
+                case ALL:
                     scopeValues.append("basic_read ");
                     scopeValues.append("extended_read ");
                     scopeValues.append("location_read ");
@@ -119,101 +119,21 @@ public class OauthUtils {
                     break;
             }
         }
+
         if (scopeValues != null && scopeValues.length() > 0) {
             scopeValues.setLength(scopeValues.length() - 1);
-            builder.appendQueryParameter(ServerProtocol.DIALOG_PARAM_SCOPE, scopeValues.toString());
+            builder.appendQueryParameter("scope", scopeValues.toString());
+            return builder;
+        } else {
+            return builder;
         }
-        return builder;
     }
 
-    public static Builder setBaseParameters() {
-        Builder builder = new Builder();
-        builder.scheme("https");
-        builder.authority("jawbone.com");
+    public static Uri.Builder setBaseParameters() {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(UpPlatformSdkConstants.URI_SCHEME);
+        builder.authority(UpPlatformSdkConstants.AUTHORITY);
+
         return builder;
-    }
-
-    static class Scope {
-        static final int[] UpPlatformSdkConstants;
-
-        static {
-            UpPlatformSdkConstants = new int[UpPlatformAuthScope.values().length];
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.BASIC_READ.ordinal()] = 1;
-            } catch (NoSuchFieldError e) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.EXTENDED_READ.ordinal()] = 2;
-            } catch (NoSuchFieldError e2) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.LOCATION_READ.ordinal()] = 3;
-            } catch (NoSuchFieldError e3) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.FRIENDS_READ.ordinal()] = 4;
-            } catch (NoSuchFieldError e4) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.MOOD_READ.ordinal()] = 5;
-            } catch (NoSuchFieldError e5) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.MOOD_WRITE.ordinal()] = 6;
-            } catch (NoSuchFieldError e6) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.MOVE_READ.ordinal()] = 7;
-            } catch (NoSuchFieldError e7) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.MOVE_WRITE.ordinal()] = 8;
-            } catch (NoSuchFieldError e8) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.SLEEP_READ.ordinal()] = 9;
-            } catch (NoSuchFieldError e9) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.SLEEP_WRITE.ordinal()] = 10;
-            } catch (NoSuchFieldError e10) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.MEAL_READ.ordinal()] = 11;
-            } catch (NoSuchFieldError e11) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.MEAL_WRITE.ordinal()] = 12;
-            } catch (NoSuchFieldError e12) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.WEIGHT_READ.ordinal()] = 13;
-            } catch (NoSuchFieldError e13) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.WEIGHT_WRITE.ordinal()] = 14;
-            } catch (NoSuchFieldError e14) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.CARDIAC_READ.ordinal()] = 15;
-            } catch (NoSuchFieldError e15) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.CARDIAC_WRITE.ordinal()] = 16;
-            } catch (NoSuchFieldError e16) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.GENERIC_EVENT_READ.ordinal()] = 17;
-            } catch (NoSuchFieldError e17) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.GENERIC_EVENT_WRITE.ordinal()] = 18;
-            } catch (NoSuchFieldError e18) {
-            }
-            try {
-                UpPlatformSdkConstants[UpPlatformAuthScope.ALL.ordinal()] = 19;
-            } catch (NoSuchFieldError e19) {
-            }
-        }
     }
 }

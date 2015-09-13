@@ -6,7 +6,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.notus.fit.BuildConfig;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 7:45 PM
  */
 public class BarChartBuilder {
     private BarChart barChart;

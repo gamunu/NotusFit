@@ -27,17 +27,17 @@
     <string name="achievement_welcome_to_fithub">CgkIpNK01csfEAIQCg</string>
     <string name="action_settings">Settings</string>
     <string name="annual_rate_placeholder">$ 1783,79</string>
-    <string name="app_id">1085463669028</string>
+    <string name="app_id">959194517283</string>
     <string name="app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
-    <string name="app_name">FitHub</string>
+    <string name="app_name">Notus Fit</string>
     <string name="appbar_scrolling_view_behavior">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="auth_google_play_services_client_facebook_display_name">Facebook</string>
     <string name="auth_google_play_services_client_google_display_name">Google</string>
     <string name="beer">beer</string>
     <string name="billing_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuVzW2EaxGvwBzvqlwcRzfjWGBrFPJ4LewqigdtkP676jgtztBB5JoSqpq0FKDFcv2qNL30Lob0cUtvPpVXUdqZfqllbRYRc9D872FENzdZp4gtAXkh4KsWLbtIFJ+zpo5H+ZlyCTuQAqb+cIUdzG3fZyJtTZL3idKIpjrOpy4woOCnpBEMomEjTCdMZ2Kw22EiUO8TuGaI5CHECCNRnw/KPGbIl36Bq2xd5zdPypGuUX/+seqMW9nIseStKebFlb83PitERSJX7lK/KqJHiyDsMPdmioi0xMqrEIdBKp0PP0vBDYV8SUE671c/x6mKSF/gh3zbXNpzNo7dyn4iaq2wIDAQAB</string>
     <string name="birthday">Birthday</string>
-    <string name="card_empty_cardwithlist_text">No data....</string>
-    <string name="card_progressbar_cardwithlist_text">Loading data...</string>
+    <string name="card_empty_cardwithlist_text">No data&#8230;</string>
+    <string name="card_progressbar_cardwithlist_text">Loading data&#8230;</string>
     <string name="challenge_description">Description</string>
     <string name="challenge_details">Challenge Details</string>
     <string name="challenges_information">Challenges Information</string>
@@ -53,7 +53,7 @@
     <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
     <string name="com_facebook_like_button_liked">Liked</string>
     <string name="com_facebook_like_button_not_liked">Like</string>
-    <string name="com_facebook_loading">Loading...</string>
+    <string name="com_facebook_loading">Loading&#8230;</string>
     <string name="com_facebook_loginview_cancel_action">Cancel</string>
     <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
     <string name="com_facebook_loginview_log_out_action">Log out</string>
@@ -138,7 +138,7 @@
     <string name="facebook_app_id">403754736464897</string>
     <string name="facebook_signup">Sign In with Facebook</string>
     <string name="finish_setup">Finish Setup</string>
-    <string name="fithub_explanation">FitHub explanation</string>
+    <string name="notusfit_explanation">FitHub explanation</string>
     <string name="fitness_hub_message">"FitHub works as hub for you! No more having to look through all your fitness app to see your data.
 Note: FitHub can not retrieve the data direct from your device. You still need the device's manufacturer app to be able to sync the data with your profile. As of today most of the manufacturers do not allow 3rd party developers to collect directly from the device."</string>
     <string name="fitness_social_message">"No more asking your friends with different devices how many steps they have today, be social and add friends to your list independent of their fitness tracker choice. 
@@ -168,28 +168,8 @@ FitHub let's you sync multiple accounts into one single dataset or view them ind
     <string name="insurance_policy">Insurance Policy #</string>
     <string name="leaderboard_max_steps_1_day">CgkIpNK01csfEAIQBg</string>
     <string name="leaderboard_max_total_steps_in_1_week">CgkIpNK01csfEAIQDw</string>
-    <string name="library_AndroidIconics_author">Mike Penz</string>
-    <string name="library_AndroidIconics_authorWebsite">http://mikepenz.com/</string>
-    <string name="library_AndroidIconics_isOpenSource">true</string>
-    <string name="library_AndroidIconics_libraryDescription">&lt;b>Android-Iconics&lt;/b> will blow your mind :D &lt;br />&lt;br /> Android-Iconics is a library to use (almost) any alternative icon-font in your projects. It allows you to add any Android-Iconics compatible typeface-library-addon to your project and you are able to start using that font.</string>
-    <string name="library_AndroidIconics_libraryName">Android-Iconics</string>
-    <string name="library_AndroidIconics_libraryVersion">0.9.1</string>
-    <string name="library_AndroidIconics_libraryWebsite">https://github.com/mikepenz/Android-Iconics</string>
-    <string name="library_AndroidIconics_licenseId">apache_2_0</string>
-    <string name="library_AndroidIconics_owner">Mike Penz</string>
-    <string name="library_AndroidIconics_repositoryLink">https://github.com/mikepenz/Android-Iconics</string>
-    <string name="library_AndroidIconics_year">2014</string>
-    <string name="library_materialdrawer_author">Mike Penz</string>
-    <string name="library_materialdrawer_authorWebsite">http://mikepenz.com/</string>
-    <string name="library_materialdrawer_isOpenSource">true</string>
-    <string name="library_materialdrawer_libraryDescription">The &lt;b>MaterialDrawer&lt;/b> library aims to provide the easiest possible implementation of a navigation drawer for your application.</string>
-    <string name="library_materialdrawer_libraryName">MaterialDrawer</string>
-    <string name="library_materialdrawer_libraryVersion">2.9.7</string>
-    <string name="library_materialdrawer_libraryWebsite">https://github.com/mikepenz/MaterialDrawer</string>
-    <string name="library_materialdrawer_licenseId">apache_2_0</string>
-    <string name="library_materialdrawer_owner">Mike Penz</string>
-    <string name="library_materialdrawer_repositoryLink">https://github.com/mikepenz/MaterialDrawer</string>
-    <string name="library_materialdrawer_year">2015</string>
+
+
     <string name="license_failed">License check failed.</string>
     <string name="linked_accounts">Linked Accounts</string>
     <string name="list_card_undo_title">Undo</string>
@@ -242,7 +222,7 @@ FitHub let's you sync multiple accounts into one single dataset or view them ind
     <string name="view_password">View Password</string>
     <string name="week_average_steps">Week Average: %s steps.</string>
     <string name="weight_label">Weight</string>
-    <string name="welcome_fithub">Welcome to FitHub</string>
+    <string name="welcome_notusfit">Welcome to FitHub</string>
     <string name="workouts_title">Workouts</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>

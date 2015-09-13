@@ -25,7 +25,6 @@
         <item>@drawable/ic_dashboard_drawer</item>
         <item>@drawable/ic_trophy</item>
         <item>@drawable/ic_drawer_challenge</item>
-        <item>@drawable/ic_donate</item>
         <item>@drawable/ic_settings_drawer</item>
         <item>@drawable/ic_exit</item>
     </array>

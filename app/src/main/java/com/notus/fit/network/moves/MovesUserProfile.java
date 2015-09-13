@@ -1,22 +1,21 @@
 package com.notus.fit.network.moves;
 
 
-public class MovesUserProfile {
+import com.google.gson.annotations.SerializedName;
 
+public class MovesUserProfile {
+    @SerializedName("firstDate")
     String firstDate;
 
-    public MovesUserProfile() {
-    }
-
     public String getFirstDate() {
-        return firstDate;
+        return this.firstDate;
     }
 
-    public void setFirstDate(String s) {
-        firstDate = s;
+    public void setFirstDate(String firstDate) {
+        this.firstDate = firstDate;
     }
 
     public String toString() {
-        return (new StringBuilder()).append("MovesUserProfile{firstDate='").append(firstDate).append('\'').append('}').toString();
+        return "MovesUserProfile{firstDate='" + this.firstDate + '\'' + '}';
     }
 }

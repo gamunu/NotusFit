@@ -1,27 +1,48 @@
 package com.jawbone.upplatformsdk.endpointModels.move;
 
 import com.google.gson.annotations.SerializedName;
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkUtils;
 
-public class HourlyEvent {
+/**
+ * Created by <a href="mailto:marcusandreog@gmail.com">Marcus Gabilheri</a>
+ *
+ * @author Marcus Gabilheri
+ * @version 1.0
+ * @since 2/13/15.
+ */
+public class HourlyEvent  {
+
+    @SerializedName("distance")
+    Integer distance;
+
     @SerializedName("calories")
     Float calories;
-    @SerializedName("distance")
-    Float distance;
-    @SerializedName("inactive_time")
-    Integer inactiveTime;
-    @SerializedName("longest_active_time")
-    Integer longestActiveTime;
-    @SerializedName("longest_idle_time")
-    Integer longestIdleTime;
+
     @SerializedName("steps")
     Integer steps;
 
-    public Float getDistance() {
-        return this.distance;
+    @SerializedName("inactive_time")
+    Integer inactiveTime;
+
+    @SerializedName("longest_active_time")
+    Integer longestActiveTime;
+
+    @SerializedName("longest_idle_time")
+    Integer longestIdleTime;
+
+    public HourlyEvent() {
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
     }
 
     public Float getCalories() {
-        return this.calories;
+        return calories;
     }
 
     public void setCalories(Float calories) {
@@ -29,7 +50,7 @@ public class HourlyEvent {
     }
 
     public Integer getSteps() {
-        return this.steps;
+        return steps;
     }
 
     public void setSteps(Integer steps) {
@@ -37,7 +58,7 @@ public class HourlyEvent {
     }
 
     public Integer getInactiveTime() {
-        return this.inactiveTime;
+        return inactiveTime;
     }
 
     public void setInactiveTime(Integer inactiveTime) {
@@ -45,7 +66,7 @@ public class HourlyEvent {
     }
 
     public Integer getLongestActiveTime() {
-        return this.longestActiveTime;
+        return longestActiveTime;
     }
 
     public void setLongestActiveTime(Integer longestActiveTime) {
@@ -53,10 +74,15 @@ public class HourlyEvent {
     }
 
     public Integer getLongestIdleTime() {
-        return this.longestIdleTime;
+        return longestIdleTime;
     }
 
     public void setLongestIdleTime(Integer longestIdleTime) {
         this.longestIdleTime = longestIdleTime;
+    }
+
+    @Override
+    public String toString() {
+        return UpPlatformSdkUtils.toJson(this);
     }
 }

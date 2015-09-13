@@ -3,7 +3,9 @@ package com.notus.fit.models.api_models;
 import org.parceler.Parcel;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 9:59 AM
  */
 
 @Parcel

@@ -1,14 +1,21 @@
 package com.notus.fit.models.fitbit;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 9:59 AM
  */
 @Parcel
 public class FitbitDistance {
+    @SerializedName("distance")
     float distance;
+    @SerializedName("activity")
     String total;
+
 
     public String getTotal() {
         return this.total;

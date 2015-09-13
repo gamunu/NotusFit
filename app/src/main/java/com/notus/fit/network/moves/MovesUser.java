@@ -1,52 +1,50 @@
 package com.notus.fit.network.moves;
 
-
-// Referenced classes of package com.notus.fit.network.moves:
-//            MovesUserProfile
+import com.google.gson.annotations.SerializedName;
 
 public class MovesUser {
-
+    @SerializedName("caloriesAvailable")
     boolean caloriesAvailable;
+    @SerializedName("platform")
     String platform;
+    @SerializedName("profile")
     MovesUserProfile profile;
+    @SerializedName("userId")
     String userId;
 
-    public MovesUser() {
+    public String getUserId() {
+        return this.userId;
     }
 
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String s) {
-        platform = s;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public MovesUserProfile getProfile() {
-        return profile;
+        return this.profile;
     }
 
-    public void setProfile(MovesUserProfile movesuserprofile) {
-        profile = movesuserprofile;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String s) {
-        userId = s;
+    public void setProfile(MovesUserProfile profile) {
+        this.profile = profile;
     }
 
     public boolean isCaloriesAvailable() {
-        return caloriesAvailable;
+        return this.caloriesAvailable;
     }
 
-    public void setCaloriesAvailable(boolean flag) {
-        caloriesAvailable = flag;
+    public void setCaloriesAvailable(boolean caloriesAvailable) {
+        this.caloriesAvailable = caloriesAvailable;
+    }
+
+    public String getPlatform() {
+        return this.platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     public String toString() {
-        return (new StringBuilder()).append("MovesUser{userId='").append(userId).append('\'').append(", profile=").append(profile).append(", caloriesAvailable=").append(caloriesAvailable).append(", platform='").append(platform).append('\'').append('}').toString();
+        return "MovesUser{userId='" + this.userId + '\'' + ", profile=" + this.profile + ", caloriesAvailable=" + this.caloriesAvailable + ", platform='" + this.platform + '\'' + '}';
     }
 }

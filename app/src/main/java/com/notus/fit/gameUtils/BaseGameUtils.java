@@ -12,7 +12,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.notus.fit.R;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 9:59 AM
  */
 public class BaseGameUtils {
     public static void showAlert(Activity activity, String message) {

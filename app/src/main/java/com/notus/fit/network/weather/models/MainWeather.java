@@ -1,79 +1,85 @@
 package com.notus.fit.network.weather.models;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class MainWeather {
 
+    @SerializedName("grnd_level")
     float groundLevel;
+    @SerializedName("humidity")
     float humidity;
+    @SerializedName("pressure")
     float pressure;
+    @SerializedName("sea_level")
     float seaLevel;
+    @SerializedName("temp_min")
     float temMin;
+    @SerializedName("temp")
     float temp;
+    @SerializedName("temp_max")
     float tempMax;
 
-    public MainWeather() {
+    public float getTemp() {
+        return this.temp;
     }
 
-    public float getGroundLevel() {
-        return groundLevel;
-    }
-
-    public MainWeather setGroundLevel(float f) {
-        groundLevel = f;
-        return this;
-    }
-
-    public float getHumidity() {
-        return humidity;
-    }
-
-    public MainWeather setHumidity(float f) {
-        humidity = f;
-        return this;
-    }
-
-    public float getPressure() {
-        return pressure;
-    }
-
-    public MainWeather setPressure(float f) {
-        pressure = f;
-        return this;
-    }
-
-    public float getSeaLevel() {
-        return seaLevel;
-    }
-
-    public MainWeather setSeaLevel(float f) {
-        seaLevel = f;
+    public MainWeather setTemp(float temp) {
+        this.temp = temp;
         return this;
     }
 
     public float getTemMin() {
-        return temMin;
+        return this.temMin;
     }
 
-    public MainWeather setTemMin(float f) {
-        temMin = f;
-        return this;
-    }
-
-    public float getTemp() {
-        return temp;
-    }
-
-    public MainWeather setTemp(float f) {
-        temp = f;
+    public MainWeather setTemMin(float temMin) {
+        this.temMin = temMin;
         return this;
     }
 
     public float getTempMax() {
-        return tempMax;
+        return this.tempMax;
     }
 
-    public MainWeather setTempMax(float f) {
-        tempMax = f;
+    public MainWeather setTempMax(float tempMax) {
+        this.tempMax = tempMax;
+        return this;
+    }
+
+    public float getPressure() {
+        return this.pressure;
+    }
+
+    public MainWeather setPressure(float pressure) {
+        this.pressure = pressure;
+        return this;
+    }
+
+    public float getSeaLevel() {
+        return this.seaLevel;
+    }
+
+    public MainWeather setSeaLevel(float seaLevel) {
+        this.seaLevel = seaLevel;
+        return this;
+    }
+
+    public float getGroundLevel() {
+        return this.groundLevel;
+    }
+
+    public MainWeather setGroundLevel(float groundLevel) {
+        this.groundLevel = groundLevel;
+        return this;
+    }
+
+    public float getHumidity() {
+        return this.humidity;
+    }
+
+    public MainWeather setHumidity(float humidity) {
+        this.humidity = humidity;
         return this;
     }
 }

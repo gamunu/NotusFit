@@ -40,7 +40,7 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
     @Bind(R.id.facebook_logo)
     ImageView fbLogo;
     @Bind(R.id.fithub_signup)
-    Button fithubSignUp;
+    Button notusFitSignUp;
     @Bind(R.id.gplus_logo)
     ImageView gPlusLogo;
     @Bind(R.id.gplus_signup)
@@ -52,8 +52,8 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind((Object) this, view);
-        this.fithubSignUp.setOnClickListener(this);
+        ButterKnife.bind(this, view);
+        this.notusFitSignUp.setOnClickListener(this);
         this.facebookSignUp.setOnClickListener(this);
         this.gplusSignUp.setOnClickListener(this);
         this.signIn.setOnClickListener(this);
@@ -82,7 +82,7 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
                     SignUpFragment.this.user.setFirstName(SignUpFragment.this.graphUser.getFirstName());
                     SignUpFragment.this.user.setLastName(SignUpFragment.this.graphUser.getLastName());
                     Log.d(SignUpFragment.LOG_TAG, "Email: " + SignUpFragment.this.user.getEmail());
-                    new SignIn().execute(new Void[0]);
+                    new SignIn().execute();
                     return;
                 }
                 Log.i(SignUpFragment.LOG_TAG, "Facebook User Failed!");
@@ -92,7 +92,7 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
 
     public void executeLogin(User user) {
         this.user = user;
-        new SignIn().execute(new Void[0]);
+        new SignIn().execute();
     }
 
     public void clickFB() {
@@ -109,12 +109,11 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.gplus_logo:
             case R.id.gplus_signup:
                 ((BaseActivity) getActivity()).signInWithGplus();
-            case R.id.facebook_logo:
+                return;
+            case R.id.facebook_signup:
                 clickFB();
-            default:
         }
     }
 
@@ -159,7 +158,7 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
                     userObject.save();
                     NetworkUtils.setPreferences(userObject, SignUpFragment.this.getActivity());
                 }
-                return Boolean.valueOf(true);
+                return true;
             } catch (ParseException ex) {
                 if (ex.getMessage() != null) {
                     Log.d(SignUpFragment.LOG_TAG, ex.getMessage());
@@ -180,12 +179,13 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
                     NetworkUtils.setPreferences(userObject, SignUpFragment.this.getActivity());
                 } catch (ParseException e) {
                     if (e.getMessage() != null) {
-                        Log.d(SignUpFragment.LOG_TAG, "Failed creating user: " + e.getMessage());
+                        Log.d(SignUpFragment.LOG_TAG, "Failed creating user", e);
                     }
                 }
-                return Boolean.valueOf(false);
-            } catch (Exception e2) {
-                return Boolean.valueOf(false);
+                return false;
+            } catch (Exception ex) {
+                Log.e(LOG_TAG, ex.getMessage(), ex);
+                return false;
             }
         }
 
@@ -194,7 +194,7 @@ public class SignUpFragment extends DefaultFragment implements View.OnClickListe
             if (SignUpFragment.this.getActivity() != null) {
                 final Intent i = new Intent(SignUpFragment.this.getActivity(), LinkDevicesActivity.class);
                 i.putExtra(NativeProtocol.METHOD_ARGS_LINK, true);
-                if (!aBoolean.booleanValue() || PrefManager.with(SignUpFragment.this.getActivity()).getString(PreferenceUtils.AVATAR_URL, null) == null) {
+                if (!aBoolean || PrefManager.with(SignUpFragment.this.getActivity()).getString(PreferenceUtils.AVATAR_URL, null) == null) {
                     SignUpFragment.this.getActivity().startService(new Intent(SignUpFragment.this.getActivity(), CreateUserService.class));
                     new Handler().postDelayed(new Runnable() {
                         @Override

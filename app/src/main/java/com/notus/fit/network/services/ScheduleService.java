@@ -25,7 +25,6 @@ import com.google.android.gms.wearable.Wearable;
 import com.notus.fit.MainActivity;
 import com.notus.fit.R;
 import com.notus.fit.models.AllDevicesWeekReport;
-import com.notus.fit.models.DayReport;
 import com.notus.fit.models.RequestTime;
 import com.notus.fit.models.WeekReport;
 import com.notus.fit.models.api_models.User;
@@ -33,7 +32,6 @@ import com.notus.fit.network.fitbit.FitbitSeriesRequest;
 import com.notus.fit.network.misfit.MisfitDateRequest;
 import com.notus.fit.network.weather.WeatherApiClient;
 import com.notus.fit.network.weather.WeatherApiClient.WeatherApi;
-import com.notus.fit.network.weather.models.Weather;
 import com.notus.fit.network.weather.models.WeatherResponse;
 import com.notus.fit.utils.Devices;
 import com.notus.fit.utils.FitnessUtils;
@@ -73,7 +71,6 @@ public class ScheduleService extends IntentService {
     protected Integer todaySteps;
     protected ParseObject userObject;
     protected WeekReport weekReport;
-    Builder builder;
     Games.GamesOptions mGamesApiOptions;
     private GoogleApiClient mClient;
     private GoogleApiClient mGamesClient;
@@ -89,7 +86,7 @@ public class ScheduleService extends IntentService {
         this.hasWearDevice = false;
         this.hasMisfit = false;
         this.hasMoves = false;
-        this.currentWeekSteps = Integer.valueOf(0);
+        this.currentWeekSteps = 0;
         this.isGamesEnabled = false;
         this.mGamesApiOptions = Games.GamesOptions.builder().build();
     }
@@ -130,9 +127,9 @@ public class ScheduleService extends IntentService {
             }
             this.weekReport = getAllDevicesWeekReport(0);
             try {
-                this.todaySteps = Integer.valueOf(((DayReport) this.weekReport.getDays().get(this.weekReport.getRealListSize() - 1)).getSteps());
+                this.todaySteps = this.weekReport.getDays().get(this.weekReport.getRealListSize() - 1).getSteps();
             } catch (Exception e) {
-                this.todaySteps = Integer.valueOf(0);
+                this.todaySteps = 0;
             }
             PrefManager.with(this).save(PreferenceUtils.WEEK_AVERAGE, String.valueOf(this.weekReport.getWeekAverage()));
             PrefManager.with(this).save(getString(R.string.today_steps), this.todaySteps.intValue());
@@ -140,14 +137,14 @@ public class ScheduleService extends IntentService {
             Log.d(TAG, "Updating user with user id: " + id + " with week average: " + this.weekReport.getWeekAverage());
             if (id != null) {
                 this.userObject = ParseQuery.getQuery(User.CLASS).whereEqualTo(User.OBJECT_ID, id).getFirst();
-                this.userObject.put(User.STEPS_AVERAGE, Integer.valueOf(this.weekReport.getWeekAverage()));
+                this.userObject.put(User.STEPS_AVERAGE, this.weekReport.getWeekAverage());
                 PrefManager.with(this).save(User.UNITS, this.userObject.getString(User.UNITS));
                 this.userObject.save();
                 this.userObject.pinInBackground();
             }
             Iterator it = this.weekReport.getStepList().iterator();
             while (it.hasNext()) {
-                this.currentWeekSteps = Integer.valueOf(this.currentWeekSteps.intValue() + ((Integer) it.next()).intValue());
+                this.currentWeekSteps = this.currentWeekSteps + (Integer) it.next();
             }
             LocalDateTime now = LocalDateTime.now();
             if (now.getMinuteOfHour() > 20 && now.getHourOfDay() % 2 == 0) {
@@ -160,7 +157,7 @@ public class ScheduleService extends IntentService {
                     DataMap map = request.getDataMap();
                     map.putFloat("temp", Float.parseFloat(PrefManager.with(this).getString("temp", AppEventsConstants.EVENT_PARAM_VALUE_NO)));
                     map.putString(User.UNITS, "imperial");
-                    map.putInt("steps", this.todaySteps.intValue());
+                    map.putInt("steps", this.todaySteps);
                     try {
                         map.putInt("weather_id", Integer.parseInt(PrefManager.with(this).getString("weather_id", "800")));
                     } catch (Exception ex) {
@@ -173,24 +170,24 @@ public class ScheduleService extends IntentService {
                 }
             }
             if (PrefManager.with(this).getBoolean(getString(R.string.notifications_enable), true)) {
-                if (this.todaySteps.intValue() != 0 && this.todaySteps.intValue() < stepGoal / 2) {
+                if (this.todaySteps != 0 && this.todaySteps < stepGoal / 2) {
                     clearPreferences();
                 }
-                if (!PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) && ((double) this.todaySteps.intValue()) > ((double) stepGoal) * 1.25d) {
+                if (!PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) && ((double) this.todaySteps) > ((double) stepGoal) * 1.25d) {
                     PrefManager.with(this).save(PreferenceUtils.OVERACHIEVER, true);
-                    sendNotification(Devices.FITHUB, "Overachiever!! You smashed your step goal of " + stepGoal + " with " + this.todaySteps + " steps!!");
+                    sendNotification(Devices.NOTUSFIT, "Overachiever!! You smashed your step goal of " + stepGoal + " with " + this.todaySteps + " steps!!");
                 }
-                if (!(PrefManager.with(this).getBoolean(PreferenceUtils.GOAL_REACHED, false) || PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) || this.todaySteps.intValue() <= stepGoal)) {
+                if (!(PrefManager.with(this).getBoolean(PreferenceUtils.GOAL_REACHED, false) || PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) || this.todaySteps <= stepGoal)) {
                     PrefManager.with(this).save(PreferenceUtils.GOAL_REACHED, true);
                     sendNotification("Goal reached!", "Congratulations! You reached your goal with " + this.todaySteps + " steps.");
                 }
-                if (!(PrefManager.with(this).getBoolean(PreferenceUtils.ALMOST_THERE, false) || PrefManager.with(this).getBoolean(PreferenceUtils.GOAL_REACHED, false) || PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) || ((double) this.todaySteps.intValue()) <= ((double) stepGoal) * 0.75d)) {
+                if (!(PrefManager.with(this).getBoolean(PreferenceUtils.ALMOST_THERE, false) || PrefManager.with(this).getBoolean(PreferenceUtils.GOAL_REACHED, false) || PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) || ((double) this.todaySteps) <= ((double) stepGoal) * 0.75d)) {
                     PrefManager.with(this).save(PreferenceUtils.ALMOST_THERE, true);
-                    sendNotification(Devices.FITHUB, "Keep up the good work! You need " + (stepGoal - this.todaySteps.intValue()) + " steps to reach your step goal for today.");
+                    sendNotification(Devices.NOTUSFIT, "Keep up the good work! You need " + (stepGoal - this.todaySteps) + " steps to reach your step goal for today.");
                 }
-                if (!(PrefManager.with(this).getBoolean(PreferenceUtils.HALFWAY_DONE, false) || PrefManager.with(this).getBoolean(PreferenceUtils.ALMOST_THERE, false) || PrefManager.with(this).getBoolean(PreferenceUtils.GOAL_REACHED, false) || PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) || this.todaySteps.intValue() <= stepGoal / 2)) {
+                if (!(PrefManager.with(this).getBoolean(PreferenceUtils.HALFWAY_DONE, false) || PrefManager.with(this).getBoolean(PreferenceUtils.ALMOST_THERE, false) || PrefManager.with(this).getBoolean(PreferenceUtils.GOAL_REACHED, false) || PrefManager.with(this).getBoolean(PreferenceUtils.OVERACHIEVER, false) || this.todaySteps <= stepGoal / 2)) {
                     PrefManager.with(this).save(PreferenceUtils.HALFWAY_DONE, true);
-                    sendNotification(Devices.FITHUB, "Keep up the good work! You are halfway through your goal with  " + this.todaySteps + " steps.");
+                    sendNotification(Devices.NOTUSFIT, "Keep up the good work! You are halfway through your goal with  " + this.todaySteps + " steps.");
                 }
             }
         } catch (Exception ex22) {
@@ -200,13 +197,13 @@ public class ScheduleService extends IntentService {
         if (this.isGamesEnabled) {
             try {
                 Log.d(TAG, "Starting update of the leaderboard...");
-                Games.Leaderboards.submitScore(this.mGamesClient, getString(R.string.leaderboard_max_steps_1_day), (long) this.todaySteps.intValue());
+                Games.Leaderboards.submitScore(this.mGamesClient, getString(R.string.leaderboard_max_steps_1_day), (long) this.todaySteps);
             } catch (Exception ex222) {
                 Log.d(TAG, "Games Exception: " + ex222.getMessage());
             }
             try {
                 Log.d(TAG, "Starting update of the weekly leader board...");
-                Games.Leaderboards.submitScore(this.mGamesClient, getString(R.string.leaderboard_max_total_steps_in_1_week), (long) this.currentWeekSteps.intValue());
+                Games.Leaderboards.submitScore(this.mGamesClient, getString(R.string.leaderboard_max_total_steps_in_1_week), (long) this.currentWeekSteps);
             } catch (Exception ex2222) {
                 Log.d(TAG, "Games Exception: " + ex2222.getMessage());
             }
@@ -227,8 +224,8 @@ public class ScheduleService extends IntentService {
             Iterator it = getAllDevicesWeekReport(1).getStepList().iterator();
             while (it.hasNext()) {
                 Integer i = (Integer) it.next();
-                totalSteps += i.intValue();
-                Games.Leaderboards.submitScore(this.mGamesClient, getString(R.string.leaderboard_max_steps_1_day), (long) i.intValue());
+                totalSteps += i;
+                Games.Leaderboards.submitScore(this.mGamesClient, getString(R.string.leaderboard_max_steps_1_day), (long) i);
             }
             Games.Leaderboards.submitScore(this.mGamesClient, getString(R.string.leaderboard_max_total_steps_in_1_week), (long) totalSteps);
             PrefManager.with(this).save(SYNC_PREVIOUS_WEEK, true);
@@ -243,7 +240,7 @@ public class ScheduleService extends IntentService {
             tracker.stopUsingGPS();
             RestAdapter weatherRestAdapter = WeatherApiClient.getBaseRestAdapter(this);
             weatherRestAdapter.setLogLevel(LogLevel.FULL);
-            WeatherApi weatherApi = (WeatherApi) weatherRestAdapter.create(WeatherApi.class);
+            WeatherApi weatherApi = weatherRestAdapter.create(WeatherApi.class);
             String units = "imperial";
             if (PrefManager.with(this).getString(User.UNITS, getString(R.string.pref_units_imperial)).equals(getString(R.string.pref_units_metric))) {
                 units = "metric";
@@ -251,7 +248,7 @@ public class ScheduleService extends IntentService {
             WeatherResponse response = weatherApi.getWeather(latitude, longitude, units, WeatherApiClient.API_KEY);
             PrefManager.with(this).save("temp", String.valueOf(response.getMainWeather().getTemp()));
             try {
-                PrefManager.with(this).save("weather_id", String.valueOf(((Weather) response.getWeather().get(0)).getId()));
+                PrefManager.with(this).save("weather_id", String.valueOf(response.getWeather().get(0).getId()));
             } catch (Exception ex) {
                 Log.d("WEATHER SERVICE", "Exception happened!");
                 ex.printStackTrace();

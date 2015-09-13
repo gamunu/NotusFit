@@ -8,35 +8,36 @@ import com.notus.fit.utils.MathUtils;
 import com.notus.fit.utils.PrefManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllDevicesWeekReport extends WeekReport {
-    protected WeekReport fitbitWeekReport;
-    protected WeekReport googleFitWeekReport;
-    protected WeekReport jawboneWeekReport;
-    protected WeekReport movesWeekReport;
+    protected WeekReport mFitbitWeekReport;
+    protected WeekReport mGoogleFitWeekReport;
+    protected WeekReport mJawboneWeekReport;
+    protected WeekReport mMovesWeekReport;
 
-    public WeekReport getGoogleFitWeekReport() {
-        return this.googleFitWeekReport;
+    public WeekReport getmGoogleFitWeekReport() {
+        return this.mGoogleFitWeekReport;
     }
 
-    public void setGoogleFitWeekReport(WeekReport googleFitWeekReport) {
-        this.googleFitWeekReport = googleFitWeekReport;
+    public void setmGoogleFitWeekReport(WeekReport mGoogleFitWeekReport) {
+        this.mGoogleFitWeekReport = mGoogleFitWeekReport;
     }
 
-    public WeekReport getFitbitWeekReport() {
-        return this.fitbitWeekReport;
+    public WeekReport getmFitbitWeekReport() {
+        return this.mFitbitWeekReport;
     }
 
-    public void setFitbitWeekReport(WeekReport fitbitWeekReport) {
-        this.fitbitWeekReport = fitbitWeekReport;
+    public void setmFitbitWeekReport(WeekReport mFitbitWeekReport) {
+        this.mFitbitWeekReport = mFitbitWeekReport;
     }
 
-    public WeekReport getJawboneWeekReport() {
-        return this.jawboneWeekReport;
+    public WeekReport getmJawboneWeekReport() {
+        return this.mJawboneWeekReport;
     }
 
-    public void setJawboneWeekReport(WeekReport jawboneWeekReport) {
-        this.jawboneWeekReport = jawboneWeekReport;
+    public void setmJawboneWeekReport(WeekReport mJawboneWeekReport) {
+        this.mJawboneWeekReport = mJawboneWeekReport;
     }
 
     public static class Builder {
@@ -82,8 +83,8 @@ public class AllDevicesWeekReport extends WeekReport {
         }
 
         public WeekReport build() {
-            ArrayList<DayReport> dayReports = new ArrayList();
-            ArrayList<Integer> stepList = new ArrayList();
+            List<DayReport> dayReports = new ArrayList<>();
+            List<Integer> stepList = new ArrayList<>();
             int weekAverage = 0;
             int size = MathUtils.max(new int[]{this.googleFitWeekReport.getRealListSize(), this.fitbitWeekReport.getRealListSize(), this.jawboneWeekReport.getRealListSize(), this.misfitWeekReport.getRealListSize(), this.movesWeekReport.getRealListSize()});
             int fitSize = googleFitWeekReport.getRealListSize();
@@ -107,10 +108,10 @@ public class AllDevicesWeekReport extends WeekReport {
                     try {
                         weekDay = this.googleFitWeekReport.getDays().get(i).getWeekDay();
                         fullDay = this.googleFitWeekReport.getDays().get(i).getFullDate();
-                        dayAverage = 0 + this.googleFitWeekReport.getDays().get(i).getSteps();
+                        dayAverage = this.googleFitWeekReport.getDays().get(i).getSteps();
                         if (this.googleFitWeekReport.getDays().get(i).getSteps() != 0) {
                             fitCounter++;
-                            numDevices = 0 + 1;
+                            numDevices = 1;
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -136,16 +137,16 @@ public class AllDevicesWeekReport extends WeekReport {
                 if (jawboneSize > jawboneCounter) {
                     if (weekDay == null) {
                         try {
-                            weekDay = ((DayReport) this.jawboneWeekReport.getDays().get(i)).getWeekDay();
+                            weekDay = this.jawboneWeekReport.getDays().get(i).getWeekDay();
                         } catch (Exception ex22) {
                             ex22.printStackTrace();
                         }
                     }
                     if (fullDay == null) {
-                        fullDay = ((DayReport) this.jawboneWeekReport.getDays().get(i)).getFullDate();
+                        fullDay = this.jawboneWeekReport.getDays().get(i).getFullDate();
                     }
-                    dayAverage += ((DayReport) this.jawboneWeekReport.getDays().get(i)).getSteps();
-                    if (((DayReport) this.jawboneWeekReport.getDays().get(i)).getSteps() != 0) {
+                    dayAverage += this.jawboneWeekReport.getDays().get(i).getSteps();
+                    if (this.jawboneWeekReport.getDays().get(i).getSteps() != 0) {
                         jawboneCounter++;
                         numDevices++;
                     }
@@ -153,16 +154,16 @@ public class AllDevicesWeekReport extends WeekReport {
                 if (misfitSize > misfitCounter) {
                     if (weekDay == null) {
                         try {
-                            weekDay = ((DayReport) this.misfitWeekReport.getDays().get(i)).getWeekDay();
+                            weekDay = this.misfitWeekReport.getDays().get(i).getWeekDay();
                         } catch (Exception ex222) {
                             ex222.printStackTrace();
                         }
                     }
                     if (fullDay == null) {
-                        fullDay = ((DayReport) this.misfitWeekReport.getDays().get(i)).getFullDate();
+                        fullDay = this.misfitWeekReport.getDays().get(i).getFullDate();
                     }
-                    dayAverage += ((DayReport) this.misfitWeekReport.getDays().get(i)).getSteps();
-                    if (((DayReport) this.misfitWeekReport.getDays().get(i)).getSteps() != 0) {
+                    dayAverage += this.misfitWeekReport.getDays().get(i).getSteps();
+                    if (this.misfitWeekReport.getDays().get(i).getSteps() != 0) {
                         misfitCounter++;
                         numDevices++;
                     }
@@ -170,16 +171,16 @@ public class AllDevicesWeekReport extends WeekReport {
                 if (movesSize > movesCounter) {
                     if (weekDay == null) {
                         try {
-                            weekDay = ((DayReport) this.movesWeekReport.getDays().get(i)).getWeekDay();
+                            weekDay = this.movesWeekReport.getDays().get(i).getWeekDay();
                         } catch (Exception ex2222) {
                             ex2222.printStackTrace();
                         }
                     }
                     if (fullDay == null) {
-                        fullDay = ((DayReport) this.movesWeekReport.getDays().get(i)).getFullDate();
+                        fullDay = this.movesWeekReport.getDays().get(i).getFullDate();
                     }
-                    dayAverage += ((DayReport) this.movesWeekReport.getDays().get(i)).getSteps();
-                    if (((DayReport) this.movesWeekReport.getDays().get(i)).getSteps() != 0) {
+                    dayAverage += this.movesWeekReport.getDays().get(i).getSteps();
+                    if (this.movesWeekReport.getDays().get(i).getSteps() != 0) {
                         movesCounter++;
                         numDevices++;
                     }
@@ -197,15 +198,15 @@ public class AllDevicesWeekReport extends WeekReport {
                 d.setWeekDay(weekDay);
                 d.setSteps(dayAverage);
                 dayReports.add(d);
-                stepList.add(Integer.valueOf(dayAverage));
+                stepList.add(dayAverage);
             }
             if (size != 0) {
                 weekAverage /= size;
             }
             while (stepList.size() < 7) {
-                stepList.add(Integer.valueOf(0));
+                stepList.add(0);
             }
-            return new WeekReport(dayReports, stepList, weekAverage, size, Devices.FITHUB);
+            return new WeekReport(dayReports, stepList, weekAverage, size, Devices.NOTUSFIT);
         }
     }
 }

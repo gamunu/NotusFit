@@ -1,23 +1,39 @@
 package com.notus.fit.models.fitbit;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 10:00 AM
  */
 @Parcel
 public class FitbitUser {
+    @SerializedName("avatar")
     String avatar;
+    @SerializedName("avatar150")
     String avatar150;
+    @SerializedName("dateOfBirth")
     String dateOfBirth;
+    @SerializedName("encodedId")
     String encodedId;
+    @SerializedName("fullName")
     String fullName;
+    @SerializedName("gender")
     String gender;
+    @SerializedName("height")
     String height;
+    @SerializedName("heightUnit")
     String heightUnit;
+    @SerializedName("memberSince")
     String memberSince;
+    @SerializedName("displayName")
     String name;
+    @SerializedName("weight")
     String weight;
+    @SerializedName("weightUnit")
     String weightUnit;
 
     public String getAvatar() {

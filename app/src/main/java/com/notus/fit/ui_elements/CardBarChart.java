@@ -33,7 +33,7 @@ public class CardBarChart extends CardWithChart {
 
     public void setupInnerViewElements(ViewGroup parent, View view) {
         super.setupInnerViewElements(parent, view);
-        ButterKnife.bind((Object) this, view);
+        ButterKnife.bind(this, view);
         this.barChart = new BarChartBuilder(this.barChart).setUnits(this.barChartData.getUnits()).setMaxVisibleValue(this.barChartData.getMaxVisibleValue()).setDrawXLabels(true).build();
         this.barChart = new BarChartDataBuilder(this.barChart, getContext()).setyValues(this.barChartData.getyValues()).setxValues(this.barChartData.getxValues()).setType(this.barChartData.getType()).build();
         if (this.barChart != null) {

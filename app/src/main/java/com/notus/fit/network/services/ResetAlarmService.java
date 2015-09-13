@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.notus.fit.utils.PrefManager;
+import com.notus.fit.utils.PreferenceUtils;
 
 public class ResetAlarmService extends IntentService {
 
@@ -12,9 +13,9 @@ public class ResetAlarmService extends IntentService {
     }
 
     protected void onHandleIntent(Intent intent) {
-        PrefManager.with(this).save("overachiever", false);
-        PrefManager.with(this).save("halfway_done", false);
-        PrefManager.with(this).save("almost_there", false);
-        PrefManager.with(this).save("goal_reached", false);
+        PrefManager.with(this).save(PreferenceUtils.OVERACHIEVER, false);
+        PrefManager.with(this).save(PreferenceUtils.HALFWAY_DONE, false);
+        PrefManager.with(this).save(PreferenceUtils.ALMOST_THERE, false);
+        PrefManager.with(this).save(PreferenceUtils.GOAL_REACHED, false);
     }
 }

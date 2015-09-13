@@ -11,17 +11,17 @@ import com.notus.fit.utils.PreferenceUtils;
 
 
 public class StartActivity extends BasePagerActivity {
-    protected SignUpFragment signUpFragment;
+    protected SignUpFragment mSignUpFragment;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         PrefManager.with(this).save(PreferenceUtils.FIRST_TIME, true);
-        this.titleList.add("Welcome");
-        this.titleList.add("Sign In / Sign Up");
+        mTitleList.add("Welcome");
+        mTitleList.add("Sign In / Sign Up");
         WelcomeFragment welcomeFragment = new WelcomeFragment();
-        this.signUpFragment = new SignUpFragment();
-        this.fragmentList.add(welcomeFragment);
-        this.fragmentList.add(this.signUpFragment);
+        mSignUpFragment = new SignUpFragment();
+        mFragmentList.add(welcomeFragment);
+        mFragmentList.add(mSignUpFragment);
         initPager();
     }
 
@@ -30,13 +30,13 @@ public class StartActivity extends BasePagerActivity {
     }
 
     public SignUpFragment getSignUpFragment() {
-        return this.signUpFragment;
+        return mSignUpFragment;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (this.signUpFragment != null) {
-            this.signUpFragment.onActivityResult(requestCode, resultCode, data);
+        if (mSignUpFragment != null) {
+            mSignUpFragment.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

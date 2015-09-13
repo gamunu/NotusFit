@@ -1,14 +1,19 @@
 package com.notus.fit.models.misfit;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.parceler.Parcel;
 
 import java.util.List;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 4:59 PM
  */
 @Parcel
 public class MisfitSummary {
+    @SerializedName("summary")
     List<MisfitDay> summary;
 
     public List<MisfitDay> getSummary() {

@@ -2,31 +2,52 @@ package com.jawbone.upplatformsdk.endpointModels.body;
 
 import com.google.gson.annotations.SerializedName;
 import com.jawbone.upplatformsdk.endpointModels.DefaultItem;
+import com.jawbone.upplatformsdk.utils.UpPlatformSdkUtils;
 
+/**
+ * Created by <a href="mailto:marcusandreog@gmail.com">Marcus Gabilheri</a>
+ *
+ * @author Marcus Gabilheri
+ * @version 1.0
+ * @since 2/14/15.
+ */
 public class BodyItem extends DefaultItem {
-    @SerializedName("bmi")
-    protected Float bmi;
-    @SerializedName("body_fat")
-    protected Float bodyFat;
-    @SerializedName("details")
-    protected BodyDetails details;
-    @SerializedName("lean_mass")
-    protected Float leanMass;
-    @SerializedName("note")
-    protected String note;
-    @SerializedName("place_acc")
-    protected Integer placeAcc;
+
     @SerializedName("place_lat")
     protected Float placeLat;
+
     @SerializedName("place_lon")
     protected Float placeLon;
+
+    @SerializedName("place_acc")
+    protected Integer placeAcc;
+
     @SerializedName("place_name")
     protected String placeName;
+
+    @SerializedName("note")
+    protected String note;
+
+    @SerializedName("lean_mass")
+    protected Float leanMass;
+
     @SerializedName("weight")
     protected Float weight;
 
+    @SerializedName("body_fat")
+    protected Float bodyFat;
+
+    @SerializedName("bmi")
+    protected Float bmi;
+
+    @SerializedName("details")
+    protected BodyDetails details;
+
+    public BodyItem() {
+    }
+
     public Float getPlaceLat() {
-        return this.placeLat;
+        return placeLat;
     }
 
     public void setPlaceLat(Float placeLat) {
@@ -34,7 +55,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public Float getPlaceLon() {
-        return this.placeLon;
+        return placeLon;
     }
 
     public void setPlaceLon(Float placeLon) {
@@ -42,7 +63,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public Integer getPlaceAcc() {
-        return this.placeAcc;
+        return placeAcc;
     }
 
     public void setPlaceAcc(Integer placeAcc) {
@@ -50,7 +71,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public String getPlaceName() {
-        return this.placeName;
+        return placeName;
     }
 
     public void setPlaceName(String placeName) {
@@ -58,7 +79,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public String getNote() {
-        return this.note;
+        return note;
     }
 
     public void setNote(String note) {
@@ -66,7 +87,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public Float getLeanMass() {
-        return this.leanMass;
+        return leanMass;
     }
 
     public void setLeanMass(Float leanMass) {
@@ -74,7 +95,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public Float getWeight() {
-        return this.weight;
+        return weight;
     }
 
     public void setWeight(Float weight) {
@@ -82,7 +103,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public Float getBodyFat() {
-        return this.bodyFat;
+        return bodyFat;
     }
 
     public void setBodyFat(Float bodyFat) {
@@ -90,7 +111,7 @@ public class BodyItem extends DefaultItem {
     }
 
     public Float getBmi() {
-        return this.bmi;
+        return bmi;
     }
 
     public void setBmi(Float bmi) {
@@ -98,10 +119,15 @@ public class BodyItem extends DefaultItem {
     }
 
     public BodyDetails getDetails() {
-        return this.details;
+        return details;
     }
 
     public void setDetails(BodyDetails details) {
         this.details = details;
+    }
+
+    @Override
+    public String toString() {
+        return UpPlatformSdkUtils.toJson(this);
     }
 }

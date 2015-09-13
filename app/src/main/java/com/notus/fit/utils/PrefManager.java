@@ -9,16 +9,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 4:59 PM
  */
 public class PrefManager {
     static Editor editor;
     static SharedPreferences preferences;
-    static PrefManager singleton;
-
-    static {
-        singleton = null;
-    }
+    static PrefManager singleton = null;
 
     PrefManager(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);

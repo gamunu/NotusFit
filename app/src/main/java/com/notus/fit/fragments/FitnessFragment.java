@@ -16,37 +16,32 @@ import rx.functions.Func0;
 
 public abstract class FitnessFragment extends DefaultFragment {
     protected static final String TAG = FitnessFragment.class.getSimpleName();
-    protected BaseActivity baseActivity;
-    protected boolean hasFitbit;
-    protected boolean hasJawbone;
-    protected boolean hasMisfit;
-    protected boolean hasMoves;
-    protected boolean hasWearDevice;
+    protected BaseActivity mBaseActivity;
+    protected boolean mHasFitbit = false;
+    protected boolean mHasJawbone = false;
+    protected boolean mHasMisfit = false;
+    protected boolean mHasMoves = false;
+    protected boolean mHasWearDevice = false;
 
 
     public FitnessFragment() {
-        this.hasFitbit = false;
-        this.hasJawbone = false;
-        this.hasWearDevice = false;
-        this.hasMisfit = false;
-        this.hasMoves = false;
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.baseActivity = (BaseActivity) getActivity();
-        this.hasFitbit = PrefManager.with(getActivity()).getBoolean(User.HAS_FITBIT, false);
-        this.hasWearDevice = PrefManager.with(getActivity()).getBoolean(User.HAS_GOOGLEFIT, false);
-        this.hasJawbone = PrefManager.with(getActivity()).getBoolean(User.HAS_JAWBONE, false);
-        this.hasMisfit = PrefManager.with(getActivity()).getBoolean(User.HAS_MISFIT, false);
-        this.hasMoves = PrefManager.with(getActivity()).getBoolean(User.HAS_MOVES, false);
+        mBaseActivity = (BaseActivity) getActivity();
+        mHasFitbit = PrefManager.with(getContext()).getBoolean(User.HAS_FITBIT, false);
+        mHasWearDevice = PrefManager.with(getContext()).getBoolean(User.HAS_GOOGLEFIT, false);
+        mHasJawbone = PrefManager.with(getContext()).getBoolean(User.HAS_JAWBONE, false);
+        mHasMisfit = PrefManager.with(getContext()).getBoolean(User.HAS_MISFIT, false);
+        mHasMoves = PrefManager.with(getContext()).getBoolean(User.HAS_MOVES, false);
     }
 
     protected Observable<WeekReport> getAndroidWearWeekReport(final RequestTime requestTime) {
         return Observable.defer(new Func0<Observable<WeekReport>>() {
             @Override
             public Observable<WeekReport> call() {
-                return Observable.just(FitnessUtils.getAndroidWearWeekReport(requestTime, FitnessFragment.this.getActivity(), FitnessFragment.this.baseActivity.getGoogleFitClient()));
+                return Observable.just(FitnessUtils.getAndroidWearWeekReport(requestTime, getActivity(), mBaseActivity.getGoogleFitClient()));
             }
         });
     }
@@ -55,7 +50,7 @@ public abstract class FitnessFragment extends DefaultFragment {
         return Observable.defer(new Func0<Observable<WeekReport>>() {
             @Override
             public Observable<WeekReport> call() {
-                return Observable.just(FitnessUtils.getFitbitWeekReport(seriesRequest, FitnessFragment.this.getActivity()));
+                return Observable.just(FitnessUtils.getFitbitWeekReport(seriesRequest, getActivity()));
             }
         });
     }
@@ -64,7 +59,7 @@ public abstract class FitnessFragment extends DefaultFragment {
         return Observable.defer(new Func0<Observable<WeekReport>>() {
             @Override
             public Observable<WeekReport> call() {
-                return Observable.just(FitnessUtils.getJawboneWeekReport(weekType, FitnessFragment.this.getActivity()));
+                return Observable.just(FitnessUtils.getJawboneWeekReport(weekType, getActivity()));
             }
         });
     }
@@ -73,7 +68,7 @@ public abstract class FitnessFragment extends DefaultFragment {
         return Observable.defer(new Func0<Observable<WeekReport>>() {
             @Override
             public Observable<WeekReport> call() {
-                return Observable.just(FitnessUtils.getMisfitWeekReport(dateRequest, FitnessFragment.this.getActivity()));
+                return Observable.just(FitnessUtils.getMisfitWeekReport(dateRequest, getActivity()));
             }
         });
     }
@@ -82,7 +77,7 @@ public abstract class FitnessFragment extends DefaultFragment {
         return Observable.defer(new Func0<Observable<WeekReport>>() {
             @Override
             public Observable<WeekReport> call() {
-                return Observable.just(FitnessUtils.getMovesWeekReport(weekType, FitnessFragment.this.getActivity()));
+                return Observable.just(FitnessUtils.getMovesWeekReport(weekType, getActivity()));
             }
         });
     }

@@ -3,9 +3,9 @@ package com.notus.fit.activities;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 
-import com.crashlytics.android.Crashlytics;
 import com.notus.fit.R;
 import com.notus.fit.fragments.ChallengeDetailFragment;
 import com.notus.fit.utils.ColorUtils;
@@ -13,10 +13,6 @@ import com.notus.fit.utils.CustomUtils;
 
 
 public class ChallengeDetailActivity extends BaseActivity {
-
-    public ChallengeDetailActivity() {
-    }
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         enableBackNav();
@@ -30,15 +26,15 @@ public class ChallengeDetailActivity extends BaseActivity {
                         window.clearFlags(67108864);
                         window.setStatusBarColor(ColorUtils.darkenColor(getIntent().getExtras().getInt("pColor")));
                     }
-                    this.toolbar.setBackground(pColor);
+                    this.mToolbar.setBackground(pColor);
                 } else {
-                    this.toolbar.setBackgroundDrawable(pColor);
+                    this.mToolbar.setBackground(pColor);
                 }
                 ChallengeDetailFragment cdF = new ChallengeDetailFragment();
                 cdF.setArguments(getIntent().getExtras());
                 CustomUtils.addFragmentToContainer(cdF, R.id.container, this);
             } catch (Exception ex) {
-                Crashlytics.logException(ex);
+                Log.e(LOG_TAG, ex.getMessage(), ex);
             }
         }
     }

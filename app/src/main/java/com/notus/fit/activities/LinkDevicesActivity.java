@@ -19,6 +19,6 @@ public class LinkDevicesActivity extends BaseActivity {
         if (!link) {
             enableBackNav();
         }
-        getSupportActionBar().setTitle("Connect Accounts");
+        setTitle("Connect Accounts");
     }
 }

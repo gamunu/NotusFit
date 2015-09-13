@@ -1,6 +1,8 @@
 package com.notus.fit.barchart;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -15,9 +17,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by VBALAUD on 9/3/2015.
+ * Project: NotusFit
+ * Created by Gamunu Balagalla
+ * Last Modified: 9/3/2015 7:45 PM
  */
 public class BarChartDataBuilder {
+    public static String LOG_TAG = BarChartDataBuilder.class.getName();
 
     public static int DEFAULT;
     public static int STEPS;
@@ -30,19 +35,19 @@ public class BarChartDataBuilder {
     private BarChart barChart;
     private float barSpaceContent;
     private String bottomText;
-    private ArrayList<Integer> colors;
+    private List<Integer> colors;
     private Context context;
     private int type;
-    private ArrayList<String> xValues;
-    private ArrayList<Integer> yValues;
+    private List<String> xValues;
+    private List<Integer> yValues;
 
     public BarChartDataBuilder(BarChart barChart, Context context) {
         this.barChart = barChart;
         this.context = context;
-        this.colors = new ArrayList();
+        this.colors = new ArrayList<>();
         this.barSpaceContent = 30.0f;
-        this.xValues = new ArrayList();
-        this.yValues = new ArrayList();
+        this.xValues = new ArrayList<>();
+        this.yValues = new ArrayList<>();
         this.bottomText = BuildConfig.FLAVOR;
         this.type = DEFAULT;
     }
@@ -56,7 +61,7 @@ public class BarChartDataBuilder {
         return this;
     }
 
-    public ArrayList<Integer> getColors() {
+    public List<Integer> getColors() {
         return this.colors;
     }
 
@@ -65,20 +70,20 @@ public class BarChartDataBuilder {
         return this;
     }
 
-    public ArrayList<Integer> getyValues() {
+    public List<Integer> getyValues() {
         return this.yValues;
     }
 
-    public BarChartDataBuilder setyValues(ArrayList<Integer> yValues) {
+    public BarChartDataBuilder setyValues(List<Integer> yValues) {
         this.yValues = yValues;
         return this;
     }
 
-    public ArrayList<String> getxValues() {
+    public List<String> getxValues() {
         return this.xValues;
     }
 
-    public BarChartDataBuilder setxValues(ArrayList<String> xValues) {
+    public BarChartDataBuilder setxValues(List<String> xValues) {
         this.xValues = xValues;
         return this;
     }
@@ -121,32 +126,32 @@ public class BarChartDataBuilder {
 
     public BarChart build() {
         try {
-            ArrayList<BarEntry> yVals = new ArrayList();
+            List<BarEntry> yVals = new ArrayList<>();
             int counter = 0;
             Iterator it = this.yValues.iterator();
             while (it.hasNext()) {
-                yVals.add(new BarEntry((float) ((Integer) it.next()).intValue(), counter));
+                yVals.add(new BarEntry((float) (Integer) it.next(), counter));
                 counter++;
             }
             if (yVals.size() != 0) {
                 int i;
                 BarDataSet set = new BarDataSet(yVals, this.bottomText);
                 for (i = 0; i < this.colors.size(); i++) {
-                    this.colors.add(i, Integer.valueOf(this.context.getResources().getColor(((Integer) this.colors.get(i)).intValue())));
+                    this.colors.add(i, ContextCompat.getColor(getContext(), this.colors.get(i)));
                 }
                 if (this.colors.size() == 0) {
                     if (this.type == DEFAULT) {
-                        this.colors.add(Integer.valueOf(this.context.getResources().getColor(R.color.primary)));
-                        this.colors.add(Integer.valueOf(this.context.getResources().getColor(R.color.accent_color)));
+                        this.colors.add(ContextCompat.getColor(getContext(), R.color.primary));
+                        this.colors.add(ContextCompat.getColor(getContext(), R.color.accent_color));
                     } else if (this.type == STEPS) {
                         it = this.yValues.iterator();
                         while (it.hasNext()) {
-                            this.colors.add(Integer.valueOf(ColorUtils.getStepsColor(getContext(), ((Integer) it.next()).intValue())));
+                            this.colors.add(ColorUtils.getStepsColor(getContext(), (Integer) it.next()));
                         }
                     }
                 }
                 set.setColors(this.colors);
-                List dataSets = new ArrayList();
+                List<BarDataSet> dataSets = new ArrayList<>();
                 dataSets.add(set);
                 if (this.xValues.size() == 0) {
                     for (i = 0; i < yVals.size(); i++) {
@@ -159,6 +164,7 @@ public class BarChartDataBuilder {
             this.barChart.invalidate();
             return this.barChart;
         } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage());
             return null;
         }
     }

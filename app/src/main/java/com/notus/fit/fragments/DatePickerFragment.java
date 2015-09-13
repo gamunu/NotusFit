@@ -4,9 +4,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.DatePicker;
-
-import com.crashlytics.android.Crashlytics;
 
 import java.util.Calendar;
 
@@ -25,7 +24,7 @@ public class DatePickerFragment extends DialogFragment implements android.app.Da
                 month = b.getInt("month");
                 day = b.getInt("day");
             } catch (NullPointerException ex) {
-                Crashlytics.logException(ex);
+                Log.e(DatePickerFragment.class.getName(), ex.getMessage(), ex);
             }
         }
         return new DatePickerDialog(getActivity(), this, year, month, day);
